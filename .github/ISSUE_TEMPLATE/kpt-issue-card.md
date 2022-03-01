@@ -1,7 +1,7 @@
 ---
 name: KPT Issue card
-about: KPT Issue card
-title: ''
+about: 'KPT Issue card '
+title: KPT Issue 제목 설정하기
 labels: example, issue card
 assignees: ''
 
