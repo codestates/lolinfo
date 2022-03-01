@@ -2,7 +2,7 @@
 name: Task Issue Card
 about: Task Issue Card
 title: "[Tack] 이슈카드 제목 설정하기"
-labels: ''
+labels: example, issue card
 assignees: ''
 
 ---
