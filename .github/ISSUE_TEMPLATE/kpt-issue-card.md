@@ -1,5 +1,5 @@
 ---
-name: KPT Issue card
+name: KPT Issue Card
 about: 'KPT Issue card '
 title: KPT Issue 제목 설정하기
 labels: example, issue card
