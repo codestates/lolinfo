@@ -10,5 +10,5 @@
 링크    
 [LOL-INFO](http://lolinfo.shop/login, "google link")
 * * *
-### For project details
-[LOL-INFO Detail!](https://github.com/codestates/lolinfo/wiki, "google link")
+## For project details
+[Project Detail!](https://github.com/codestates/lolinfo/wiki, "google link")
