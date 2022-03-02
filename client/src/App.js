@@ -1,32 +1,14 @@
-import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import React from 'react';
+import GlobalStyle from './styles/GlobalStyle';
+import styled, {ThemeProvider} from 'styled-components';
+import theme from './styles/theme';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import RecordPage from './pages/RecordPage';
+import Home from './pages/Home';
+import Board from './pages/Board';
 
-import Home from "./pages/Home";
-import Board from "./pages/Board"
-
-
-const mainColor = "#C4C4C4";
-const subColor = "#000000";
-
-const GlobalStyle = createGlobalStyle`
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  body {
-    font-family: "Helvetica", "Arial", sans-serif;
-    line-height: 1.5;
-  }
-`;
-
+const subColor = '#000000';
 //Header
 const StHeader = styled.div`
   background-color: ${subColor};
@@ -37,14 +19,17 @@ const StHeader = styled.div`
 function App() {
   return (
     <div className="App">
-      <Router>
-        <GlobalStyle />
-        <StHeader>Header</StHeader>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/board" element={<Board />} />
-        </Routes>
-      </Router>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <GlobalStyle />
+          <StHeader>Header</StHeader>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/board" element={<Board />} />
+            <Route path="/record" element={<RecordPage />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
     </div>
   );
 }
