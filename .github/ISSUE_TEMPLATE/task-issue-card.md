@@ -1,7 +1,7 @@
 ---
 name: Task Issue Card
 about: Task Issue Card
-title: "[Task] 이슈카드 제목 설정하기"
+title: "[해당 마일스톤] 이슈카드 제목 설정"
 labels: issue card
 assignees: ''
 
@@ -26,5 +26,4 @@ assignees: ''
  ### Labels
  * Estimated time: `E: 1h`
  * Group : `client`, `server`
- * Sprint: `Sprint__NUMBER__`
  * Urgency: `High`, `Middle`, `Low`
