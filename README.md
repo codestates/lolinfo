@@ -11,4 +11,4 @@
 [LOL-INFO](http://lolinfo.shop/login, "google link")
 * * *
 ## For project details
-[Project Detail!](https://github.com/codestates/lolinfo/wiki, "google link")
+[Project Detail 여기를 클릭!](https://github.com/codestates/lolinfo/wiki, "google link")
