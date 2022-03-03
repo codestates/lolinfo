@@ -87,12 +87,12 @@ img {
     border-radius: 50%;
 }
 `
-const SocialButton1=styled.img`
-grid-column: 1;
-`
-const SocialButton2=styled.img`
-grid-column: 2;
-`
+// const SocialButton1=styled.img`
+// grid-column: 1;
+// `
+// const SocialButton2=styled.img`
+// grid-column: 2;
+// `
 const SocialButton3=styled.img`
 grid-column: 2;
 `
