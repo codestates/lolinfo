@@ -8,10 +8,9 @@ import RecordPage from './pages/RecordPage';
 import Home from './pages/Home';
 import Board from './pages/Board';
 
-const subColor = '#000000';
 //Header
 const StHeader = styled.div`
-  background-color: ${subColor};
+  background-color: ${props => props.theme.mainColor};
   height: 10vh;
   color: white;
 `;

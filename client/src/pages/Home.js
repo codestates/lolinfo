@@ -1,9 +1,9 @@
-import Card from "../components/Card";
-import { Search } from "@styled-icons/bootstrap/Search";
-import styled from "styled-components";
+import Card from '../components/Card';
+import {Search} from '@styled-icons/bootstrap/Search';
+import styled from 'styled-components';
 
-const mainColor = "#C4C4C4";
-const subColor = "#000000";
+const mainColor = '#C4C4C4';
+const subColor = '#000000';
 
 //Body
 const StWrapper = styled.div`
@@ -20,11 +20,11 @@ const StWrapper = styled.div`
 const BodyRow = styled.div`
   display: grid;
   grid-template-areas:
-    "title title title"
-    "search search search"
-    ". bodytitle ."
-    ". body ."
-    ". more .";
+    'title title title'
+    'search search search'
+    '. bodytitle .'
+    '. body .'
+    '. more .';
   width: 100%;
   height: auto;
 
