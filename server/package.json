@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/yhs9421877/2weekProject#readme",
   "dependencies": {
+    "axios": "^0.26.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.17.2",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15",
     "sequelize-cli": "^6.4.1"
   }
 }
