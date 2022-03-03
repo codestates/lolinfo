@@ -2,9 +2,18 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 
 const RecentWapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(3rem, auto);
+  grid-template-rows: repeat(8, minmax(1rem, auto));
+  grid-template-areas:
+    'title-record'
+    'CircleGraph'
+    'title-team'
+    'TeamRate'
+    'title-gamelength'
+    'GameTimeRate'
+    'title-KDA'
+    'TotalKDA';
 
   text-align: center;
   font-family: 'Roboto', sans-serif;
@@ -13,20 +22,52 @@ const RecentWapper = styled.div`
   color: #24292ed0;
 
   width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
 
   @media all and (max-width: ${props => props.theme.recordMobileH}) {
     display: none;
+  }
+
+  > .title-record {
+    grid-area: title-record;
+  }
+
+  > .CircleGraph {
+    grid-area: CircleGraph;
+  }
+
+  > .title-team {
+    grid-area: title-team;
+  }
+
+  > .TeamRate {
+    grid-area: TeamRate;
+  }
+
+  > .title-gamelength {
+    grid-area: title-gamelength;
+  }
+
+  > .GameTimeRate {
+    grid-area: GameTimeRate;
+  }
+
+  > .title-KDA {
+    grid-area: title-KDA;
+  }
+
+  > .TotalKDA {
+    grid-area: TotalKDA;
   }
 `;
 const CircleGraphWapper = styled.div`
   position: relative;
   width: 150px;
   margin: auto;
-  margin-top: 0.4rem;
-  margin-bottom: 0.8rem;
 `;
 
-const TeamVictoryRate = styled.img`
+const TeamRate = styled.img`
   object-fit: cover;
   width: 120px;
   height: 120px;
@@ -35,7 +76,7 @@ const TeamVictoryRate = styled.img`
   margin-bottom: 1rem;
 `;
 
-const TimeVictoryRate = styled.img`
+const GameTimeRate = styled.img`
   object-fit: cover;
   width: 120px;
   height: 120px;
@@ -91,21 +132,51 @@ const CircleGraph = styled.div`
 
 const TotalKDAWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   font-size: 1.1rem;
 `;
 
 const TotalKDA = styled.span`
-  display: inline-flex;
-  grid-column-start: 1;
-  grid-column-end: 3;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(1rem, auto));
+  grid-template-rows: repeat(2, minmax(1rem, auto));
+  grid-template-areas:
+    'kill spe1 death spe2 assist icon'
+    'average average average kill-assist kill-assist kill-assist';
+
+  justify-content: center;
 
   margin: auto;
-  margin-top: 0.2rem;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin-top: 0rem;
   align-items: center;
-  word-spacing: 8px;
+
+  > .kill {
+    grid-area: kill;
+  }
+
+  > .death {
+    grid-area: death;
+  }
+
+  > .assist {
+    grid-area: assist;
+  }
+
+  > .icon {
+    grid-area: icon;
+  }
+
+  > .average {
+    grid-area: average;
+    font-size: minmax(0.5rem, auto);
+    margin-right: 0.2rem;
+  }
+
+  > .kill-assist {
+    grid-area: kill-assist;
+    font-size: minmax(0.5rem, auto);
+    margin-left: 0.2rem;
+  }
 `;
 
 const Icon = styled.img`
@@ -115,6 +186,16 @@ const Icon = styled.img`
   filter: invert(85%) sepia(50%) saturate(1000%) hue-rotate(130deg) brightness(95%) contrast(50%);
 `;
 
+const data = [
+  {team: 'red', rate: 75},
+  {team: 'blue', rate: 24},
+];
+
+const width = 120;
+const height = 120;
+
+// const svg = d3.select('.TeamRate').append('svg').attr('height').attr('width');
+
 function RecentChart() {
   const [rate, setRate] = useState(0);
   const sleep = n => new Promise(resolve => setTimeout(resolve, n));
@@ -122,7 +203,7 @@ function RecentChart() {
   useEffect(() => {
     const fn = async () => {
       await sleep(15);
-      if (rate < 87) {
+      if (rate < 85) {
         setRate(rate + 1);
       }
     };
@@ -131,25 +212,29 @@ function RecentChart() {
 
   return (
     <RecentWapper name="RecentWapper">
-      <span>{'2전 3승 1패'}</span>
-      <CircleGraphWapper name="CircleGraphWapper">
+      <span className="title-record">{'4전 3승 1패'}</span>
+      <CircleGraphWapper className="CircleGraph" name="CircleGraphWapper">
         <CircleGraph rate={rate} name="CircleGraph">
           <div className="progress-circle"></div>
           <span className="percent">{rate + '%'}</span>
         </CircleGraph>
       </CircleGraphWapper>
-      <span>팀별 승률</span>
-      <TeamVictoryRate />
-      <span>게임 길이별 승률</span>
-      <TimeVictoryRate />
-      <span>KDA</span>
-      <TotalKDAWrapper>
+      <span className="title-team">팀별 승률</span>
+      <TeamRate className="TeamRate" />
+      <span className="title-gamelength">게임 길이별 승률</span>
+      <GameTimeRate className="GameTimeRate" />
+      <span className="title-KDA">KDA</span>
+      <TotalKDAWrapper className="TotalKDAWrapper">
         <TotalKDA>
-          <span>{`${44} / ${1} / ${33}`}&nbsp;</span>
-          <Icon size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
+          <span className="kill">{44}</span>
+          <span>{'/'}</span>
+          <span className="death">{1}</span>
+          <span>{'/'}</span>
+          <span className="assist">{33}</span>
+          <Icon className="icon" size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
+          <span className="average">평점:{`${88.2}`}</span>
+          <span className="kill-assist">킬관여:{`70%`}</span>
         </TotalKDA>
-        <span>평점:{`${' ' + 88.2}`}</span>
-        <span>킬관여:{`70%`}</span>
       </TotalKDAWrapper>
     </RecentWapper>
   );
