@@ -8,6 +8,7 @@ import Board from "./pages/Board";
 import Theme from './styles/Theme';
 import GlobalStyle from './styles/GlobalStyle';
 
+
 //Header
 const StHeader = styled.div`
   background-color: ${props => props.theme.mainColor};
@@ -25,6 +26,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/board" element={<Board />} />
+            <Route path="/record" element={<RecordPage />} />
           </Routes>
         </Router>
       </ThemeProvider>

@@ -2,6 +2,7 @@ import { Search } from "@styled-icons/bootstrap/Search";
 import styled from "styled-components";
 import CardContainer from "../containers/CardContainer";
 
+
 //Body
 const StWrapper = styled.div`
   display: flex;
@@ -16,11 +17,11 @@ const StWrapper = styled.div`
 const BodyRow = styled.div`
   display: grid;
   grid-template-areas:
-    "title title title"
-    "search search search"
-    ". bodytitle ."
-    ". body ."
-    ". more .";
+    'title title title'
+    'search search search'
+    '. bodytitle .'
+    '. body .'
+    '. more .';
   width: 100%;
   height: auto;
   text-align: center;
