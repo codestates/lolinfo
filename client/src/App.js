@@ -1,12 +1,14 @@
-import React,{useState} from 'react';
+import React, {useState}from "react";
+import styled, { ThemeProvider } from "styled-components";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import Board from "./pages/Board";
+
+import Theme from './styles/Theme';
 import GlobalStyle from './styles/GlobalStyle';
-import styled, {ThemeProvider} from 'styled-components';
-import theme from './styles/theme';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
 import RecordPage from './pages/RecordPage';
-import Home from './pages/Home';
-import Board from './pages/Board';
 import Search from "./components/search";
 // import MainTitle from "./components/title";
 import NaviBar from "./components/naviBar";
@@ -27,7 +29,7 @@ function App() {
 }
   return (
     <div className="App" ref={element}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
           <NaviBar sticky={isSticky} naviMenu={naviMenu}></NaviBar>
