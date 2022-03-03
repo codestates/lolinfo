@@ -9,6 +9,8 @@ const theme = {
   kdaFontSmall: '0.4rem',
   fontColor: 'yellow',
   placeholderColor: '#5883ab',
+  titleLetterSpace: '10px',
+  
 };
 
 export default theme;
