@@ -1,12 +1,13 @@
-import React from 'react';
-import GlobalStyle from './styles/GlobalStyle';
-import styled, {ThemeProvider} from 'styled-components';
-import theme from './styles/theme';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import React from "react";
+import styled, { ThemeProvider } from "styled-components";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import RecordPage from './pages/RecordPage';
-import Home from './pages/Home';
-import Board from './pages/Board';
+import Home from "./pages/Home";
+import Board from "./pages/Board";
+
+import Theme from './styles/Theme';
+import GlobalStyle from './styles/GlobalStyle';
+
 
 //Header
 const StHeader = styled.div`
@@ -18,7 +19,7 @@ const StHeader = styled.div`
 function App() {
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
           <StHeader>Header</StHeader>
