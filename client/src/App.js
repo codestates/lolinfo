@@ -1,37 +1,40 @@
-import React, {useState} from 'react';
-import styled, {ThemeProvider} from 'styled-components';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+
+import React, { useState } from 'react';
+import styled, { ThemeProvider } from 'styled-components';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Board from './pages/Board';
-import Edit from './pages/Mypage-Edit';
-import DeleteAccount from  './pages/Mypage-DelAco';
-import ChangePassword from './pages/Mypage-ChangePw';
+import Edit from "./pages/Mypage-Edit";
+import DeleteAccount from "./pages/Mypage-DelAco";
+import ChangePassword from "./pages/Mypage-ChangePw";
+import ChattingRoom from "./pages/ChattingRoom"
 
-import Theme from './styles/Theme';
-import GlobalStyle from './styles/GlobalStyle';
 
-import RecordPage from './pages/RecordPage';
-import Search from './components/search';
+import Theme from "./styles/Theme";
+import GlobalStyle from "./styles/GlobalStyle";
+
+import RecordPage from "./pages/RecordPage";
+import Search from "./components/search";
 // import MainTitle from "./components/title";
-import NaviBar from './components/naviBar';
-import LoginPage from './components/loginPage';
-import useSticky from './hook/useSticky';
-import SignupPage from './components/signupPage';
-import Modal from './components/modal';
+import NaviBar from "./components/naviBar";
+import LoginPage from "./components/loginPage";
+import useSticky from "./hook/useSticky";
+import SignupPage from "./components/signupPage";
+import Modal from "./components/modal";
 
 //Header
 function App() {
-  const {isSticky, element} = useSticky();
-  const [loginModal, setLoginModal] = useState('');
+  const { isSticky, element } = useSticky();
+  const [loginModal, setLoginModal] = useState("");
   const [userInfo, setUserInfo] = useState({
-    name: '',
-    password: '',
-    passwordC: '',
-    submit: '',
-    login: '',
+    name: "",
+    password: "",
+    passwordC: "",
+    submit: "",
+    login: "",
   });
   function naviMenu(order) {
-    if (order === 5) setLoginModal('login');
+    if (order === 5) setLoginModal("login");
     else if (order === 0) {
       //메인
       // history.push("/")
@@ -68,11 +71,11 @@ function App() {
             <Route path="/mypage/edit" element={<Edit />} />
             <Route path="/mypage/changePassword" element={<ChangePassword />} />
             <Route path="/mypage/deleteAccount" element={<DeleteAccount />} />
+            <Route path="/chat" element={<ChattingRoom />} />
           </Routes>
         </Router>
       </ThemeProvider>
     </div>
   );
 }
-
 export default App;
