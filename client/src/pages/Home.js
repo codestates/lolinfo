@@ -4,13 +4,13 @@ import CardContainer from "../containers/CardContainer";
 
 //Body
 const StWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    overflow: auto;
-    flex-wrap: wrap;
-    background-color: ${(props) => props.theme.subColor};
-    height: 90vh;
-    padding: 2rem 0.4445rem;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+  flex-wrap: wrap;
+  background-color: ${props => props.theme.subColor};
+  height: 100%;
+  padding: 2rem 0.4445rem;
 `;
 
 const BodyRow = styled.div`
