@@ -1,6 +1,6 @@
 import React, {useState}from "react";
 import { ThemeProvider } from "styled-components";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useNavigate ,BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Board from "./pages/Board";
 
@@ -25,21 +25,21 @@ function App() {
   })
   function naviMenu(order){
     if(order===5)setLoginModal('login')
-    else if(order===0){//메인
-      // history.push("/")
-    }
-    else if(order===1){//게시판
+    // else if(order===0){//메인
+    //   // avigate
+    // }
+    // else if(order===1){//게시판
 
-    }
-    else if(order===2){//전적
+    // }
+    // else if(order===2){//전적
 
-    }
-    else if(order===3){//랭킹
+    // }
+    // else if(order===3){//랭킹
 
-    }
-    else if(order===4){//오픈채팅
+    // }
+    // else if(order===4){//오픈채팅
 
-    }
+    // }
 }
   return (
     <div className="App" ref={element}>
