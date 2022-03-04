@@ -1,10 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const SH1 = styled.h1`
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
   font-weight: 300;
-`
+`;
 
 const SButton = styled.button`
   background-color: rgba(51, 51, 51, 0.05);
@@ -13,7 +14,8 @@ const SButton = styled.button`
   color: #333333;
   cursor: pointer;
   display: inline-block;
-  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
@@ -23,7 +25,7 @@ const SButton = styled.button`
   text-align: center;
   transition: all 200ms;
   vertical-align: baseline;
-`
+`;
 
 function Counter({ number, onIncrease, onDecrease }) {
   return (
