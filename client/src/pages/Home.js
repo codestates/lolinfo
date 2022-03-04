@@ -16,7 +16,6 @@ const StWrapper = styled.div`
 
 const BodyRow = styled.div`
   display: grid;
-  /* grid-auto-rows: minmax(100px, auto); */
   grid-template-areas:
     'title title title'
     'search search search'
