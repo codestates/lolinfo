@@ -1,182 +1,76 @@
-import React from "react";
-import styled, { createGlobalStyle } from "styled-components";
-import Card from "./components/Card";
-import { Search } from '@styled-icons/bootstrap/Search';
+import React, {useState} from 'react';
+import styled, {ThemeProvider} from 'styled-components';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Home from './pages/Home';
+import Board from './pages/Board';
+import Edit from './pages/Mypage-Edit';
+import DeleteAccount from  './pages/Mypage-DelAco';
+import ChangePassword from './pages/Mypage-ChangePw';
 
-const mainColor = "#C4C4C4";
-const subColor = "#000000";
+import Theme from './styles/Theme';
+import GlobalStyle from './styles/GlobalStyle';
 
-
-
-const GlobalStyle = createGlobalStyle`
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  body {
-    font-family: "Helvetica", "Arial", sans-serif;
-    line-height: 1.5;
-  }
-`;
+import RecordPage from './pages/RecordPage';
+import Search from './components/search';
+// import MainTitle from "./components/title";
+import NaviBar from './components/naviBar';
+import LoginPage from './components/loginPage';
+import useSticky from './hook/useSticky';
+import SignupPage from './components/signupPage';
+import Modal from './components/modal';
 
 //Header
-const StHeader = styled.div`
-  background-color: ${subColor};
-  height: 10vh;
-`;
-//Body
-const StWrapper = styled.div`
-  display: flex;
-    justify-content: center;
-    overflow: auto;
-    flex-wrap: wrap;
-  background-color: ${mainColor};
-  height: 90vh;
-  padding: 2rem 0.4445rem;
-`;
-
-//Card container
-const BodyRow = styled.div`
-  display: grid;
-    grid-template-areas:
-    "title title title"
-    "search search search"
-    ". bodytitle ."
-    ". body ."
-    ". more ."
-    ;
-  width: 100%;
-  height: auto;
-
-  text-align: center;
-
-  padding: 0rem 1rem 0rem 1rem;
-`;
-
-const BodyHeader = styled.div`
-  grid-area: title;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  min-height: 100px;
-  > h1 {
-    align-self: center;
-    justify-self: center;
-  }
-`;
-
-const SearchBox = styled.div`
-grid-area: search;
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  min-height: 100px;
-`;
-
-const StInput = styled.input`
-  width: 50vw;
-  height: 80%;
-  padding: 2rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  border-width: 0;
-  outline: white none 0px;
-`
-
-const StSearchIcon = styled(Search)`
-  color: steelblue;
-  width: 1.5rem;
-  height: 1.5rem;
-  position: absolute;
-    right: 26vw;
-  cursor: pointer;
-
-`
-
-const StH2 = styled.h2`
-  grid-area: bodytitle;
-  text-align: left;
-  padding-left: 1rem;
-  color: white;
-  max-height: 3rem;
-`;
-
-const CardWrapper = styled.div`
-  grid-area: body;
-  display: grid;
-    justify-content: center;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    grid-template-rows: repeat(auto-fill,  minmax(220px, 1fr));
-    gap: 5px;
-  width: 100%;
-  height: auto;
-  padding: 0.4rem;
-`;
-
-
-const StButton = styled.button`
-  grid-area: more;
-  width: 7rem;
-  display: inline-block;
-  color: white;
-  background-color: darkgray;
-  font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border: 2px solid ${subColor};
-  border-radius: 13px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-
-  cursor: pointer;
-`;
-
-
-
 function App() {
+  const {isSticky, element} = useSticky();
+  const [loginModal, setLoginModal] = useState('');
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    password: '',
+    passwordC: '',
+    submit: '',
+    login: '',
+  });
+  function naviMenu(order) {
+    if (order === 5) setLoginModal('login');
+    else if (order === 0) {
+      //메인
+      // history.push("/")
+    } else if (order === 1) {
+      //게시판
+    } else if (order === 2) {
+      //전적
+    } else if (order === 3) {
+      //랭킹
+    } else if (order === 4) {
+      //오픈채팅
+    }
+  }
   return (
-    <div className="App">
-      <GlobalStyle />
-      <StHeader>Header</StHeader>
-      <StWrapper>
-        <BodyRow>
-          <BodyHeader>
-            <h1>LOLINFO</h1>
-          </BodyHeader>
-          <SearchBox>
-            <StInput placeholder="Search" autoComplete="off"></StInput>
-            <StSearchIcon />
-          </SearchBox>
-          <StH2>게시판</StH2>
-          <CardWrapper>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-          </CardWrapper>
-          <StButton as="a" href="#">더보기</StButton>
-        </BodyRow>
-      </StWrapper>
+    <div className="App" ref={element}>
+      <ThemeProvider theme={Theme}>
+        <Router>
+          <GlobalStyle />
+          <NaviBar sticky={isSticky} naviMenu={naviMenu} />
+          <Search />
+          {loginModal ? (
+            <Modal setLoginModal={setLoginModal} visible={true}>
+              {loginModal === 'login' ? (
+                <LoginPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />
+              ) : (
+                <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />
+              )}
+            </Modal>
+          ) : null}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/board" element={<Board />} />
+            <Route path="/record" element={<RecordPage />} />
+            <Route path="/mypage/edit" element={<Edit />} />
+            <Route path="/mypage/changePassword" element={<ChangePassword />} />
+            <Route path="/mypage/deleteAccount" element={<DeleteAccount />} />
+          </Routes>
+        </Router>
+      </ThemeProvider>
     </div>
   );
 }
