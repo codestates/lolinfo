@@ -68,10 +68,6 @@ const CircleGraphWapper = styled.div`
 `;
 
 const TeamRate = styled.div`
-  > svg > rect {
-    border-radius: 20%;
-  }
-
   .DodgerBlue {
     fill: DodgerBlue;
     color: white;
@@ -195,6 +191,7 @@ const Icon = styled.img`
 
 function RecentChart() {
   const [rate, setRate] = useState(0);
+  const [graphSize, setGraphSize] = useState(150);
   const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
 
   useEffect(() => {
@@ -209,20 +206,44 @@ function RecentChart() {
 
   useEffect(() => {
     const data = [100, 75];
-    const color = ["DodgerBlue", "FireBrick"];
-    d3.select("svg")
+    const color = ["FireBrick", "DodgerBlue"];
+    d3.select(".teamGraph")
       .selectAll("rect")
       .data(data)
       .enter()
       .append("rect")
       .attr("rx", 5)
-      .attr("height", 15)
-      .attr("y", (d, i) => (i + 1) * 30)
+      .attr("height", 20)
       .attr("class", (d, i) => color[i])
-      .attr("width", 10)
+      .attr("width", 5)
       .transition()
       .duration(1500)
       .attr("width", (d) => (d * 140) / 100);
+
+    d3.select(".FireBrick").attr("y", 23);
+    d3.select(".DodgerBlue").attr("y", 87);
+
+    const xScale = d3
+      .scaleLinear()
+      .domain([0, 100])
+      .range([3, graphSize - 10]);
+
+    const margin = 20;
+
+    const xAxis = d3.axisBottom(xScale).tickSize(5).ticks(2);
+    const xAxisSVG = d3
+      .select("svg")
+      .append("g")
+      .attr("transform", `translate(0,${graphSize - margin})`);
+    xAxis(xAxisSVG);
+
+    const yScale = d3
+      .scaleBand()
+      .domain(["red", "blue"])
+      .range([0, `${graphSize - margin}`]);
+    const yAxisSVG = d3.select("svg").append("g");
+    const yAxis = d3.axisRight(yScale).tickSize(5).ticks(2);
+    yAxis(yAxisSVG); //y
   }, []);
 
   return (
@@ -236,7 +257,7 @@ function RecentChart() {
       </CircleGraphWapper>
       <span className="title-team">팀별 승률</span>
       <TeamRate className="TeamRate">
-        <svg width="140" height="140"></svg>
+        <svg className="teamGraph" width={graphSize} height={graphSize}></svg>
       </TeamRate>
       <span className="title-gamelength">게임 길이별 승률</span>
       <GameTimeRate className="GameTimeRate" />
