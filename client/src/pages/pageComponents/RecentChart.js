@@ -1,22 +1,22 @@
-import React, {useState, useEffect, useRef} from 'react';
-import styled from 'styled-components';
-import * as d3 from 'd3';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import * as d3 from "d3";
 const RecentWapper = styled.div`
   display: grid;
   grid-template-columns: minmax(3rem, auto);
   grid-template-rows: repeat(8, minmax(1rem, auto));
   grid-template-areas:
-    'title-record'
-    'CircleGraph'
-    'title-team'
-    'TeamRate'
-    'title-gamelength'
-    'GameTimeRate'
-    'title-KDA'
-    'TotalKDA';
+    "title-record"
+    "CircleGraph"
+    "title-team"
+    "TeamRate"
+    "title-gamelength"
+    "GameTimeRate"
+    "title-KDA"
+    "TotalKDA";
 
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 1.2em;
   font-weight: 700;
   color: #24292ed0;
@@ -25,7 +25,7 @@ const RecentWapper = styled.div`
   margin: 0 auto;
   overflow: hidden;
 
-  @media all and (max-width: ${props => props.theme.recordMobileH}) {
+  @media all and (max-width: ${(props) => props.theme.recordMobileH}) {
     display: none;
   }
 
@@ -68,12 +68,19 @@ const CircleGraphWapper = styled.div`
 `;
 
 const TeamRate = styled.div`
-  object-fit: cover;
-  width: 120px;
-  height: 120px;
-  border-radius: 10%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  > svg > rect {
+    border-radius: 20%;
+  }
+
+  .DodgerBlue {
+    fill: DodgerBlue;
+    color: white;
+  }
+
+  .FireBrick {
+    fill: FireBrick;
+    color: white;
+  }
 `;
 
 const GameTimeRate = styled.img`
@@ -89,7 +96,7 @@ const CircleGraph = styled.div`
   display: inline-flex;
   width: 140px;
   height: 140px;
-  background: ${props => props.theme.recordBgColor};
+  background: ${(props) => props.theme.recordBgColor};
   // border-radius: 100%;
 
   > .progress-circle {
@@ -101,7 +108,7 @@ const CircleGraph = styled.div`
     width: 80%;
     background: conic-gradient(
       #00ffff 0deg
-        ${props => {
+        ${(props) => {
           return String(props.rate) + `%`;
         }},
       #cadcff 0deg
@@ -114,11 +121,11 @@ const CircleGraph = styled.div`
 
   > .progress-circle:before {
     // inner circle
-    content: '';
+    content: "";
     position: absolute;
     height: 70%;
     width: 70%;
-    background-color: ${props => props.theme.recordBgColor};
+    background-color: ${(props) => props.theme.recordBgColor};
     border-radius: 100%;
   }
 
@@ -141,8 +148,8 @@ const TotalKDA = styled.span`
   grid-template-columns: repeat(6, minmax(1rem, auto));
   grid-template-rows: repeat(2, minmax(1rem, auto));
   grid-template-areas:
-    'kill spe1 death spe2 assist icon'
-    'average average average kill-assist kill-assist kill-assist';
+    "kill spe1 death spe2 assist icon"
+    "average average average kill-assist kill-assist kill-assist";
 
   justify-content: center;
 
@@ -181,19 +188,14 @@ const TotalKDA = styled.span`
 
 const Icon = styled.img`
   object-fit: cover;
-  width: ${props => String(props.size) + 'px'};
-  height: ${props => String(props.size) + 'px'};
+  width: ${(props) => String(props.size) + "px"};
+  height: ${(props) => String(props.size) + "px"};
   filter: invert(85%) sepia(50%) saturate(1000%) hue-rotate(130deg) brightness(95%) contrast(50%);
 `;
 
-const data = [
-  {team: 'red', rate: 80},
-  {team: 'blue', rate: 20},
-];
-
 function RecentChart() {
   const [rate, setRate] = useState(0);
-  const sleep = n => new Promise(resolve => setTimeout(resolve, n));
+  const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
 
   useEffect(() => {
     const fn = async () => {
@@ -205,60 +207,58 @@ function RecentChart() {
     fn();
   }, [rate]);
 
-  const svgRef = useRef(null);
   useEffect(() => {
-    const margin = {top: 10, right: 0, bottom: 20, left: 30};
-    const width = 140 - margin.left - margin.right;
-    const height = 120 - margin.top - margin.bottom;
+    const data = [100, 75];
+    const color = ["FireBrick", "DodgerBlue"];
+    d3.select(".teamGraph")
+      .selectAll("rect")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("rx", 5)
+      .attr("height", 20)
+      .attr("class", (d, i) => color[i])
+      .attr("width", 10)
+      .transition()
+      .duration(1500)
+      .attr("width", (d) => (d * 140) / 100);
 
-    const sVg = d3
-      .select(svgRef.current)
-      .append('svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
-      // translate this svg element to leave some margin.
-      .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    d3.select(".FireBrick").attr("y", 24);
+    d3.select(".DodgerBlue").attr("y", 88);
 
-    const x = d3
-      .scaleLinear()
-      .domain([0, 100]) // This is the min and the max of the data: 0 to 100 if percentages
-      .range([0, width]); // This is the corresponding value I want in Pixel
+    const xScale = d3.scaleLinear().domain([0, 100]).range([5, 140]);
+    const xAxis = d3.axisBottom(xScale).tickSize(5).ticks(2);
+    const xAxisSVG = d3.select("svg").append("g").attr("transform", "translate(0, 130)");
+    xAxis(xAxisSVG);
 
-    sVg
-      .append('g')
-      .attr('transform', 'translate(0,' + height + ')')
-      .call(d3.axisBottom(x));
-
-    // X scale and Axis
-    var y = d3
-      .scaleLinear()
-      .domain([0, 100]) // This is the min and the max of the data: 0 to 100 if percentages
-      .range([height, 0]); // This is the corresponding value I want in Pixel
-
-    sVg.append('g').call(d3.axisLeft(y));
+    const yScale = d3.scaleBand().domain(["red", "blue"]).range([0, 130]);
+    const yAxisSVG = d3.select("svg").append("g");
+    const yAxis = d3.axisRight(yScale).tickSize(5).ticks(2);
+    yAxis(yAxisSVG); //y
   }, []);
 
   return (
     <RecentWapper name="RecentWapper">
-      <span className="title-record">{'4전 3승 1패'}</span>
+      <span className="title-record">{"4전 3승 1패"}</span>
       <CircleGraphWapper className="CircleGraph" name="CircleGraphWapper">
         <CircleGraph rate={rate} name="CircleGraph">
           <div className="progress-circle"></div>
-          <span className="percent">{rate + '%'}</span>
+          <span className="percent">{rate + "%"}</span>
         </CircleGraph>
       </CircleGraphWapper>
       <span className="title-team">팀별 승률</span>
-      <TeamRate ref={svgRef} className="TeamRate" />
+      <TeamRate className="TeamRate">
+        <svg className="teamGraph" width="150" height="150"></svg>
+      </TeamRate>
       <span className="title-gamelength">게임 길이별 승률</span>
       <GameTimeRate className="GameTimeRate" />
       <span className="title-KDA">KDA</span>
       <TotalKDAWrapper className="TotalKDAWrapper">
         <TotalKDA>
           <span className="kill">{44}</span>
-          <span>{'/'}</span>
+          <span>{"/"}</span>
           <span className="death">{1}</span>
-          <span>{'/'}</span>
+          <span>{"/"}</span>
           <span className="assist">{33}</span>
           <Icon className="icon" size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
           <span className="average">평점:{`${88.2}`}</span>
