@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled, { css, keyframes } from "styled-components";
+import React, { useState } from "react";
+import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 
 import CardContainer from "../containers/CardContainer";
@@ -119,7 +119,7 @@ const StWrapper = styled.div`
   overflow: auto;
   flex-wrap: wrap;
   background-color: ${(props) => props.theme.subColor};
-  height: 90vh;
+  height: 100%;
   padding: 2rem 0.4445rem;
 `;
 

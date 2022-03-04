@@ -1,27 +1,27 @@
 import { Search } from "@styled-icons/bootstrap/Search";
 import styled from "styled-components";
 import CardContainer from "../containers/CardContainer";
-
-
+import * as d3 from "d3";
+import { useEffect } from "react";
 //Body
 const StWrapper = styled.div`
   display: flex;
   justify-content: center;
   overflow: auto;
   flex-wrap: wrap;
-  background-color: ${props => props.theme.subColor};
-  height: 90vh;
+  background-color: ${(props) => props.theme.subColor};
+  height: 100%;
   padding: 2rem 0.4445rem;
 `;
 
 const BodyRow = styled.div`
   display: grid;
   grid-template-areas:
-    'title title title'
-    'search search search'
-    '. bodytitle .'
-    '. body .'
-    '. more .';
+    "title title title"
+    "search search search"
+    ". bodytitle ."
+    ". body ."
+    ". more .";
   width: 100%;
   height: auto;
   text-align: center;
@@ -86,7 +86,7 @@ const StButton = styled.button`
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
-  border: 2px solid ${props => props.theme.subColor};;
+  border: 2px solid ${(props) => props.theme.subColor};
   border-radius: 13px;
   display: block;
   margin-left: auto;
@@ -96,11 +96,27 @@ const StButton = styled.button`
 `;
 
 function Home() {
+  useEffect(() => {
+    d3.select(".main-title")
+      .transition()
+      .duration(1200)
+      .style("color", "#7FFFD4")
+      .text("LOL")
+      .transition()
+      .duration(1300)
+      .style("color", "#00BFFF")
+      .text("INFO")
+      .transition()
+      .duration(1500)
+      .style("color", "#2e2f32")
+      .text("LOLINFO");
+  }, []);
+
   return (
     <StWrapper>
       <BodyRow>
         <BodyHeader>
-          <h1>LOLINFO</h1>
+          <h1 className="main-title">LOLINFO</h1>
         </BodyHeader>
         <SearchBox>
           <StInput placeholder="Search" autoComplete="off"></StInput>
