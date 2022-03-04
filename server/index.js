@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const express = require('express');
 const app = express();
+const morgan = require('morgan')
 
 const controllers = require('./controllers');
 
@@ -18,14 +19,15 @@ app.use(express.urlencoded({extended: false}));
 //     methods: ["GET", "POST", "OPTIONS"],
 //   })
 // );
+app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
   res.send('Hello, yeyeye');
 });
 
-const PORT = 80;
+const PORT = 4000;
 server = app.listen(PORT, () => {
-  console.log('server running');
+  console.log(`server running: ${PORT}`);
 });
 
 module.exports = server;
