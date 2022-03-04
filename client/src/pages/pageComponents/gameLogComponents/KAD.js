@@ -28,6 +28,10 @@ const KDAWrapper = styled.div`
     align-items: center;
   }
 
+  @media all and (max-width: 652px) {
+    font-size: ${props => props.theme.kdaFontSmall};
+  }
+
   > .kdakda.icon {
   }
 `;

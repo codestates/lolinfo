@@ -1,24 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function LoginPage({setLoginModal,setUserInfo}){
-    return(
-        <div >
-            <Container >
-                <TitleOPGG>LOLINFO</TitleOPGG>
-                <IDInput type="text" placeholder="Username or Email" required />
-                <PasswordInput placeholder="Enter your Password"/>
-                <LoginButton>Next</LoginButton>
-                <TextMessage>Don’t have an account?</TextMessage>
-                <SignUp onClick={()=>setLoginModal('signup')}>SignUp</SignUp>
-                <SocialContainer>
-                    {/* <SocialButton1 src="https://www.dpreview.com/files/p/articles/4698742202/facebook.jpeg" alt=""/> */}
-                    {/* <SocialButton2 src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png" alt=""/> */}
-                    <SocialButton3 src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-github-icon-35.png" alt=""/>
-                </SocialContainer>
-            </Container>
-        </div>
-    )
+function LoginPage({setLoginModal, setUserInfo}) {
+  return (
+    <div>
+      <Container>
+        <TitleOPGG>LOLINFO</TitleOPGG>
+        <IDInput type="text" placeholder="Username or Email" required />
+        <PasswordInput placeholder="Enter your Password" />
+        <LoginButton>Next</LoginButton>
+        <TextMessage>Don’t have an account?</TextMessage>
+        <SignUp onClick={() => setLoginModal('signup')}>SignUp</SignUp>
+        <SocialContainer>
+          {/* <SocialButton1 src="https://www.dpreview.com/files/p/articles/4698742202/facebook.jpeg" alt=""/> */}
+          {/* <SocialButton2 src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png" alt=""/> */}
+          <SocialButton3 src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-github-icon-35.png" alt="" />
+        </SocialContainer>
+      </Container>
+    </div>
+  );
 }
 
 const Container=styled.div`
@@ -87,8 +87,8 @@ img {
     height: 45px;
     object-fit: cover;
     border-radius: 50%;
-}
-`
+  }
+`;
 // const SocialButton1=styled.img`
 // grid-column: 1;
 // `

@@ -1,33 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
-function SignupPage({setLoginModal,setUserInfo}){
-    function getInfoAll(){
-        return ()=>{
-        }
-    }
-    function getInputValue(e){
-        console.log(e.target.matches('.ID'));
-    }
-    return(
-        <div >
-            <Container >
-                <TitleOPGG>LOLINFO</TitleOPGG>
-                <IDInput className='signUp ID' type="text" placeholder="Username or Email" required onChange={(e)=>getInputValue(e)}/>
-                <PasswordInput placeholder="Enter your Password"/>
-                <PasswordInputC placeholder="Confirm your Password"/>
-                <SignUpButton>Submit</SignUpButton>
-                <TextMessage>Already have an acount?</TextMessage>
-                <SignIn onClick={()=>setLoginModal('login')&&setUserInfo('')}>Login</SignIn>
-                <SocialContainer>
-                    {/* <SocialButton1 src="https://www.dpreview.com/files/p/articles/4698742202/facebook.jpeg" alt=""/> */}
-                    {/* <SocialButton2 src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png" alt=""/> */}
-                    <SocialButton3 src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-github-icon-35.png" alt=""/>
-                </SocialContainer>
-            </Container>
-        </div>
-    )
+function SignupPage({setLoginModal, setUserInfo}) {
+  function getInfoAll() {
+    return () => {};
+  }
+  function getInputValue(e) {
+    console.log(e.target.matches('.ID'));
+  }
+  return (
+    <div>
+      <Container>
+        <TitleOPGG>LOLINFO</TitleOPGG>
+        <IDInput className="signUp ID" type="text" placeholder="Username or Email" required onChange={e => getInputValue(e)} />
+        <PasswordInput placeholder="Enter your Password" />
+        <PasswordInputC placeholder="Confirm your Password" />
+        <SignUpButton>Submit</SignUpButton>
+        <TextMessage>Already have an acount?</TextMessage>
+        <SignIn onClick={() => setLoginModal('login') && setUserInfo('')}>Login</SignIn>
+        <SocialContainer>
+          {/* <SocialButton1 src="https://www.dpreview.com/files/p/articles/4698742202/facebook.jpeg" alt=""/> */}
+          {/* <SocialButton2 src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png" alt=""/> */}
+          <SocialButton3 src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-github-icon-35.png" alt="" />
+        </SocialContainer>
+      </Container>
+    </div>
+  );
 }
 
 const Container=styled.div`
