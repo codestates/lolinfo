@@ -1,20 +1,20 @@
-import React from 'react';
-import styled from 'styled-components';
-import chatImg from '../resource/CommunicationChatCircle.png';
+import React from "react";
+import styled from "styled-components";
+import chatImg from "../resource/CommunicationChatCircle.png";
 
 // const apiKey='RGAPI-96e62fa5-864f-45e2-9142-126115b57f84';
 // const baseUrl='https://kr.api.riotgames.com/lol/'
 // const url='summoner/v4/summoners/by-name/'
 const config = {
   // `url`은 요청에 사용될 서버 URL입니다.
-  url: '/summoner/v4/summoners/by-name',
+  url: "/summoner/v4/summoners/by-name",
 
   // `method`는 요청을 생성할때 사용되는 메소드입니다.
-  method: 'get', // 기본값
+  method: "get", // 기본값
 
   // `url`이 절대값이 아닌 경우 `baseURL`은 URL 앞에 붙습니다.
   // 상대적인 URL을 인스턴스 메서드에 전달하려면 `baseURL`을 설정하는 것은 편리합니다.
-  baseURL: 'https://kr.api.riotgames.com/lol',
+  baseURL: "https://kr.api.riotgames.com/lol",
   // `transformRequest`는 요청 데이터를 서버로 전송하기 전에 변경할 수 있게 해줍니다.
   // 이것은 'PUT', 'POST', 'PATCH', 'DELETE' 메소드에서만 적용됩니다.
   // 마지막 함수는 Buffer, ArrayBuffer, FormData 또는 Stream의 인스턴스 또는 문자열을 반환해야 합니다.
@@ -34,17 +34,18 @@ const config = {
 
   // `headers`는 사용자 지정 헤더입니다.
   headers: {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36',
-    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,mt;q=0.6',
-    'Accept-Charset': 'application/x-www-form-urlencoded; charset=UTF-8',
-    Origin: 'https://developer.riotgames.com',
+    "User-Agent":
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36",
+    "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,mt;q=0.6",
+    "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
+    Origin: "https://developer.riotgames.com",
   },
 
   // `params`은 요청과 함께 전송되는 URL 파라미터입니다.
   // 반드시 일반 객체나 URLSearchParams 객체여야 합니다.
   // 참고: null이나 undefined는 URL에 렌더링되지 않습니다.
   params: {
-    ID: '삼다칼잡이',
+    ID: "삼다칼잡이",
   },
 
   // `paramsSerializer`는 `params`의 시리얼라이즈를 담당하는 옵션 함수입니다.
@@ -148,15 +149,19 @@ function Search() {
     <div>
       <Container>
         <SearchIcon></SearchIcon>
-        <SearchInput onKeyUp={e => (e.key === 'Enter' ? onChangeHandler(e.target.value) : null)}></SearchInput>
+        <SearchInput
+          onKeyUp={(e) =>
+            e.key === "Enter" ? onChangeHandler(e.target.value) : null
+          }
+        ></SearchInput>
       </Container>
     </div>
   );
 }
 const Container = styled.div`
   min-width: 320px;
-  background: ${props => props.theme.mainColor};
-  color: ${props => props.theme.fontColor};
+  background: ${(props) => props.theme.mainColor};
+  color: ${(props) => props.theme.fontColor};
   display: grid;
   grid-template-columns: 10px 50px repeat(5, 1fr) 50px;
   grid-template-rows: 1fr 0.5fr;
