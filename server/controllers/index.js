@@ -1,3 +1,3 @@
 module.exports = {
-    match: require('./info/match'),
-  };
+    match: require("./info/match"),
+};
