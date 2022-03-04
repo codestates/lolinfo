@@ -23,6 +23,8 @@ export const RecentWapper = styled.div`
   margin: 0 auto;
   overflow: hidden;
 
+  align-items: center;
+
   @media all and (max-width: ${(props) => props.theme.recordMobileH}) {
     display: none;
   }
@@ -45,6 +47,7 @@ export const RecentWapper = styled.div`
 
   > .title-gamelength {
     grid-area: title-gamelength;
+    
   }
 
   > .GameTimeRate {
@@ -53,6 +56,7 @@ export const RecentWapper = styled.div`
 
   > .title-KDA {
     grid-area: title-KDA;
+    letter-spacing: 5px;
   }
 
   > .TotalKDA {
@@ -75,6 +79,7 @@ export const TeamRate = styled.div`
     fill: FireBrick;
     color: white;
   }
+
 `;
 
 export const GameTimeRate = styled.img`
