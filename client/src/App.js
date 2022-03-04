@@ -7,6 +7,9 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import RecordPage from './pages/RecordPage';
 import Home from './pages/Home';
 import Board from './pages/Board';
+import Edit from './pages/Mypage-Edit';
+import DeleteAccount from  './pages/Mypage-DelAco';
+import ChangePassword from './pages/Mypage-ChangePw';
 
 const subColor = '#000000';
 //Header
@@ -27,6 +30,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/board" element={<Board />} />
             <Route path="/record" element={<RecordPage />} />
+            <Route path="/mypage/edit" element={<Edit />} />
+            <Route path="/mypage/changePassword" element={<ChangePassword />} />
+            <Route path="/mypage/deleteAccount" element={<DeleteAccount />} />
           </Routes>
         </Router>
       </ThemeProvider>

@@ -383,6 +383,7 @@ const AverageWrapper = styled.div`
       font-size: ${props => props.theme.kdaFontSmall};
       font-weight: 400;
   }
+}
 `;
 
 const KillAsiWrapper = styled.div`
@@ -425,7 +426,7 @@ const KillCntWrapper = styled.div`
   > .medal {
     line-height: 1.8;
     border-radius: 20%;
-    boder: none;
+    border: none;
     background-color: tomato;
 
     font-size: 0.7rem;
