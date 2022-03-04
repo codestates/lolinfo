@@ -20,15 +20,13 @@ app.use(express.urlencoded({ extended: false }));
 // );
 
 app.get("/", (req, res) => {
-    res.send("Hello, yeyeye");
+  res.send("Hello, yeyeye");
 });
 app.get("/match", controllers.match);
-// app.get("/userId", controllers.puuid);
-// app.get("/version", controllers.puuid);
 
 const PORT = 80;
 server = app.listen(PORT, () => {
-    console.log("server running port %s", PORT);
+  console.log("server running port %s", PORT);
 });
 
 module.exports = server;
