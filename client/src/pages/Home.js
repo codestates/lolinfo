@@ -10,12 +10,13 @@ const StWrapper = styled.div`
   overflow: auto;
   flex-wrap: wrap;
   background-color: ${props => props.theme.subColor};
-  height: 90vh;
+  height: 100%;
   padding: 2rem 0.4445rem;
 `;
 
 const BodyRow = styled.div`
   display: grid;
+  /* grid-auto-rows: minmax(100px, auto); */
   grid-template-areas:
     'title title title'
     'search search search'
