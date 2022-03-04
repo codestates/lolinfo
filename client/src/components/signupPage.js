@@ -41,7 +41,7 @@ grid-template-columns:1fr repeat(6, 30px) 1.1fr ;
 grid-template-rows: 20px 30px repeat(6, 1fr);
 `
 const TitleOPGG=styled.div`
-grid-column: 3;
+grid-column: 4;
 grid-row: 2;
 font-size: large;
 letter-spacing:${(props)=>props.theme.titleLetterSpace};

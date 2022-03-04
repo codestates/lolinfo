@@ -15,7 +15,7 @@ import NaviBar from "./components/naviBar";
 import LoginPage from "./components/loginPage";
 import useSticky from "./hook/useSticky";
 import SignupPage from './components/signupPage';
-import Modal from './components/modal'
+import Modal from './components/modal';
 
 //Header
 function App() {
@@ -32,7 +32,7 @@ function App() {
       <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
-          <NaviBar sticky={isSticky} naviMenu={naviMenu}></NaviBar>
+          <NaviBar sticky={isSticky} naviMenu={naviMenu}/>
           <Search/>
           {
             loginModal?
