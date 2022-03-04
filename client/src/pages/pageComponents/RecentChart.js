@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import styled from 'styled-components';
-
+import * as d3 from 'd3';
 const RecentWapper = styled.div`
   display: grid;
   grid-template-columns: minmax(3rem, auto);
@@ -67,7 +67,7 @@ const CircleGraphWapper = styled.div`
   margin: auto;
 `;
 
-const TeamRate = styled.img`
+const TeamRate = styled.div`
   object-fit: cover;
   width: 120px;
   height: 120px;
@@ -187,14 +187,9 @@ const Icon = styled.img`
 `;
 
 const data = [
-  {team: 'red', rate: 75},
-  {team: 'blue', rate: 24},
+  {team: 'red', rate: 80},
+  {team: 'blue', rate: 20},
 ];
-
-const width = 120;
-const height = 120;
-
-// const svg = d3.select('.TeamRate').append('svg').attr('height').attr('width');
 
 function RecentChart() {
   const [rate, setRate] = useState(0);
@@ -210,6 +205,40 @@ function RecentChart() {
     fn();
   }, [rate]);
 
+  const svgRef = useRef(null);
+  useEffect(() => {
+    const margin = {top: 10, right: 0, bottom: 20, left: 30};
+    const width = 140 - margin.left - margin.right;
+    const height = 120 - margin.top - margin.bottom;
+
+    const sVg = d3
+      .select(svgRef.current)
+      .append('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      // translate this svg element to leave some margin.
+      .append('g')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    const x = d3
+      .scaleLinear()
+      .domain([0, 100]) // This is the min and the max of the data: 0 to 100 if percentages
+      .range([0, width]); // This is the corresponding value I want in Pixel
+
+    sVg
+      .append('g')
+      .attr('transform', 'translate(0,' + height + ')')
+      .call(d3.axisBottom(x));
+
+    // X scale and Axis
+    var y = d3
+      .scaleLinear()
+      .domain([0, 100]) // This is the min and the max of the data: 0 to 100 if percentages
+      .range([height, 0]); // This is the corresponding value I want in Pixel
+
+    sVg.append('g').call(d3.axisLeft(y));
+  }, []);
+
   return (
     <RecentWapper name="RecentWapper">
       <span className="title-record">{'4전 3승 1패'}</span>
@@ -220,7 +249,7 @@ function RecentChart() {
         </CircleGraph>
       </CircleGraphWapper>
       <span className="title-team">팀별 승률</span>
-      <TeamRate className="TeamRate" />
+      <TeamRate ref={svgRef} className="TeamRate" />
       <span className="title-gamelength">게임 길이별 승률</span>
       <GameTimeRate className="GameTimeRate" />
       <span className="title-KDA">KDA</span>
