@@ -1,9 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import React from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
-function Modal({setLoginModal, visible, children}) {
-  document.addEventListener('click', e => (e.target.matches('.modal-outside') ? setLoginModal('') : 0), false);
+function Modal({ setLoginModal, visible, children }) {
+  document.addEventListener(
+    "click",
+    (e) => (e.target.matches(".modal-outside") ? setLoginModal("") : 0),
+    false
+  );
   return (
     <>
       <ModalOverlay visible={visible} />
@@ -44,7 +48,6 @@ const ModalInner = styled.div`
   box-sizing: border-box;
   position: relative;
   width: 350px;
-  // max-width: 480px;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
