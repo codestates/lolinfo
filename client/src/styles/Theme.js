@@ -8,8 +8,10 @@ const theme = {
   kdaFontMedium: '0.7rem',
   kdaFontSmall: '0.4rem',
   fontColor: 'yellow',
+  fontColorForLoginPageAndSignupPage: 'white',
   placeholderColor: '#5883ab',
-  
+  inputBorderColor: 'white',
+  titleLetterSpace: '12px',
 };
 
 export default theme;
