@@ -12,16 +12,15 @@ const theme = {
   fontColor: 'yellow',
   fontColorForLoginPageAndSignupPage: 'white',
   placeholderColor: '#5883ab',
-<<<<<<< HEAD
   MypageLineColor: '#e9edef',
   MypageFontColor: '#52595f',
   MypageSubColor: '#98a0a7',
   MypageButtonColor: 'rgb(30, 161, 247)',
   MypageSmallHeader: '#7b858e',
-=======
   inputBorderColor: 'white',
   titleLetterSpace: '12px',
->>>>>>> e1550711386e741a654056a33a5545a9ec9b3e14
+  ChattingBackgroundColor: '#5383e8',
+  ChattingLineColor: '#DCDCE0',
 };
 
 export default theme;
