@@ -8,13 +8,19 @@ function RecentChart() {
   const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
 
   useEffect(() => {
+    let isUnmount = false;
+
     const fn = async () => {
       await sleep(15);
       if (rate < 85) {
-        setRate(rate + 1);
+        if (!isUnmount) setRate(rate + 1);
       }
     };
     fn();
+
+    return () => {
+      isUnmount = true;
+    };
   }, [rate]);
 
   useEffect(() => {
