@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Board from './pages/Board';
@@ -8,21 +7,16 @@ import Edit from "./pages/Mypage-Edit";
 import DeleteAccount from "./pages/Mypage-DelAco";
 import ChangePassword from "./pages/Mypage-ChangePw";
 import ChattingRoom from "./pages/ChattingRoom"
-
-
 import Theme from "./styles/Theme";
 import GlobalStyle from "./styles/GlobalStyle";
-
 import RecordPage from "./pages/RecordPage";
 import Search from "./components/search";
-// import MainTitle from "./components/title";
 import NaviBar from "./components/naviBar";
 import LoginPage from "./components/loginPage";
 import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 
-//Header
 function App() {
   const { isSticky, element } = useSticky();
   const [loginModal, setLoginModal] = useState("");
