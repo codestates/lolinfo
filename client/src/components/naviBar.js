@@ -18,7 +18,6 @@ const menuNameList = ['메인', '게시판', '전적', '랭킹', '오픈채팅',
 const NaviContainer = styled.div`
   min-width: 320px;
   background: ${props => props.theme.mainColor};
-  color: ${props => props.theme.fontColor};
   display: grid;
   grid-template-columns: repeat(5, 1fr) 1fr 1fr;
   grid-template-rows: 5px 50px 5px;
@@ -43,13 +42,10 @@ const NaviContainer = styled.div`
 `;
 
 const Menu = styled.button`
+  color: ${props => props.theme.fontColorForLoginPageAndSignupPage};
   background: ${props => props.theme.mainColor};
-  color: ${props => props.theme.fontColor};
   border: none;
   cursor: pointer;
-  // &:hover {
-  //   auto;
-  // }
   grid-column: ${props => (props.order === menuNameList.length - 1 ? menuNameList.length + 1 : props.order + 1)} /
     ${props => (props.order === menuNameList.length - 1 ? menuNameList.length + 2 : props.order + 2)};
   grid-row: 2/3;
