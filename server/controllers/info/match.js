@@ -1,10 +1,5 @@
 const axios = require("axios").default;
 const infoAll = require("../getsourceinfo/infoAll");
-// const gv = require("../getsourceinfo/version");
-// const gp = require("../getsourceinfo/nametoPuuid");
-// const gl = require("../getsourceinfo/matchList");
-// const ma = require("../getsourceinfo/oneMatchInfo");
-// "KR_5788449253"
 module.exports = async (req, res) => {
   let nickname = req.query.nickname;
   let [int1, int2] = [req.query.int1, req.query.int2];
