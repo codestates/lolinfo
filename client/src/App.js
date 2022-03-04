@@ -16,47 +16,37 @@ import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 
 function App() {
-  const { isSticky, element } = useSticky();
-  const [loginModal, setLoginModal] = useState("");
-  const [userInfo, setUserInfo] = useState({
-    name: "",
-    password: "",
-    passwordC: "",
-    submit: "",
-    login: "",
-  });
+    const { isSticky, element } = useSticky();
+    const [loginModal, setLoginModal] = useState("");
+    const [userInfo, setUserInfo] = useState({
+        name: "",
+        password: "",
+        passwordC: "",
+        submit: "",
+        login: "",
+    });
 
-  return (
-    <div className="App" ref={element}>
-      <ThemeProvider theme={Theme}>
-        <Router>
-          <GlobalStyle />
-          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
-          <Search />
-          {loginModal ? (
-            <Modal setLoginModal={setLoginModal} visible={true}>
-              {loginModal === "login" ? (
-                <LoginPage
-                  setLoginModal={setLoginModal}
-                  setUserInfo={setUserInfo}
-                />
-              ) : (
-                <SignupPage
-                  setLoginModal={setLoginModal}
-                  setUserInfo={setUserInfo}
-                />
-              )}
-            </Modal>
-          ) : null}
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/board" element={<Board />} />
-            <Route path="/record" element={<RecordPage />} />
-          </Routes>
-        </Router>
-      </ThemeProvider>
-    </div>
-  );
+    return (
+        <div className="App" ref={element}>
+            <ThemeProvider theme={Theme}>
+                <Router>
+                    <GlobalStyle />
+                    <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
+                    <Search />
+                    {loginModal ? (
+                        <Modal setLoginModal={setLoginModal} visible={true}>
+                            {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} /> : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />}
+                        </Modal>
+                    ) : null}
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/board" element={<Board />} />
+                        <Route path="/record" element={<RecordPage />} />
+                    </Routes>
+                </Router>
+            </ThemeProvider>
+        </div>
+    );
 }
 
 export default App;
