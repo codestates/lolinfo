@@ -29,6 +29,7 @@ function NaviBar({ sticky, setLoginModal }) {
 }
 const menuNameList = ["메인", "게시판", "전적", "랭킹", "오픈채팅", "로그인"];
 const NaviContainer = styled.div`
+    z-index: 998;
     min-width: 320px;
     background: ${(props) => props.theme.mainColor};
     display: grid;

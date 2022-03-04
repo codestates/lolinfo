@@ -22,7 +22,7 @@ const BodyRow = styled.div`
         ". body ."
         ". more .";
     width: 100%;
-    height: auto;
+    height: 100%;
     text-align: center;
 
     padding: 0rem 1rem;
