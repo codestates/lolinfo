@@ -1,9 +1,7 @@
-import Card from "../components/Card";
 import { Search } from "@styled-icons/bootstrap/Search";
 import styled from "styled-components";
+import CardContainer from "../containers/CardContainer";
 
-const mainColor = "#C4C4C4";
-const subColor = "#000000";
 
 //Body
 const StWrapper = styled.div`
@@ -11,23 +9,21 @@ const StWrapper = styled.div`
   justify-content: center;
   overflow: auto;
   flex-wrap: wrap;
-  background-color: ${mainColor};
+  background-color: ${props => props.theme.subColor};
   height: 90vh;
   padding: 2rem 0.4445rem;
 `;
 
-//Card container
 const BodyRow = styled.div`
   display: grid;
   grid-template-areas:
-    "title title title"
-    "search search search"
-    ". bodytitle ."
-    ". body ."
-    ". more .";
+    'title title title'
+    'search search search'
+    '. bodytitle .'
+    '. body .'
+    '. more .';
   width: 100%;
   height: auto;
-
   text-align: center;
 
   padding: 0rem 1rem;
@@ -81,18 +77,6 @@ const StH2 = styled.h2`
   max-height: 3rem;
 `;
 
-const CardWrapper = styled.div`
-  grid-area: body;
-  display: grid;
-  justify-content: center;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  grid-template-rows: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 5px;
-  width: 100%;
-  height: auto;
-  padding: 0.4rem;
-`;
-
 const StButton = styled.button`
   grid-area: more;
   width: 7rem;
@@ -102,7 +86,7 @@ const StButton = styled.button`
   font-size: 1em;
   margin: 1em;
   padding: 0.25em 1em;
-  border: 2px solid ${subColor};
+  border: 2px solid ${props => props.theme.subColor};;
   border-radius: 13px;
   display: block;
   margin-left: auto;
@@ -123,24 +107,7 @@ function Home() {
           <StSearchIcon />
         </SearchBox>
         <StH2>게시판</StH2>
-        <CardWrapper>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </CardWrapper>
+        <CardContainer />
         <StButton as="a" href="#">
           더보기
         </StButton>
