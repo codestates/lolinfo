@@ -8,6 +8,11 @@ const theme = {
   kdaFontSmall: '0.4rem',
   fontColor: 'yellow',
   placeholderColor: '#5883ab',
+  MypageLineColor: '#e9edef',
+  MypageFontColor: '#52595f',
+  MypageSubColor: '#98a0a7',
+  MypageButtonColor: 'rgb(30, 161, 247)',
+  MypageSmallHeader: '#7b858e',
 };
 
 export default theme;
