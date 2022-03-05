@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 const ChampWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, auto);
@@ -9,8 +9,8 @@ const ChampWrapper = styled.div`
 
   > .champ-icon {
     object-fit: cover;
-    width: 50px;
-    height: 50px;
+    width: 62px;
+    height: 62px;
     border-radius: 50%;
     grid-column: 2/4;
     grid-row: 2/4;
