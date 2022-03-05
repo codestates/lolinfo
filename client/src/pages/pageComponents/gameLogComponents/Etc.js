@@ -1,15 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const EtcWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, minmax(1rem, auto));
+  grid-template-columns: repeat(7, minmax(1.3rem, auto));
   grid-template-rows: repeat(2, minmax(1rem, auto));
   grid-template-areas:
-    'item item item item item item item'
-    'cs cs cs icon1 gold gold icon2';
+    "item item item item item item item"
+    "cs cs cs icon1 gold gold icon2";
 
-  font-size: ${props => props.theme.kdaFontMedium};
+  font-size: ${(props) => props.theme.kdaFontMedium};
 
   justify-content: center;
   align-items: center;
@@ -17,15 +17,17 @@ const EtcWrapper = styled.div`
 
   > .item > img {
     object-fit: cover;
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+
+    transform: translateY(10px);
   }
 
   > .icon > img {
     object-fit: cover;
-    width: 1rem;
-    height: 1rem;
-
+    width: 1.2rem;
+    height: 1.2rem;
+    transform: translateY(3px);
     filter: invert(85%) sepia(50%) saturate(1000%) hue-rotate(130deg) brightness(95%) contrast(50%);
   }
 
@@ -34,6 +36,7 @@ const EtcWrapper = styled.div`
   }
   > .cs {
     grid-area: cs;
+    font-size: 0.9rem;
   }
   > .icon1 {
     grid-area: icon1;
@@ -41,6 +44,7 @@ const EtcWrapper = styled.div`
 
   > .gold {
     grid-area: gold;
+    font-size: 0.9rem;
   }
 
   > .icon2 {
