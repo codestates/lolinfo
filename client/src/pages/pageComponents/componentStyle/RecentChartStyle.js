@@ -25,7 +25,7 @@ export const RecentWapper = styled.div`
 
   align-items: center;
 
-  @media all and (max-width: ${(props) => props.theme.recordMobileH}) {
+  @media all and (max-width: ${(props) => props.theme.recordBoxOneCol}) {
     display: none;
   }
 
@@ -47,7 +47,6 @@ export const RecentWapper = styled.div`
 
   > .title-gamelength {
     grid-area: title-gamelength;
-    
   }
 
   > .GameTimeRate {
@@ -79,19 +78,16 @@ export const TeamRate = styled.div`
     fill: FireBrick;
     color: white;
   }
-
 `;
 
 export const GameTimeRate = styled.div`
+  .high {
+    fill: CornflowerBlue;
+  }
 
-.high {
-  fill: CornflowerBlue;
-}
-
-.low {
-  fill:IndianRed;
-}
-
+  .low {
+    fill: IndianRed;
+  }
 `;
 
 export const CircleGraph = styled.div`
@@ -164,7 +160,6 @@ export const TotalKDA = styled.span`
 
   > .kill {
     grid-area: kill;
-
   }
 
   > .death {
