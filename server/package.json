@@ -1,7 +1,7 @@
 {
-    "name": "my-app",
+    "name": "lolinfo",
     "version": "1.0.0",
-    "description": "2week project - server",
+    "description": "lolinfo - server",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/yhs9421877/2weekProject.git"
+        "url": "git+https://github.com/codestates/lolinfo.git"
     },
     "keywords": [
         "express",
@@ -19,9 +19,9 @@
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/yhs9421877/2weekProject/issues"
+        "url": "https://github.com/codestates/lolinfo/issues"
     },
-    "homepage": "https://github.com/yhs9421877/2weekProject#readme",
+    "homepage": "https://github.com/codestates/lolinfo#readme",
     "dependencies": {
         "axios": "^0.26.0",
         "cookie-parser": "^1.4.6",

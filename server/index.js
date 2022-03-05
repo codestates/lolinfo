@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const express = require("express");
 const app = express();
+const morgan = require('morgan')
 
 const controllers = require("./controllers");
 
@@ -18,10 +19,12 @@ app.use(express.urlencoded({ extended: false }));
 //     methods: ["GET", "POST", "OPTIONS"],
 //   })
 // );
+app.use(morgan('dev'));
 
 app.get("/", (req, res) => {
   res.send("Hello, yeyeye");
 });
+
 app.get("/match", controllers.match);
 app.get("/player", controllers.player);
 app.get("/version", controllers.version);
