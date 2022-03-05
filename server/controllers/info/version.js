@@ -1,6 +1,5 @@
-const axios = require("axios");
 const infoAll = require("../getsourceinfo/infoAll");
-module.exports = async (req, res) => {
+module.exports = async (_, res) => {
   let version = await infoAll.version();
   res.status(200).send({ version });
 };

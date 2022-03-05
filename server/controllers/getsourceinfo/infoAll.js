@@ -9,12 +9,6 @@ module.exports = {
   nametoUserInfo: async (nickname) => {
     let data = await axios.get(`https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(nickname)}`).catch((error) => console.log("Error in nametoUserInfo call: ", error.message));
     return data.data;
-    // accountId: 'rwn2FoZMusf0RvFue82yBUEjU0v0TMqPSlJYPw6UuYzp',
-    // puuid: '12D2y7Ca2qarAVvzdVJKisptC9qf8LeunI_uXnZcKIgNtFK4E9cDO9YmtqkSqBAKzEdFCZvDqqNcig',
-    // name: '삼다칼잡이',
-    // profileIconId: 4379,
-    // revisionDate: 1646103579000,
-    // summonerLevel: 143
   },
   version: async () => {
     let data = await axios.get("https://ddragon.leagueoflegends.com/api/versions.json").catch((error) => console.log("Error in version call: ", error.message));
