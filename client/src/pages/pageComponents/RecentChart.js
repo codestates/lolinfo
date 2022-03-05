@@ -109,13 +109,14 @@ function RecentChart() {
       .selectAll('rect') 
       .data(data) 
       .enter() 
-      .append('rect') 
+      .append('rect')
       .attr('x', (data) => x(data.len) + x.bandwidth() / 2 + 12.5)
       .attr('width', 15) 
       .attr("transform",`translate(0,${height-margin.bottom})`)
-      .attr('height', 5)
-      .attr('y', -5) 
+      .attr('height', 1)
+      .attr('y', -1) 
       .transition().duration(1800)
+      .delay((data,i)=>i*150)
       .attr("height",data=>data.value)
       .attr("y",data=>-data.value)
       .attr('class', (data)=>{
@@ -123,7 +124,6 @@ function RecentChart() {
           return "high" 
         else return "low" 
       }).attr("rx", 2);
-
   },[])
 
   return (
