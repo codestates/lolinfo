@@ -23,7 +23,8 @@ app.get("/", (req, res) => {
   res.send("Hello, yeyeye");
 });
 app.get("/match", controllers.match);
-
+app.get("/player", controllers.player);
+app.get("/version", controllers.version);
 const PORT = 80;
 server = app.listen(PORT, () => {
   console.log("server running port %s", PORT);
