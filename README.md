@@ -12,7 +12,7 @@
 ***LOL-INFO*** 입니다 😜
 
 링크    
-[LOL-INFO](http://lolinfo.shop/login, "google link")
+[LOL-INFO](http://lolinfo.shop/login)
 * * *
 ## For project details
 [Project Detail 여기를 클릭!](https://github.com/codestates/lolinfo/wiki, "google link")
