@@ -8,6 +8,7 @@ const app = express();
 const morgan = require('morgan')
 
 const usersRouter = require('./routes/users');
+const infoRouter = require('./routes/info');
 
 app.use(express.json());
 // app.use(cookieParser());
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 
 // router
 app.use('/users', usersRouter);
+app.use('/info', infoRouter)
 
 const PORT = 80;
 server = app.listen(PORT, () => {
