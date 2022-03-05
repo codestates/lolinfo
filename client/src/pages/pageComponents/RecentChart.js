@@ -105,6 +105,25 @@ function RecentChart() {
     svg.append('g').call(xAxis); 
     svg.append('g').call(yAxis);
     
+    svg
+      .selectAll('rect') 
+      .data(data) 
+      .enter() 
+      .append('rect') 
+      .attr('x', (data) => x(data.len) + x.bandwidth() / 2 + 12.5)
+      .attr('width', 15) 
+      .attr("transform",`translate(0,${height-margin.bottom})`)
+      .attr('height', 5)
+      .attr('y', -5) 
+      .transition().duration(1800)
+      .attr("height",data=>data.value)
+      .attr("y",data=>-data.value)
+      .attr('class', (data)=>{
+        if(data.value>50) 
+          return "high" 
+        else return "low" 
+      }).attr("rx", 2);
+
   },[])
 
   return (
