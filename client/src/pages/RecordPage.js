@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Rank from "./pageComponents/Rank";
+import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
 
@@ -67,7 +67,7 @@ function RecordPage() {
   return (
     <div>
       <Content>
-        <Rank />
+        <UserProfile />
         <BoxWrapper name="BoxWrapper">
           <RecentChart />
           <RecentGameLog />
