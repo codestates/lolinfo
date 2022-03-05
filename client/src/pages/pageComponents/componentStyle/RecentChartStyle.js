@@ -84,6 +84,14 @@ export const TeamRate = styled.div`
 
 export const GameTimeRate = styled.div`
 
+.high {
+  fill: DodgerBlue;
+}
+
+.low {
+  fill:FireBrick;
+}
+
 `;
 
 export const CircleGraph = styled.div`

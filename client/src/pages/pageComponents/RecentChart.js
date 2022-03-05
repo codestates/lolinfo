@@ -105,6 +105,23 @@ function RecentChart() {
     svg.append('g').call(xAxis); 
     svg.append('g').call(yAxis);
     
+    svg
+      .selectAll('rect') 
+      .data(data) 
+      .enter() 
+      .append('rect') 
+      .attr('x', (data) => x(data.len) + x.bandwidth() / 2 + 12.5)
+      .attr('y', (data) => y(data.value)) 
+      .attr('width', 15) 
+      .attr('height', (data) => y(0) - y(data.value)) 
+      .attr('class', (data)=>{
+        if(data.value>50) 
+          return "high" 
+        else return "low" 
+      }).attr("rx", 2); // 클래스를 부여하여 css, scss등으로 넓이나 색깔 등을 직접 부여 가능한다.
+
+      // .attr('fill', (data) => data.color); // input data에 미리 
+
   },[])
 
   return (
