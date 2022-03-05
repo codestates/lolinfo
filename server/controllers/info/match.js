@@ -1,14 +1,10 @@
-const axios = require('axios').default
-const gv=require('../getsourceinfo/getVersion')
-const gp=require('../getsourceinfo/getPuuid')
-// "KR_5788449253"
-module.exports=async(req,res)=>{
-    console.log(req.query)
-    // let puuid=gp()
-    let version=await gv()
-    // console.log(process.env.APIKEY)
-    // axios.get()
-    // https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}?start=int1&count=int2
-    
-    res.status(201).send({version})
-}
+const infoAll = require("../getsourceinfo/infoAll");
+module.exports = async (req, res) => {
+  let playerinfo = await infoAll.nametoUserInfo(req.query.nickname);
+  if (!playerinfo) return res.status(404).send({ message: "Data not found - match file not found", status_code: 404 });
+  let matchList = await infoAll.matchList(playerinfo.puuid, req.query.int1, req.query.int2);
+  if (!matchList) return res.status(403).send({ message: "Forbidden", status_code: 403 });
+  let temp = [];
+  for (let match of matchList) temp.push(infoAll.oneMatchInfo(match));
+  return res.status(200).send(await Promise.all(temp));
+};
