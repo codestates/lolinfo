@@ -5,7 +5,7 @@ import RecentGameLog from "./pageComponents/RecentGameLog";
 
 const Content = styled.div`
     display: flex;
-    height: 110vh;
+    height: 95vh;
     background-color: #fff;
     margin: 0.5rem 0.5rem 0rem 0.5rem;
     overflow: hidden;

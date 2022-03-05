@@ -65,7 +65,7 @@ export const RecentWapper = styled.div`
 `;
 export const CircleGraphWapper = styled.div`
   position: relative;
-  width: 150px;
+  width: 9rem;
   margin: auto;
 `;
 
@@ -82,13 +82,8 @@ export const TeamRate = styled.div`
 
 `;
 
-export const GameTimeRate = styled.img`
-  object-fit: cover;
-  width: 120px;
-  height: 120px;
-  border-radius: 10%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+export const GameTimeRate = styled.div`
+
 `;
 
 export const CircleGraph = styled.div`
