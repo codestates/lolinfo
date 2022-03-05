@@ -62,8 +62,69 @@ function RecentChart() {
       .range([0, `${graphSize - margin}`]);
     const yAxisSVG = d3.select("svg").append("g");
     const yAxis = d3.axisRight(yScale).tickSize(5).ticks(2);
-    yAxis(yAxisSVG); //y
+    yAxis(yAxisSVG);
   }, []);
+
+  useEffect(() => {
+
+    const width = 190;
+    const height = 160;
+    const margin = { top: 28, left: 20, bottom: 20, right: 50 };
+    const svg = d3.select('.GameTimeRate').append('svg').attr('width', width).attr('height', height);
+    
+    const data = [
+      { len: '0-25', value: 40 },
+      { len: '25-30', value: 10 },
+      { len: '30-35', value: 60 },
+      { len: '35분+', value: 95 },
+    ];
+
+    const x = d3
+      .scaleBand()
+      .domain(data.map((d) => d.len)) 
+      .range([0, width - margin.right]);
+
+    const y = d3
+      .scaleLinear() 
+      .domain([0, d3.max(data, (d) => d.value)]) 
+      .range([height - margin.bottom, margin.top]); 
+
+    const xAxis = (g) => {
+      return g 
+        .attr('transform', `translate(${margin.left}, ${height - margin.bottom})`)
+        .call(d3.axisBottom(x).tickSizeOuter(0));
+    };
+
+    const yAxis = (g) =>
+      g
+        .attr('transform', `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(y).tickValues([0, 20, 40, 60, 80, 100]).tickSize(-width+margin.right))
+        .call((g) => g.select('.domain').remove()) 
+        .attr('class', 'grid'); 
+
+    svg.append('g').call(xAxis); 
+    svg.append('g').call(yAxis);
+    
+    svg
+      .selectAll('rect') 
+      .data(data) 
+      .enter() 
+      .append('rect')
+      .attr('x', (data) => x(data.len) + x.bandwidth() / 2 + 12.5)
+      .attr('width', 15) 
+      .attr("transform",`translate(0,${height-margin.bottom})`)
+      .attr('height', 1)
+      .attr('y', -1) 
+      .transition().duration(1800)
+      .delay((data,i)=>i*150)
+      .attr("height",data=>data.value)
+      .attr("y",data=>-data.value)
+      .attr('class', (data)=>{
+        if(data.value>50) 
+          return "high" 
+        else return "low" 
+      }).attr("rx", 2);
+  },[])
 
   return (
     <RecentWapper name="RecentWapper">
@@ -79,7 +140,9 @@ function RecentChart() {
         <svg className="teamGraph" width={graphSize} height={graphSize}></svg>
       </TeamRate>
       <span className="title-gamelength">게임 길이별 승률</span>
-      <GameTimeRate className="GameTimeRate" />
+      <GameTimeRate className="GameTimeRate">
+        
+      </GameTimeRate>
       <span className="title-KDA">KDA</span>
       <TotalKDAWrapper className="TotalKDAWrapper">
         <TotalKDA>

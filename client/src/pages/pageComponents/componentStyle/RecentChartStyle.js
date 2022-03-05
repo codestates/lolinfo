@@ -23,6 +23,8 @@ export const RecentWapper = styled.div`
   margin: 0 auto;
   overflow: hidden;
 
+  align-items: center;
+
   @media all and (max-width: ${(props) => props.theme.recordMobileH}) {
     display: none;
   }
@@ -45,6 +47,7 @@ export const RecentWapper = styled.div`
 
   > .title-gamelength {
     grid-area: title-gamelength;
+    
   }
 
   > .GameTimeRate {
@@ -53,6 +56,7 @@ export const RecentWapper = styled.div`
 
   > .title-KDA {
     grid-area: title-KDA;
+    letter-spacing: 5px;
   }
 
   > .TotalKDA {
@@ -61,7 +65,7 @@ export const RecentWapper = styled.div`
 `;
 export const CircleGraphWapper = styled.div`
   position: relative;
-  width: 150px;
+  width: 9rem;
   margin: auto;
 `;
 
@@ -75,15 +79,19 @@ export const TeamRate = styled.div`
     fill: FireBrick;
     color: white;
   }
+
 `;
 
-export const GameTimeRate = styled.img`
-  object-fit: cover;
-  width: 120px;
-  height: 120px;
-  border-radius: 10%;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+export const GameTimeRate = styled.div`
+
+.high {
+  fill: CornflowerBlue;
+}
+
+.low {
+  fill:IndianRed;
+}
+
 `;
 
 export const CircleGraph = styled.div`
