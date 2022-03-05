@@ -1,42 +1,19 @@
-import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom'
-
+import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponent'
 
 const Container = styled.div`
  display: grid;
  grid-template-columns: repeat(10, minmax(auto, 1fr));
  grid-template-rows: 50px repeat(10, minmax(auto, 1fr)) 150px;
  background-color:${props => props.theme.recordBgColor};
-`
+`;
 const SubMenu = styled.div`
- display: grid;
- grid-template-columns: repeat(10, minmax(auto, 1fr));
- grid-template-rows: repeat(auto, minmax(auto, 1fr));
  grid-row: 1/1;
- grid-column: 1/12;
- height: 3vw;
+ grid-column: 1/11;
+ height: 3.7vw;
  align-items: center;
- background-color:#fff;
-`
-const Edit = styled.div`
- grid-row: 1/1;
- grid-column: 1/2;
- font-size: 1rem;
- margin: 0 0.6em;
-`
-const ChangePassword = styled.div`
- grid-row: 1/1;
- grid-column: 2/3;
- font-size: 1rem;
- margin: 0 0.6em;
-`
-const DeleteAccount = styled.div`
- grid-row: 1/1;
- grid-column: 3/4;
- font-size: 1rem;
- margin: 0 0.6em;
-`
+ background-color: #fff;
+`;
 const ChangePwPage = styled.div`
  display: grid;
  grid-template-columns: repeat(9, minmax(auto, 1fr));
@@ -44,7 +21,7 @@ const ChangePwPage = styled.div`
  grid-row: 2/12;
  grid-column: 1/12;
  background-color:${props => props.theme.recordBgColor};
-`
+`;
 const ChangePasswordContainer = styled.div`
  display: grid;
  grid-template-columns: repeat(10, minmax(auto, 1fr));
@@ -52,66 +29,88 @@ const ChangePasswordContainer = styled.div`
  grid-row: 2/9;
  grid-column: 3/8;
  background-color: #fff;
-`
+ @media (max-width: 700px) {
+ display: grid;
+ grid-template-columns: repeat(10, minmax(auto, 1fr));
+ grid-template-rows: repeat(7, minmax(auto, 1fr));
+ grid-row: 2/9;
+ grid-column: 1/10;
+ background-color: #fff;
+} 
+`;
 const Header = styled.h2`
  grid-row: 1/2;
  grid-column:2/4;
  font-weight: 400;
  padding: 16px 0px;
-`
+ @media (max-width: 700px) {
+ grid-row: 1/2;
+ grid-column:2/4;
+ font-weight: 400;
+ font-size: 1em ;
+ padding: 16px 0px;
+} 
+`;
 const SmallHeader = styled.h4`
  grid-row: 2/3;
  grid-column:2/10;
  font-weight: 400;
  color: ${props => props.theme.MypageSmallHeader};
-`
+ @media (max-width: 700px) {
+ grid-row: 2/3;
+ grid-column:2/10;
+ font-weight: 400;
+ font-size: 0.7em ;
+ color: ${props => props.theme.MypageSmallHeader};
+} 
+`;
 const ChangePasswordDiv = styled.div`
  display: grid;
  grid-template-columns: repeat(9, minmax(auto, 1fr));
  grid-template-rows: repeat(10, minmax(auto, 1fr));
  grid-row:3/9;
  grid-column:2/10;
-`
-const CurrentPassword =styled.div`
+`;
+const CurrentPassword = styled.div`
  display: grid;
  grid-template-columns: repeat(20, minmax(auto, 1fr));
  grid-template-rows: repeat(10, minmax(auto, 1fr));
  grid-row:1/3;
  grid-column:2/9;
-`
+`;
 const CurrentPasswordInput = styled.input`
  grid-row:3/9;
  grid-column:4/18;
-`
-const NewPassword =styled.div`
+`;
+const NewPassword = styled.div`
  display: grid;
  grid-template-columns: repeat(20, minmax(auto, 1fr));
  grid-template-rows: repeat(10, minmax(auto, 1fr));
  grid-row:3/5;
  grid-column:2/9;
-`
+`;
 const NewPasswordInput = styled.input`
  grid-row:3/9;
  grid-column:4/18;
-`
-const NewPasswordCheck =styled.div`
+`;
+const NewPasswordCheck = styled.div`
  display: grid;
  grid-template-columns: repeat(20, minmax(auto, 1fr));
  grid-template-rows: repeat(10, minmax(auto, 1fr));
  grid-row:5/7;
  grid-column:2/9;
-`
+`;
 const NewPasswordCheckInput = styled.input`
  grid-row:3/9;
  grid-column:4/18;
-`
-const SubmitButtonDiv =styled.div`
+`;
+const SubmitButtonDiv = styled.div`
  display: grid;
  grid-template-columns: repeat(20, minmax(auto, 1fr));
  grid-template-rows: repeat(10, minmax(auto, 1fr));
  grid-row:7/9;
  grid-column:2/9;
-`
+`;
 const SubmitButton = styled.button`
  grid-row:3/9;
  grid-column:4/18;
@@ -120,15 +119,13 @@ const SubmitButton = styled.button`
  font-weight: 700;
  border: 0;
  cursor: pointer;
-`
-function ChangePasswordPage(){
+`;
+function ChangePasswordPage() {
 
-    return(
+    return (
         <Container>
             <SubMenu>
-                    <Link to="/mypage/edit"> <Edit >개인정보 관리</Edit></Link>
-                    <Link to="/mypage/changePassword"> <ChangePassword>비밀번호 변경</ChangePassword></Link>
-                    <Link to="/mypage/deleteAccount"> <DeleteAccount>회원 탈퇴</DeleteAccount> </Link>
+                <MypageNavbar></MypageNavbar>
             </SubMenu>
             <ChangePwPage>
                 <ChangePasswordContainer>
@@ -150,8 +147,6 @@ function ChangePasswordPage(){
                     </ChangePasswordDiv>
                 </ChangePasswordContainer>
             </ChangePwPage>
-        
-
         </Container>
     )
 }
