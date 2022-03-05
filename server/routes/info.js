@@ -11,3 +11,5 @@ router.get('/player', infoController.player.get);
 
 // * GET /info/version
 router.get('/version', infoController.version.get);
+
+module.exports = router;
