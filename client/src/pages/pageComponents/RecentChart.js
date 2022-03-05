@@ -69,13 +69,13 @@ function RecentChart() {
 
     const width = 190;
     const height = 160;
-    const margin = { top: 28, left: 20, bottom: 20, right: 50 };
+    const margin = { top: 30, left: 20, bottom: 20, right: 50 };
     const svg = d3.select('.GameTimeRate').append('svg').attr('width', width).attr('height', height);
     
     const data = [
-      { len: '0-25', value: 40 },
-      { len: '25-30', value: 10 },
-      { len: '30-35', value: 60 },
+      { len: '0-25', value:60 },
+      { len: '25-30', value: 47 },
+      { len: '30-35', value: 10 },
       { len: '35분+', value: 95 },
     ];
 
@@ -86,7 +86,7 @@ function RecentChart() {
 
     const y = d3
       .scaleLinear() 
-      .domain([0, d3.max(data, (d) => d.value)]) 
+      .domain([0, 100]) 
       .range([height - margin.bottom, margin.top]); 
 
     const xAxis = (g) => {
@@ -117,8 +117,8 @@ function RecentChart() {
       .attr('y', -1) 
       .transition().duration(1800)
       .delay((data,i)=>i*150)
-      .attr("height",data=>data.value)
-      .attr("y",data=>-data.value)
+      .attr("height",data=>(data.value*(height- margin.top -  margin.bottom))/100)
+      .attr("y",data=>(-data.value*(height- margin.top - margin.bottom))/100)
       .attr('class', (data)=>{
         if(data.value>50) 
           return "high" 
