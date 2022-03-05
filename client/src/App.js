@@ -27,7 +27,7 @@ function App() {
     submit: "",
     login: "",
   });
-  
+
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
