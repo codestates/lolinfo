@@ -26,7 +26,6 @@ function useSticky() {
   // This function handles the scroll performance issue
   useEffect(() => {
     window.addEventListener("scroll", debounce(handleScroll));
-    console.log("window.scrollY=", window.scrollY);
     return () => {
       window.removeEventListener("scroll", () => handleScroll);
     };
