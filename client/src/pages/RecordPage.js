@@ -5,7 +5,7 @@ import RecentGameLog from "./pageComponents/RecentGameLog";
 
 const Content = styled.div`
     display: flex;
-    height: 90vh;
+    height: 95vh;
     background-color: #fff;
     margin: 0.5rem 0.5rem 0rem 0.5rem;
     overflow: hidden;
@@ -56,13 +56,13 @@ const BoxWrapper = styled.div`
 function RecordPage() {
     const [widthSize, setWidthSize] = useState(0);
     const resizeListener = () => {
-        if (window.innerWidth <= 480) {
-            // console.log(window.innerWidth);
-        }
+      // console.log(window.innerWidth);
     };
 
     useEffect(() => {
+        // console.log(document.body.style)
         window.addEventListener("resize", resizeListener);
+        document.body.style.aspectRatio = "125%";
     }, []);
 
     return (
