@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Board from './pages/Board';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Board from "./pages/Board";
 import Edit from "./pages/Mypage-Edit";
 import DeleteAccount from "./pages/Mypage-DelAco";
 import ChangePassword from "./pages/Mypage-ChangePw";
-import ChattingRoom from "./pages/ChattingRoom"
+import ChattingRoom from "./pages/ChattingRoom";
 import Theme from "./styles/Theme";
 import GlobalStyle from "./styles/GlobalStyle";
 import RecordPage from "./pages/RecordPage";
@@ -19,6 +19,7 @@ import Modal from "./components/modal";
 
 function App() {
   const { isSticky, element } = useSticky();
+  const [history, setHistory] = useState(false);
   const [loginModal, setLoginModal] = useState("");
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -27,14 +28,13 @@ function App() {
     submit: "",
     login: "",
   });
-
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
-          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
-          <Search />
+          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} setHistory={setHistory} />
+          {history ? <Search /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
               {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} /> : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />}
@@ -54,4 +54,4 @@ function App() {
     </div>
   );
 }
-export default App
+export default App;
