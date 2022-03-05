@@ -159,8 +159,12 @@ export const TotalKDA = styled.span`
   margin-top: 0rem;
   align-items: center;
 
+  font-size: 0.9rem;
+  font-weight: 550;
+
   > .kill {
     grid-area: kill;
+
   }
 
   > .death {
@@ -185,6 +189,7 @@ export const TotalKDA = styled.span`
     grid-area: kill-assist;
     font-size: minmax(0.5rem, auto);
     margin-left: 0.2rem;
+    color: tomato;
   }
 `;
 
