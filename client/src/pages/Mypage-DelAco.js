@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom'
+import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponent'
 
 
 const Container = styled.div`
@@ -8,35 +7,14 @@ const Container = styled.div`
  grid-template-columns: repeat(10, minmax(auto, 1fr));
  grid-template-rows: 50px repeat(10, minmax(auto, 1fr));
  background-color: ${props => props.theme.recordBgColor};
-`
+`;
 const SubMenu = styled.div`
- display: grid;
- grid-template-columns: repeat(10, minmax(auto, 1fr));
- grid-template-rows: repeat(auto, minmax(auto, 1fr));
  grid-row: 1/1;
  grid-column: 1/11;
- height: 3vw;
+ height: 3.7vw;
  align-items: center;
- background-color:#fff;
-`
-const Edit = styled.div`
- grid-row: 1/1;
- grid-column: 1/2;
- font-size: 1rem;
- margin: 0 0.6em;
-`
-const ChangePassword = styled.div`
- grid-row: 1/1;
- grid-column: 2/3;
- font-size: 1rem;
- margin: 0 0.6em;
-`
-const DeleteAccount = styled.div`
- grid-row: 1/1;
- grid-column: 3/4;
- font-size: 1rem;
- margin: 0 0.6em;
-`
+ background-color: #fff;
+`;
 const DeletePage = styled.div`
  display: grid;
  grid-template-columns: repeat(9, minmax(auto, 1fr));
@@ -44,8 +22,7 @@ const DeletePage = styled.div`
  grid-row: 2/11;
  grid-column: 1/11;
  background-color:${props => props.theme.recordBgColor};
-
-`
+`;
 const DeleteAccountContainer = styled.div`
  display: grid;
  grid-template-columns: repeat(10, minmax(auto, 1fr));
@@ -53,19 +30,27 @@ const DeleteAccountContainer = styled.div`
  grid-row: 2/9;
  grid-column: 3/8;
  background-color: #fff;
-`
+ @media (max-width: 700px) {
+ display: grid;
+ grid-template-columns: repeat(10, minmax(auto, 1fr));
+ grid-template-rows: repeat(10, minmax(auto, 1fr));
+ grid-row: 2/9;
+ grid-column: 1/10;
+ background-color: #fff;
+} 
+`;
 const Header = styled.h2`
  grid-row: 1/2;
- grid-column:2/4;
+ grid-column:2/5;
  font-weight: 400;
  padding: 16px 0px;
-`
-const SmallHeader= styled.h4`
+`;
+const SmallHeader = styled.h4`
  grid-row: 2/3;
  grid-column:2/10;
  font-weight: 400;
  color: ${props => props.theme.MypageSmallHeader};
-`
+`;
 const FirstLaw = styled.div`
  display: grid;
  grid-template-columns: repeat(9, minmax(auto, 1fr));
@@ -73,96 +58,96 @@ const FirstLaw = styled.div`
  grid-row: 3/4;
  grid-column:2/10;
  border-top: 1px solid ${props => props.theme.MypageLineColor};
-`
+`;
 const FirstLawName = styled.div`
  grid-row: 1/5;
  grid-column:1/10;
  font-weight: 400;
  font-size: 18px;
-`
+`;
 const FirstLawdetail = styled.div`
  grid-row: 5/10;
  grid-column:1/10;
  color: ${props => props.theme.MypageSmallHeader};
  font-size: 12px;
  font-weight: 400;
-`
+`;
 const SecondLaw = styled.div`
  grid-row: 4/5;
  grid-column:2/10;
-`
+`;
 const SecondLawName = styled.div`
  grid-row: 1/5;
  grid-column:1/10;
  font-weight: 400;
  font-size: 18px;
-`
+`;
 const SecondLawdetail = styled.div`
  grid-row: 5/10;
  grid-column:1/10;
  color: ${props => props.theme.MypageSmallHeader};
  font-size: 12px;
  font-weight: 400;
- `
+ `;
 const ThirdLaw = styled.div`
  grid-row: 5/6;
  grid-column:2/10;
-`
+`;
 const ThirdLawName = styled.div`
  grid-row: 1/5;
  grid-column:1/10;
  font-weight: 400;
  font-size: 18px;
-`
+`;
 const ThirdLawdetail = styled.div`
  grid-row: 5/10;
  grid-column:1/10;
  color: ${props => props.theme.MypageSmallHeader};
  font-size: 12px;
  font-weight: 400;
- `
+ `;
 const FourthLaw = styled.div`
  grid-row: 6/7;
  grid-column:2/10;
-`
+`;
 const FourthLawName = styled.div`
  grid-row: 1/5;
  grid-column:1/10;
  font-weight: 400;
  font-size: 18px;
-`
+`;
 const FourthLawdetail = styled.div`
  grid-row: 5/10;
  grid-column:1/10;
  color: ${props => props.theme.MypageSmallHeader};
  font-size: 12px;
  font-weight: 400;
- `
+ `;
 const FifthLaw = styled.div`
  grid-row: 7/8;
  grid-column:2/10;
  border-bottom: 1px solid ${props => props.theme.MypageLineColor};
-`
+`;
 const FifthLawName = styled.div`
  grid-row: 1/5;
  grid-column:1/10;
  font-weight: 400;
  font-size: 18px;
-`
+`;
 const FifthLawdetail = styled.div`
  grid-row: 5/10;
  grid-column:1/10;
  color: ${props => props.theme.MypageSmallHeader};
  font-size: 12px;
  font-weight: 400;
- `
+ `;
 const CheckBoxDiv = styled.div`
  display: grid;
  grid-template-columns: repeat(9, minmax(auto, 1fr));
  grid-template-rows: repeat(1, minmax(auto, 1fr));
  grid-row: 8/9;
  grid-column:2/10;
-`
+`;
 const CheckBox = styled.input`
  grid-row: 1;
  grid-column:1/2;
@@ -171,19 +156,24 @@ const CheckBox = styled.input`
  outline: 0;
  margin: 26px 5px 5px 0px;
  cursor: pointer;
-`
-const CheckBoxDetail =styled.div`
+`;
+const CheckBoxDetail = styled.div`
  grid-row: 1;
  grid-column:2/10;
  margin: 24px 5px 5px -30px;
-`
+ @media (max-width: 700px) {
+ grid-row: 1;
+ grid-column:2/10;
+ margin: 24px 5px 5px -15px;
+}
+`;
 const AgreeORDisAgree = styled.div`
  display: grid;
  grid-template-columns: repeat(13, minmax(auto, 1fr));
  grid-template-rows: repeat(10, minmax(auto, 1fr));
  grid-row: 10/11;
  grid-column:2/10;
-`
+`;
 const Disagree = styled.button`
  grid-row: 2/10;
  grid-column:4/7;
@@ -191,7 +181,7 @@ const Disagree = styled.button`
  border: 2px solid ${props => props.theme.MypageLineColor};
  cursor: pointer;
  font-size: 18px;
-`
+`;
 const Agree = styled.button`
  grid-row: 2/10;
  grid-column:8/11;
@@ -200,16 +190,13 @@ const Agree = styled.button`
  font-weight: 700;
  border: 0;
  font-size: 18px;
-`
+`;
+function DeleteAccountPage() {
 
-function DeleteAccountPage(){
-
-    return(
+    return (
         <Container>
             <SubMenu>
-                    <Link to="/mypage/edit"> <Edit >개인정보 관리</Edit></Link>
-                    <Link to="/mypage/changePassword"> <ChangePassword>비밀번호 변경</ChangePassword></Link>
-                    <Link to="/mypage/deleteAccount"> <DeleteAccount>회원 탈퇴</DeleteAccount> </Link>   
+                <MypageNavbar></MypageNavbar>
             </SubMenu>
             <DeletePage>
                 <DeleteAccountContainer>
@@ -245,8 +232,6 @@ function DeleteAccountPage(){
                     </AgreeORDisAgree>
                 </DeleteAccountContainer>
             </DeletePage>
-        
-
         </Container>
     )
 }
