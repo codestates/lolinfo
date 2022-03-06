@@ -5,10 +5,10 @@ const cors = require("cors");
 
 const express = require("express");
 const app = express();
-const morgan = require('morgan')
+const morgan = require("morgan");
 
-const usersRouter = require('./routes/users');
-const infoRouter = require('./routes/info');
+const usersRouter = require("./routes/users");
+const gamesRouter = require("./routes/games");
 
 app.use(express.json());
 // app.use(cookieParser());
@@ -18,17 +18,17 @@ app.use(
     origin: ["http://localhost"],
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
-  })
+  }),
 );
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   res.send("Hello, yeyeye");
 });
 
 // router
-app.use('/users', usersRouter);
-app.use('/info', infoRouter)
+app.use("/users", usersRouter);
+app.use("/games", gamesRouter);
 
 const PORT = 80;
 server = app.listen(PORT, () => {
