@@ -1,4 +1,4 @@
 module.exports = {
-  infoController: require('./info'),
-  usersController: require('./users'),
+  infoController: require("./games"),
+  usersController: require("./users"),
 };

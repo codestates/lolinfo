@@ -1,4 +1,4 @@
-const infoAll = require("../getsourceinfo/infoAll");
+const infoAll = require("../gamesource/infoAll");
 module.exports = {
   get: async (_, res) => {
     let version = await infoAll.version();
