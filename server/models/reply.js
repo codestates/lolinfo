@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       body: DataTypes.STRING,
       class: DataTypes.TINYINT,
+      order: DataTypes.INTEGER
     },
     {
       sequelize,
