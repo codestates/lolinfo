@@ -1,4 +1,4 @@
-const infoAll = require("../getsourceinfo/infoAll");
+const infoAll = require("../gamesource/infoAll");
 module.exports = {
   get: async (req, res) => {
     let playerinfo = await infoAll.nametoUserInfo(req.query.nickname);
