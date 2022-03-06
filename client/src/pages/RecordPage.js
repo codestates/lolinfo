@@ -8,7 +8,6 @@ const Content = styled.div`
   display: grid;
   background-color: #fff;
   margin: 0.5rem 0.5rem 0rem 0.5rem;
-  overflow: hidden;
   justify-content: center;
 
   font-family: "Roboto", sans-serif;
@@ -18,38 +17,37 @@ const Content = styled.div`
 
 const BoxWrapper = styled.div`
   display: grid;
-  // grid-template-columns: repeat(auto-fill, minmax(auto, 1fr));
-  grid-template-columns: minmax(auto, 3fr) minmax(auto, 7fr);
-  background-color: ${(props) => props.theme.recordBgColor};
-  width: 55vw;
+  grid-template-columns: minmax(auto, 3fr) minmax(auto, 8fr);
+  grid-template-rows: minmax(auto, 1fr);
+  grid-template-areas: "RecentChart RecentGameLog";
 
+  background-color: ${(props) => props.theme.recordBgColor};
   padding: 1rem 0rem 3rem 0rem;
 
-  //767
-  @media all and (max-width: ${(props) => props.theme.recordMobileH}) {
+  @media all and (max-width: ${(props) => props.theme.recordBoxOneCol}) {
     grid-template-columns: minmax(auto, 1fr);
-    width: ${(props) => props.theme.media1};
+    grid-template-areas: "RecentGameLog";
+    padding: 1rem 1rem 3rem 1rem;
   }
 
-  @media all and (max-width: 1200px) {
-    width: 80vw;
+  > .RecentChart {
+    grid-area: RecentChart;
   }
 
-  @media (min-width: 767px) and (max-width: 850px) {
-    width: 90vw;
+  > .RecentGameLog {
+    grid-area: RecentGameLog;
   }
+`;
 
-  @media all and (max-width: 767px) {
-    width: 75vw;
-  }
+const LogWrapper = styled.div`
+  text-align: center;
+  display: grid;
+  grid-template-columns: minmax(1fr, auto);
+  grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));
+  flex-direction: column;
+  gap: 1rem;
 
-  @media all and (max-width: 560px) {
-    width: 90vw;
-  }
-
-  @media all and (max-width: 480px) {
-    width: 95vw;
-  }
+  background-color: ${(props) => props.theme.recordBgColor};
 `;
 
 function RecordPage() {
@@ -69,8 +67,40 @@ function RecordPage() {
       <Content>
         <UserProfile />
         <BoxWrapper name="BoxWrapper">
-          <RecentChart />
-          <RecentGameLog />
+          <RecentChart className="RecentChart" />
+          <div>
+            <LogWrapper className="RecentGameLog">
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+              <RecentGameLog />
+            </LogWrapper>
+          </div>
         </BoxWrapper>
       </Content>
     </div>

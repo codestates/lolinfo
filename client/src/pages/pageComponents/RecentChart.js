@@ -130,34 +130,36 @@ function RecentChart() {
   }, []);
 
   return (
-    <RecentWapper name="RecentWapper">
-      <span className="title-record">{"4전 3승 1패"}</span>
-      <CircleGraphWapper className="CircleGraph" name="CircleGraphWapper">
-        <CircleGraph rate={rate} name="CircleGraph">
-          <div className="progress-circle"></div>
-          <span className="percent">{rate + "%"}</span>
-        </CircleGraph>
-      </CircleGraphWapper>
-      <span className="title-team">팀별 승률</span>
-      <TeamRate className="TeamRate">
-        <svg className="teamGraph" width={graphSize} height={graphSize}></svg>
-      </TeamRate>
-      <span className="title-gamelength">게임 길이별 승률</span>
-      <GameTimeRate className="GameTimeRate"></GameTimeRate>
-      <span className="title-KDA">KDA</span>
-      <TotalKDAWrapper className="TotalKDAWrapper">
-        <TotalKDA>
-          <span className="kill">{44}</span>
-          <span>{"/"}</span>
-          <span className="death">{1}</span>
-          <span>{"/"}</span>
-          <span className="assist">{33}</span>
-          <Icon className="icon" size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
-          <span className="average">평점:{`${88.2}`}</span>
-          <span className="kill-assist">킬관여:{`70%`}</span>
-        </TotalKDA>
-      </TotalKDAWrapper>
-    </RecentWapper>
+    <div>
+      <RecentWapper name="RecentWapper">
+        <span className="title-record">{"4전 3승 1패"}</span>
+        <CircleGraphWapper className="CircleGraph" name="CircleGraphWapper">
+          <CircleGraph rate={rate} name="CircleGraph">
+            <div className="progress-circle"></div>
+            <span className="percent">{rate + "%"}</span>
+          </CircleGraph>
+        </CircleGraphWapper>
+        <span className="title-team">팀별 승률</span>
+        <TeamRate className="TeamRate">
+          <svg className="teamGraph" width={graphSize} height={graphSize}></svg>
+        </TeamRate>
+        <span className="title-gamelength">게임 길이별 승률</span>
+        <GameTimeRate className="GameTimeRate"></GameTimeRate>
+        <span className="title-KDA">KDA</span>
+        <TotalKDAWrapper className="TotalKDAWrapper">
+          <TotalKDA>
+            <span className="kill">{44}</span>
+            <span>{"/"}</span>
+            <span className="death">{1}</span>
+            <span>{"/"}</span>
+            <span className="assist">{33}</span>
+            <Icon className="icon" size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
+            <span className="average">평점:{`${88.2}`}</span>
+            <span className="kill-assist">킬관여:{`70%`}</span>
+          </TotalKDA>
+        </TotalKDAWrapper>
+      </RecentWapper>
+    </div>
   );
 }
 

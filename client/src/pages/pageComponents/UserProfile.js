@@ -16,8 +16,8 @@ const ProfileWrapper = styled.div`
 
   img {
     object-fit: cover;
-    width: ${(props) => String(props.size) + "rem"};
-    height: ${(props) => String(props.size) + "rem"};
+    width: ${(props) => String(props.imgSize) + "rem"};
+    height: ${(props) => String(props.imgSize) + "rem"};
 
     border-radius: 20%;
   }
@@ -25,7 +25,7 @@ const ProfileWrapper = styled.div`
 
 function UserProfile() {
   return (
-    <ProfileWrapper size={6}>
+    <ProfileWrapper imgSize={6}>
       <UserProfileImg />
       <Rank name="solo-rank" />
       <Rank name="free-rank" />
