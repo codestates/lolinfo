@@ -50,6 +50,13 @@ const Header = styled.h2`
  font-size: 1em ;
  padding: 16px 0px;
 } 
+@media (max-width: 500px) {
+ grid-row: 1/2;
+ grid-column:2/4;
+ font-weight: 400;
+ font-size: 0.8em ;
+ padding: 16px 0px;
+} 
 `;
 const SmallHeader = styled.h4`
  grid-row: 2/3;

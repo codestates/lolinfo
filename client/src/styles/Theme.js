@@ -21,6 +21,7 @@ const theme = {
   titleLetterSpace: "12px",
   ChattingBackgroundColor: "#5383e8",
   ChattingLineColor: "#DCDCE0",
+  ChattingRoomSentMessageColor: "#ffeb33",
 };
 
 export default theme;
