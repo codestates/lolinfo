@@ -29,9 +29,31 @@ app.get("/", (req, res) => {
 // router
 app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
+app.use("/chats", () => console.log(1));
 
+//Socket.io section
+const http = require("http").createServer(app);
 const PORT = 80;
-server = app.listen(PORT, () => {
+const ioPORT = 8080;
+const io = require("socket.io")(ioPORT, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+io.on("connection", (socket) => {
+  /* socket object may be used to send specific messages to the new connected client */
+  console.log("new client connected");
+  socket.emit("connection", null); //악수
+  // socket.on("channel-join", (id) => {
+  //   console.log("channel join", id);
+  //   return id;
+  // });
+  socket.on("send-message", (message) => {
+    io.emit("message", message);
+  });
+  socket.on("disconnect", () => {});
+});
+const server = http.listen(PORT, () => {
   console.log("server running port %s", PORT);
 });
 

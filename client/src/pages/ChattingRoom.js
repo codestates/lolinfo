@@ -8,14 +8,12 @@ const Space = styled.div`
   height: 100px;
   background-color: ${(props) => props.theme.ChattingBackgroundColor};
 `;
-
 const Dividedpart = styled.div`
   display: grid;
   grid-template-areas:
     " . chatting chatting chatting chatting user . "
     " . chatting chatting chatting chatting user . ";
 `;
-
 const Header = styled.header`
   grid-row: 1/2;
   grid-column: 1/11;
@@ -24,7 +22,6 @@ const Header = styled.header`
   border: 2px solid ${(props) => props.theme.ChattingLineColor};
   font-weight: bold;
 `;
-
 const ChattingDiv = styled.div`
   display: grid;
   grid-template-columns: repeat(10, minmax(auto, 1fr));
@@ -62,25 +59,6 @@ const ChattingInputDiv = styled.div`
   background-color: ${(props) => props.theme.recordBgColor};
   border: 2px solid ${(props) => props.theme.ChattingLineColor};
 `;
-const ChattingInputForm = styled.form`
-  display: grid;
-  grid-template-columns: repeat(19, minmax(auto, 1fr));
-  grid-template-rows: repeat(10, minmax(auto, 1fr));
-  grid-row: 2/11;
-  grid-column: 1/20;
-  padding: 5px 5px 5px 10px;
-`;
-const ChattingInput = styled.input`
-  grid-row: 1/11;
-  grid-column: 1/18;
-  border: none;
-  outline: none;
-  background-color: inherit;
-`;
-const ChattingSubmitButton = styled.button`
-  grid-row: 1/11;
-  grid-column: 18/21;
-`;
 const NextHead = styled.header`
   font-weight: bold;
   font-size: 1.2rem;
@@ -89,11 +67,11 @@ const NextHead = styled.header`
   text-align: center;
   @media (max-width: 600px) {
     font-weight: bold;
-  font-size: 0.6rem;
-  grid-row: 1/2;
-  grid-column: 1/11;
-  text-align: center;
-}
+    font-size: 0.6rem;
+    grid-row: 1/2;
+    grid-column: 1/11;
+    text-align: center;
+  }
 `;
 const UserList = styled.ul`
   grid-row: 2/10;
@@ -114,13 +92,13 @@ const EachUserImg = styled.img`
   border-radius: 50%;
   overflow: hidden;
   @media (max-width: 600px) {
-  grid-row: 1/3;
-  grid-column: 1/3;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  overflow: hidden;
-}
+    grid-row: 1/3;
+    grid-column: 1/3;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
 `;
 const EachUserName = styled.span`
   grid-row: 1/3;
@@ -128,11 +106,11 @@ const EachUserName = styled.span`
   font-size: 18px;
   font-weight: 500;
   @media (max-width: 600px) {
-  grid-row: 1/3;
-  grid-column: 3/10;
-  font-size: 10px;
-  font-weight: 500;
-}
+    grid-row: 1/3;
+    grid-column: 3/10;
+    font-size: 10px;
+    font-weight: 500;
+  }
 `;
 const EachUserTalkingBox = styled.div`
   height: 5vw;
@@ -195,7 +173,26 @@ const ChattingRoomTime = styled.span`
   font-size: 10px;
   margin: 0 5px;
 `;
-function ChattingRoom() {
+const ChattingInputForm = styled.form`
+  display: grid;
+  grid-template-columns: repeat(19, minmax(auto, 1fr));
+  grid-template-rows: repeat(10, minmax(auto, 1fr));
+  grid-row: 2/11;
+  grid-column: 1/20;
+  padding: 5px 5px 5px 10px;
+`;
+const ChattingInput = styled.input`
+  grid-row: 1/11;
+  grid-column: 1/18;
+  border: none;
+  outline: none;
+  background-color: inherit;
+`;
+const ChattingSubmitButton = styled.button`
+  grid-row: 1/11;
+  grid-column: 18/21;
+`;
+function ChattingRoom({ handleSendMsg }) {
   return (
     <Container>
       <Space></Space>
