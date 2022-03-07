@@ -41,17 +41,17 @@ const io = require("socket.io")(ioPORT, {
   },
 });
 io.on("connection", (socket) => {
-  /* socket object may be used to send specific messages to the new connected client */
   console.log("new client connected");
+  // console.log(socket);
   socket.emit("connection", null); //악수
-  // socket.on("channel-join", (id) => {
-  //   console.log("channel join", id);
-  //   return id;
-  // });
+  // socket.on("who am i", () => {});
   socket.on("send-message", (message) => {
-    io.emit("message", message);
+    console.log(socket.id);
+    socket.broadcast.emit("message", message);
   });
-  socket.on("disconnect", () => {});
+  socket.on("disconnect", () => {
+    console.log("disconnect");
+  });
 });
 const server = http.listen(PORT, () => {
   console.log("server running port %s", PORT);

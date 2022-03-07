@@ -16,7 +16,6 @@ import LoginPage from "./components/loginPage";
 import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
-import socketClient from "socket.io-client";
 function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(false);
@@ -28,17 +27,7 @@ function App() {
     submit: "",
     login: "",
   });
-  //socket.io-client
-  const SERVER = "http://localhost:8080";
-  const socket = socketClient(SERVER);
-  socket.on("connection", () => {
-    console.log(`I'm in-fu-vincible bitch`);
-  });
-  socket.on("msg", () => {
-    console.log(`I'm in-fu-vincible bitch`);
-  });
-  function handleSendMsg() {}
-  function handleTakeMsg() {}
+
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
@@ -58,7 +47,7 @@ function App() {
             <Route path="/mypage/edit" element={<Edit />} />
             <Route path="/mypage/changePassword" element={<ChangePassword />} />
             <Route path="/mypage/deleteAccount" element={<DeleteAccount />} />
-            <Route path="/chat" element={<ChattingRoom handleSendMsg={handleSendMsg} />} />
+            <Route path="/chat" element={<ChattingRoom />} />
           </Routes>
         </Router>
       </ThemeProvider>
