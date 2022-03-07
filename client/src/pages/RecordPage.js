@@ -4,7 +4,6 @@ import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
-import { getProfile } from "../store/GameProfile";
 import { getRecord } from "../store/GameRecord";
 
 const Content = styled.div`
@@ -54,14 +53,10 @@ const LogWrapper = styled.div`
 `;
 
 function RecordPage() {
-  // const { data: profile } = useSelector((state) => state.gameProfile);
   const { data: record } = useSelector((state) => state.gameRecord);
-  console.log("record=", record);
+  console.log("record", record);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log("profile:::", profile);
-  // }, [profile]);
   // useEffect(() => {
   //   console.log("record:::", record);
   // }, [record]);
@@ -80,7 +75,7 @@ function RecordPage() {
   return (
     <div>
       <Content>
-        {/* <UserProfile /> */}
+        <UserProfile info={record.data[0][0]} />
         <BoxWrapper name="BoxWrapper">
           <RecentChart className="RecentChart" />
           <div>
