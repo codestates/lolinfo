@@ -86,7 +86,7 @@ function RecordPage() {
           break;
         }
       }
-      console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+      // console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
     }
 
     let k = 0,
@@ -106,12 +106,10 @@ function RecordPage() {
       a += needs[i].assists;
 
       if (needs[i].teamId === 100 && needs[i].win) {
-        console.log("blueRate:", blueRate);
         ++blueRate;
       }
 
       if (needs[i].teamId === 200 && needs[i].win) {
-        console.log("RedRate:", RedRate);
         ++RedRate;
       }
 
@@ -140,8 +138,7 @@ function RecordPage() {
   if (!record.loading) extractData();
   if (!record.data) <div>`data null!`</div>;
   if (record.error) <div>`error !!`</div>;
-  console.log(needs);
-  console.log(chartData);
+  // console.log(needs);
 
   return (
     <div>
