@@ -3,14 +3,8 @@ import ReactDOM from "react-dom";
 
 import App from "./App";
 
+import { store } from "./store/store";
 import { Provider } from "react-redux";
-import ReduxThunk from "redux-thunk";
-import { createStore, applyMiddleware } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import logger from "redux-logger";
-import rootReducer from "./store";
-
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(ReduxThunk, logger)));
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,7 +12,7 @@ ReactDOM.render(
       <App />
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root"),
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
