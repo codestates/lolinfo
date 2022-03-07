@@ -42,12 +42,14 @@ const io = require("socket.io")(ioPORT, {
 });
 io.on("connection", (socket) => {
   console.log("new client connected");
-  // console.log(socket);
   socket.emit("connection", null); //악수
-  // socket.on("who am i", () => {});
-  socket.on("send-message", (message) => {
+  socket.on("need ID", () => {
+    console.log("Hi! ", socket.id);
+    socket.emit("my ID", socket.id);
+  });
+  socket.on("messageCTS", (message) => {
     console.log(socket.id);
-    socket.broadcast.emit("message", message);
+    socket.broadcast.emit("messageSTC", { message, id: socket.id, time: Date.now() });
   });
   socket.on("disconnect", () => {
     console.log("disconnect");
