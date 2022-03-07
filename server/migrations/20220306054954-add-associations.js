@@ -35,7 +35,7 @@ module.exports = {
       comment: "댓글이 달린 게시글의 참조",
     });
 
-    await queryInterface.addColumn("Replies", "parentReplyId", {
+    await queryInterface.addColumn("Replies", "groupdId", {
       type: Sequelize.DataTypes.UUID,
       references: {
         model: "Replies",
@@ -65,7 +65,7 @@ module.exports = {
 
     await queryInterface.removeColumn(
       "Replies", // name of Source model
-      "parentReplyId", // key we want to remove
+      "groupdId", // key we want to remove
     );
   },
 };
