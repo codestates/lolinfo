@@ -55,7 +55,7 @@ const LogWrapper = styled.div`
 
 function RecordPage() {
   const { data: record } = useSelector((state) => state.gameRecord);
-  // console.log("record", record);
+  console.log("record", record);
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -74,16 +74,67 @@ function RecordPage() {
 
   const needs = [];
   let chartData = {};
+
+  //날짜
   function extractData() {
     for (let i = 1; i < record.data.length; ++i) {
-      let gameLen = record.data[i].info.gameDuration;
+      const { gameType, gameDuration, gameId } = record.data[i].info;
+      let gameLen = gameDuration;
       for (let j = 0; j < record.data[i].info.participants.length; ++j) {
         const name = record.data[i].info.participants[j].summonerName;
         if (name === userName) {
-          const { profileIcon, summonerName, summonerLevel, win, kills, deaths, assists, teamId } = record.data[i].info.participants[j];
+          const {
+            profileIcon,
+            summonerName,
+            summonerLevel,
+            win,
+            kills,
+            deaths,
+            assists,
+            teamId,
+            championId,
+            champLevel,
+            championName,
+            quadraKills,
+            pentaKills,
+            tripleKills,
+            doubleKills,
+            item0,
+            item1,
+            item2,
+            item3,
+            item4,
+            item5,
+            item6,
+            goldEarned,
+          } = record.data[i].info.participants[j];
+          const oneGameTime = (gameLen / 60).toFixed(2);
           gameLen = parseInt(gameLen / 60);
-          needs.push({ gameLen, profileIcon, summonerName, summonerLevel, win, kills, deaths, assists, teamId });
-          break;
+          const item = [item0, item1, item2, item3, item4, item5, item6];
+
+          needs.push({
+            gameId,
+            gameLen,
+            profileIcon,
+            summonerName,
+            summonerLevel,
+            win,
+            kills,
+            deaths,
+            assists,
+            teamId,
+            oneGameTime,
+            gameType,
+            championId,
+            champLevel,
+            quadraKills,
+            pentaKills,
+            tripleKills,
+            doubleKills,
+            championName,
+            item,
+            goldEarned,
+          });
         }
       }
       // console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
@@ -138,7 +189,7 @@ function RecordPage() {
   if (!record.loading) extractData();
   if (!record.data) <div>`data null!`</div>;
   if (record.error) <div>`error !!`</div>;
-  // console.log(needs);
+  console.log(needs);
 
   return (
     <div>
@@ -148,15 +199,9 @@ function RecordPage() {
           <RecentChart className="RecentChart" chartData={chartData} />
           <div>
             <LogWrapper className="RecentGameLog">
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
+              {needs.map((v, i) => {
+                return <RecentGameLog key={v.gameId} data={v} />;
+              })}
             </LogWrapper>
           </div>
         </BoxWrapper>
