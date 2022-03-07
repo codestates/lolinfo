@@ -64,17 +64,22 @@ const RankWrapper = styled.div`
   }
 `;
 
-function Rank({ name }) {
+function Rank({ lp, wins, losses, summonerName, tier, rank }) {
+  // console.log("Rank::::", lp, wins, losses, summonerName, tier, rank);
+
   return (
-    <RankWrapper className={name}>
+    <RankWrapper className={summonerName}>
       <img className="rank-img" src="https://www.lolog.me/images/icon/DIAMOND.png" alt="DIAMOND" />
       <div className="rank-text">
         <span className="rank-title">솔로랭크</span>
-        <span className="tier">Diamond II</span>
-        <span className="ratio">55.26% 4lp</span>
+        <span className="tier">
+          {tier}
+          {rank}
+        </span>
+        <span className="ratio">55.26% {lp}lp</span>
         <div className="result">
-          <span className="win">105W</span>
-          <span className="lose">75L</span>
+          <span className="win">{wins}W</span>
+          <span className="lose">{losses}L</span>
         </div>
       </div>
     </RankWrapper>
