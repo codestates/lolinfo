@@ -55,7 +55,7 @@ const LogWrapper = styled.div`
 
 function RecordPage() {
   const { data: record } = useSelector((state) => state.gameRecord);
-  console.log("record", record);
+  // console.log("record", record);
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -189,7 +189,7 @@ function RecordPage() {
   if (!record.loading) extractData();
   if (!record.data) <div>`data null!`</div>;
   if (record.error) <div>`error !!`</div>;
-  console.log(needs);
+  // console.log(needs);
 
   return (
     <div>
@@ -199,7 +199,7 @@ function RecordPage() {
           <RecentChart className="RecentChart" chartData={chartData} />
           <div>
             <LogWrapper className="RecentGameLog">
-              {needs.map((v, i) => {
+              {needs.map((v) => {
                 return <RecentGameLog key={v.gameId} data={v} />;
               })}
             </LogWrapper>
