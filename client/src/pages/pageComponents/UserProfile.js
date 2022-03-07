@@ -23,8 +23,8 @@ const ProfileWrapper = styled.div`
   }
 `;
 
-function UserProfile({ info }) {
-  const { leaguePoints, wins, losses, summonerName, tier, rank, queueType } = info;
+function UserProfile({ info, icon, gameID }) {
+  const { leaguePoints, wins, losses, tier, rank, queueType } = info;
 
   let rankType = queueType;
   rankType = rankType.toLowerCase().split("_");
@@ -37,8 +37,8 @@ function UserProfile({ info }) {
 
   return (
     <ProfileWrapper imgSize={6}>
-      <UserProfileImg gameID={summonerName} />
-      <Rank name="solo-rank" lp={leaguePoints} wins={wins} losses={losses} summonerName={summonerName} tier={tier} rank={rank} rankType={rankType[1]} />
+      <UserProfileImg gameID={gameID} icon={icon} />
+      <Rank name="solo-rank" lp={leaguePoints} wins={wins} losses={losses} tier={tier} rank={rank} rankType={rankType[1]} />
       {/* <Rank name="free-rank" /> */}
     </ProfileWrapper>
   );
