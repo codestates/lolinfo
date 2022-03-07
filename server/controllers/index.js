@@ -1,3 +1,5 @@
 module.exports = {
-    match: require('./info/match'),
-  };
+  gamesController: require("./games"),
+  usersController: require("./users"),
+  boardsController: require('./boards'),
+};
