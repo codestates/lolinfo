@@ -1,62 +1,88 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import socketClient from "socket.io-client";
-import Message from "./pageComponents/chat/Message";
 
-function ChattingRoom() {
+function ChattingRoom({ history }) {
   const [msgList, setMsgList] = useState([]);
+  const [msgListUser, setMsgListUser] = useState([]);
   const [msgListIdx, setMsgListIdx] = useState([]);
   const [msgCTS, setMsgCTS] = useState("");
   const [msgSTC, setMsgSTC] = useState("");
   const [myID, setMyID] = useState("");
   const focusInput = useRef(null);
-  const SERVER = "http://localhost:8080";
-  const socket = socketClient(SERVER);
+  const msgRef = useRef(null);
+  const SERVER = "http://localhost:80";
+  const [socket, setSocket] = useState(socketClient(SERVER));
+  const [connected, setConnected] = useState(false);
+  const user = "User_" + String(new Date().getTime()).slice(9);
   useEffect(() => {
+    // let socket = socketClient(SERVER);
+    const socket = socketClient.connect(SERVER, {
+      path: "/chat",
+    });
     socket.on("connection", () => {
-      console.log("Im on IO server.");
+      console.log("Im on IO server.", socket.id);
+      setConnected(true);
     });
-    socket.emit("need ID", null);
-    socket.on("my ID", (id) => {
-      console.log("my ID ", id);
-      setMyID(id);
+    socket.on("msgSTC", (message) => {
+      msgList.push(message);
+      msgListUser.push("user");
+      msgListIdx.push(0);
+      setChat([...msgList]);
+      setMsgListUser([...msgListUser]);
+      setMsgListIdx([...msgListIdx]);
     });
-    socket.emit("messageCTS", `hi! I'm ${myID}`); //서버에 메세지 발송
+
+    // socket disconnet onUnmount if exists
+    if (socket) return () => socket.disconnect();
   }, []);
-
-  socket.on("messageSTC", (msg) => console.log(msg));
-
-  useEffect(() => {}, []);
+  // socket.on("disconnect", () => {
+  //   setSocket(socketClient(SERVER));
+  // });
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
+  socket.on("messageSTC", (msg) => {
+    console.log(msg);
+    setMsgList([...msgList, msg.message]);
+    setMsgListIdx([...msgListIdx, 0]);
+  });
+  const scrollToBottom = () => {
+    msgRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [msgList]);
   useEffect(() => {
     focusInput.current.focus();
   }, []);
-  function handleInputMsg(e) {}
-  function handleMsgList() {}
-  function handleSendTestMsg() {}
-
+  function handleCTS() {
+    if (msgCTS === "") return;
+    setMsgList([...msgList, msgCTS]);
+    setMsgListIdx([...msgListIdx, 1]);
+    setMsgCTS("");
+  }
   return (
     <MainContainer>
       <Title>LOLINFO 채팅방</Title>
       <ToolContainer>
-        <MsgInput ref={focusInput} onChange={(e) => setMsgCTS(e.target.value)} />
-        <MsgButton type="button" value="button" onClick={handleMsgList} />
-        <button style={{ zIndex: 999 }} onClick={handleSendTestMsg}>
-          test
-        </button>
+        <MsgInput ref={focusInput} value={msgCTS} onChange={(e) => setMsgCTS(e.target.value)} onKeyPress={(e) => (e.key === "Enter" ? handleCTS() : null)} />
+        <MsgButton type="button" value="button" onClick={() => handleCTS()} />
       </ToolContainer>
       <UserContainer>people</UserContainer>
       <ChatContainer>
         {msgList.map((x, i) =>
           msgListIdx[i] ? (
-            <MsgList key={i}>
-              <Message className="my">{x.myMsg}</Message>
+            <MsgList key={"msg_" + i}>
+              <Message className="my">{x}</Message>
             </MsgList>
           ) : (
-            <MsgList key={i}>
-              <Message className="ur">{x.ioMsg}</Message>
+            <MsgList key={"msg_" + i}>
+              <Message className="ur">{x}</Message>
             </MsgList>
           ),
         )}
+        <div ref={msgRef} />
       </ChatContainer>
     </MainContainer>
   );
@@ -112,6 +138,6 @@ const MsgList = styled.li`
     text-align: left;
   }
 `;
-// const Message = styled.div`
-//   font-size: 50px;
-// `;
+const Message = styled.div`
+  font-size: 50px;
+`;

@@ -10,9 +10,11 @@ const morgan = require("morgan");
 const usersRouter = require("./routes/users");
 const gamesRouter = require("./routes/games");
 
-app.use(express.json());
+// Middlewares
 // app.use(cookieParser());
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: ["http://localhost"],
@@ -20,7 +22,6 @@ app.use(
     methods: ["GET", "POST", "OPTIONS"],
   }),
 );
-app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   res.send("Hello, yeyeye");
@@ -32,31 +33,38 @@ app.use("/games", gamesRouter);
 app.use("/chats", () => console.log(1));
 
 //Socket.io section
-const http = require("http").createServer(app);
-const PORT = 80;
-const ioPORT = 8080;
-const io = require("socket.io")(ioPORT, {
+
+const server = require("http").createServer(app);
+const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: true,
   },
 });
-io.on("connection", (socket) => {
+const PORT = 80;
+// const ioPORT = 8080;
+// const io = require("socket.io")(ioPORT, {
+//   cors: {
+//     origin: "http://localhost:3000",
+//   },
+// });
+
+server.listen(PORT, () => {
+  console.log("server running port %s", PORT);
+});
+io.on("connection", (client) => {
   console.log("new client connected");
-  socket.emit("connection", null); //악수
-  socket.on("need ID", () => {
-    console.log("Hi! ", socket.id);
-    socket.emit("my ID", socket.id);
+  client.emit("connection", null); //악수
+  client.on("need ID", () => {
+    console.log("Hi! ", client.id);
+    client.emit("my ID", client.id);
   });
-  socket.on("messageCTS", (message) => {
-    console.log(socket.id);
-    socket.broadcast.emit("messageSTC", { message, id: socket.id, time: Date.now() });
+  client.on("messageCTS", (message) => {
+    // console.log(message);
+    client.broadcast.emit("messageSTC", { message, id: client.id, time: Date.now() });
   });
-  socket.on("disconnect", () => {
+  client.on("disconnect", () => {
     console.log("disconnect");
   });
-});
-const server = http.listen(PORT, () => {
-  console.log("server running port %s", PORT);
 });
 
 module.exports = server;

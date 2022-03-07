@@ -47,7 +47,7 @@ function App() {
             <Route path="/mypage/edit" element={<Edit />} />
             <Route path="/mypage/changePassword" element={<ChangePassword />} />
             <Route path="/mypage/deleteAccount" element={<DeleteAccount />} />
-            <Route path="/chat" element={<ChattingRoom />} />
+            <Route path="/chat" element={<ChattingRoom history={history} />} />
           </Routes>
         </Router>
       </ThemeProvider>
