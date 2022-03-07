@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
+import { useSelector, useDispatch } from "react-redux";
+import { getProfile } from "../store/GameProfile";
+import { getRecord } from "../store/GameRecord";
 
 const Content = styled.div`
   display: grid;
@@ -51,16 +54,25 @@ const LogWrapper = styled.div`
 `;
 
 function RecordPage() {
-  const [widthSize, setWidthSize] = useState(0);
-  const resizeListener = () => {
-    // console.log(window.innerWidth);
-  };
+  const { data: profile } = useSelector((state) => state.gameProfile);
+  const { data: record } = useSelector((state) => state.gameRecord);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // console.log(document.body.style)
-    window.addEventListener("resize", resizeListener);
-    document.body.style.aspectRatio = "125%";
-  }, []);
+    console.log("profile:::", profile);
+  }, [profile]);
+  useEffect(() => {
+    console.log("record:::", record);
+  }, [record]);
+
+  useEffect(() => {
+    const profileUrl = "http://localhost:80/games/player?nickname=";
+    dispatch(getProfile("get", profileUrl, "고양이"));
+
+    const matchUrl = "http://localhost:80/games/match?nickname=";
+    dispatch(getRecord("get", matchUrl, "고양이"));
+  }, [dispatch]);
 
   return (
     <div>
@@ -70,26 +82,6 @@ function RecordPage() {
           <RecentChart className="RecentChart" />
           <div>
             <LogWrapper className="RecentGameLog">
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
-              <RecentGameLog />
               <RecentGameLog />
               <RecentGameLog />
               <RecentGameLog />
