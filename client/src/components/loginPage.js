@@ -4,11 +4,14 @@ import styled from "styled-components";
 function LoginPage({ setLoginModal, setUserInfo }) {
   let info = {};
   const infoHandler = (e, tag) => (info[tag] = e.target.value);
-  const infoSandler = () => {
+  const infoSandler = async () => {
     info.login = true;
     setUserInfo(info);
     setLoginModal("");
     console.log(info); //이해를 돕기위해 남겨놓겠습니다.
+    // const { name, password } = info
+    // const LoginReturnValue = await axios.post("http://localhost:80", { name, password })
+
   };
   return (
     <div>
