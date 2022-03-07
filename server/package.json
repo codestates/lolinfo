@@ -1,40 +1,40 @@
 {
-    "name": "lolinfo",
-    "version": "1.0.0",
-    "description": "lolinfo - server",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon index.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/codestates/lolinfo.git"
-    },
-    "keywords": [
-        "express",
-        "sequelize",
-        "mysql"
-    ],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/codestates/lolinfo/issues"
-    },
-    "homepage": "https://github.com/codestates/lolinfo#readme",
-    "dependencies": {
-        "axios": "^0.26.0",
-        "cookie-parser": "^1.4.6",
-        "cors": "^2.8.5",
-        "express": "^4.17.2",
-        "morgan": "^1.10.0",
-        "mysql2": "^2.3.3",
-        "sequelize": "^6.16.1",
-        "socket.io": "^4.4.1"
-    },
-    "devDependencies": {
-        "dotenv": "^16.0.0",
-        "nodemon": "^2.0.15",
-        "sequelize-cli": "^6.4.1"
-    }
+  "name": "lolinfo",
+  "version": "1.0.0",
+  "description": "lolinfo - server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codestates/lolinfo.git"
+  },
+  "keywords": [
+    "express",
+    "sequelize",
+    "mysql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codestates/lolinfo/issues"
+  },
+  "homepage": "https://github.com/codestates/lolinfo#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.16.1",
+    "socket.io": "^4.4.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15",
+    "sequelize-cli": "^6.4.1"
+  }
 }
