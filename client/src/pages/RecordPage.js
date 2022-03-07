@@ -54,9 +54,9 @@ const LogWrapper = styled.div`
 `;
 
 function RecordPage() {
-  const { data: profile } = useSelector((state) => state.gameProfile);
+  // const { data: profile } = useSelector((state) => state.gameProfile);
   const { data: record } = useSelector((state) => state.gameRecord);
-
+  console.log("record=", record);
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -67,20 +67,20 @@ function RecordPage() {
   // }, [record]);
 
   useEffect(() => {
-    const profileUrl = "http://localhost:80/games/player?nickname=";
-    dispatch(getProfile("get", profileUrl, "고양이"));
+    // const profileUrl = "http://localhost:80/games/player?nickname=";
+    // dispatch(getProfile("get", profileUrl, "고양이"));
 
-    // const matchUrl = "http://localhost:80/games/match?nickname=";
-    // dispatch(getRecord("get", matchUrl, "고양이"));
+    const matchUrl = "http://localhost:80/games/match?nickname=";
+    dispatch(getRecord("get", matchUrl, "고양이"));
   }, [dispatch]);
 
-  if (profile.loading) return <div>로딩중...</div>;
-  if (!profile.data) return <div>data null!...</div>;
+  if (record.loading) return <div>로딩중...</div>;
+  if (!record.data) return <div>data null!...</div>;
 
   return (
     <div>
       <Content>
-        <UserProfile info={profile} />
+        {/* <UserProfile /> */}
         <BoxWrapper name="BoxWrapper">
           <RecentChart className="RecentChart" />
           <div>
