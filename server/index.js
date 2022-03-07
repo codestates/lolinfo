@@ -11,9 +11,11 @@ const usersRouter = require("./routes/users");
 const gamesRouter = require("./routes/games");
 const boardsRouter = require('./routes/boards');
 
-app.use(express.json());
+// Middlewares
 // app.use(cookieParser());
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: ["http://localhost:3000"],
@@ -21,7 +23,6 @@ app.use(
     methods: ["GET", "POST", "OPTIONS"],
   }),
 );
-app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   res.send("Hello, yeyeye");
@@ -32,9 +33,4 @@ app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
 app.use('/board', boardsRouter);
 
-const PORT = 80;
-server = app.listen(PORT, () => {
-  console.log("server running port %s", PORT);
-});
-
-module.exports = server;
+module.exports = app;
