@@ -23,11 +23,13 @@ const ProfileWrapper = styled.div`
   }
 `;
 
-function UserProfile() {
+function UserProfile({ info }) {
+  const { leaguePoints, wins, losses, summonerName, tier, rank } = info;
+
   return (
     <ProfileWrapper imgSize={6}>
       <UserProfileImg />
-      <Rank name="solo-rank" />
+      <Rank name="solo-rank" lp={leaguePoints} wins={wins} losses={losses} summonerName={summonerName} tier={tier} rank={rank} />
       <Rank name="free-rank" />
     </ProfileWrapper>
   );
