@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
         comment: "이름",
       },
+      salt: {
+        type: DataTypes.STRING(100),
+      },
     },
     {
       sequelize,
