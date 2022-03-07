@@ -44,12 +44,25 @@ const Header = styled.h2`
  grid-column:2/5;
  font-weight: 400;
  padding: 16px 0px;
+ @media (max-width: 700px) {
+ grid-row: 1/2;
+ grid-column:2/5;
+ font-weight: 400;
+ padding: 16px 0px;
+} 
 `;
 const SmallHeader = styled.h4`
  grid-row: 2/3;
  grid-column:2/10;
  font-weight: 400;
  color: ${props => props.theme.MypageSmallHeader};
+ @media (max-width: 700px) {
+ grid-row: 2/3;
+ grid-column:2/10;
+ font-weight: 400;
+ font-size:12px;
+ color: ${props => props.theme.MypageSmallHeader};
+} 
 `;
 const FirstLaw = styled.div`
  display: grid;
@@ -164,7 +177,8 @@ const CheckBoxDetail = styled.div`
  @media (max-width: 700px) {
  grid-row: 1;
  grid-column:2/10;
- margin: 24px 5px 5px -15px;
+ font-size: 13px;
+ margin: 26px 5px 5px -15px;
 }
 `;
 const AgreeORDisAgree = styled.div`

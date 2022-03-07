@@ -29,7 +29,8 @@
         "express": "^4.17.2",
         "morgan": "^1.10.0",
         "mysql2": "^2.3.3",
-        "sequelize": "^6.16.1"
+        "sequelize": "^6.16.1",
+        "socket.io": "^4.4.1"
     },
     "devDependencies": {
         "dotenv": "^16.0.0",
