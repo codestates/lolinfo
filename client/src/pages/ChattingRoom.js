@@ -1,52 +1,19 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
-import socketClient from "socket.io-client";
+import io from "socket.io-client";
 
 function ChattingRoom({ history }) {
   const [msgList, setMsgList] = useState([]);
-  const [msgListUser, setMsgListUser] = useState([]);
+  // const [msgListUser, setMsgListUser] = useState([]);
   const [msgListIdx, setMsgListIdx] = useState([]);
   const [msgCTS, setMsgCTS] = useState("");
-  const [msgSTC, setMsgSTC] = useState("");
-  const [myID, setMyID] = useState("");
+  // const [msgSTC, setMsgSTC] = useState("");
+  // const [myID, setMyID] = useState("");
   const focusInput = useRef(null);
   const msgRef = useRef(null);
   const SERVER = "http://localhost:80";
-  const [socket, setSocket] = useState(socketClient(SERVER));
-  const [connected, setConnected] = useState(false);
-  const user = "User_" + String(new Date().getTime()).slice(9);
-  useEffect(() => {
-    // let socket = socketClient(SERVER);
-    const socket = socketClient.connect(SERVER, {
-      path: "/chat",
-    });
-    socket.on("connection", () => {
-      console.log("Im on IO server.", socket.id);
-      setConnected(true);
-    });
-    socket.on("msgSTC", (message) => {
-      msgList.push(message);
-      msgListUser.push("user");
-      msgListIdx.push(0);
-      setChat([...msgList]);
-      setMsgListUser([...msgListUser]);
-      setMsgListIdx([...msgListIdx]);
-    });
 
-    // socket disconnet onUnmount if exists
-    if (socket) return () => socket.disconnect();
-  }, []);
-  // socket.on("disconnect", () => {
-  //   setSocket(socketClient(SERVER));
-  // });
-  socket.on("connect_error", (err) => {
-    console.log(`connect_error due to ${err.message}`);
-  });
-  socket.on("messageSTC", (msg) => {
-    console.log(msg);
-    setMsgList([...msgList, msg.message]);
-    setMsgListIdx([...msgListIdx, 0]);
-  });
+  const user = "User_" + String(new Date().getTime()).slice(9);
   const scrollToBottom = () => {
     msgRef.current.scrollIntoView({ behavior: "smooth" });
   };
@@ -56,12 +23,19 @@ function ChattingRoom({ history }) {
   useEffect(() => {
     focusInput.current.focus();
   }, []);
-  function handleCTS() {
-    if (msgCTS === "") return;
-    setMsgList([...msgList, msgCTS]);
-    setMsgListIdx([...msgListIdx, 1]);
-    setMsgCTS("");
-  }
+
+  //io client start
+  const socket = io.connect("http://127.0.0.1:80");
+  // const socket = io("/chat"); //namespace
+  // socket.on("connection", () => {
+  //   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+  // });
+
+  // socket.on("disconnect", () => {
+  //   console.log(socket.id); // undefined
+  // });
+
+  function handleCTS() {}
   return (
     <MainContainer>
       <Title>LOLINFO 채팅방</Title>
