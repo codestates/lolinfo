@@ -70,8 +70,8 @@ function RecordPage() {
     const profileUrl = "http://localhost:80/games/player?nickname=";
     dispatch(getProfile("get", profileUrl, "고양이"));
 
-    // const matchUrl = "http://localhost:80/games/match?nickname=";
-    // dispatch(getRecord("get", matchUrl, "고양이"));
+    const matchUrl = "http://localhost:80/games/match?nickname=";
+    dispatch(getRecord("get", matchUrl, "고양이"));
   }, [dispatch]);
 
   if (profile.loading) return <div>로딩중...</div>;
@@ -80,7 +80,7 @@ function RecordPage() {
   return (
     <div>
       <Content>
-        <UserProfile info={profile} />
+        <UserProfile info={profile.data} />
         <BoxWrapper name="BoxWrapper">
           <RecentChart className="RecentChart" />
           <div>
