@@ -1,28 +1,28 @@
 import { createPromiseThunk, reducerUtils } from "../lib/asyncUtils";
 
-const GET_USER = "GET_USER";
-const GET_USER_SUCCESS = "GET_USER_SUCCESS";
-const GET_USER_ERROR = "GET_USER_ERROR";
+const GET_PROFILE = "GET_PROFILE";
+const GET_PROFILE_SUCCESS = "GET_PROFILE_SUCCESS";
+const GET_PROFILE_ERROR = "GET_PROFILE_ERROR";
 
-export const getUser = createPromiseThunk(GET_USER);
+export const getProfile = createPromiseThunk(GET_PROFILE);
 
 const initState = {
   data: reducerUtils.initial(),
 };
 
-export default function user(state = initState, action) {
+export default function gameProfile(state = initState, action) {
   switch (action.type) {
-    case GET_USER:
+    case GET_PROFILE:
       return {
         ...state,
         data: reducerUtils.initial(),
       };
-    case GET_USER_SUCCESS:
+    case GET_PROFILE_SUCCESS:
       return {
         ...state,
         data: reducerUtils.success(action.payload),
       };
-    case GET_USER_ERROR:
+    case GET_PROFILE_ERROR:
       return {
         ...state,
         data: reducerUtils.error(action.error),
