@@ -67,7 +67,7 @@ const RankWrapper = styled.div`
 function Rank({ lp, wins, losses, tier, rank, rankType }) {
   return (
     <RankWrapper>
-      <img className="rank-img" src="https://www.lolog.me/images/icon/DIAMOND.png" alt="DIAMOND" />
+      <img className="rank-img" src={`tierImg/Emblem_${tier}.png`} alt={`${rank}`} />
       <div className="rank-text">
         <span className="rank-title">{rankType}</span>
         <span className="tier">{`${tier} ${rank}`}</span>

@@ -9,7 +9,7 @@ const morgan = require("morgan");
 
 const usersRouter = require("./routes/users");
 const gamesRouter = require("./routes/games");
-const boardsRouter = require('./routes/boards');
+const boardsRouter = require("./routes/boards");
 
 // Middlewares
 // app.use(cookieParser());
@@ -31,6 +31,6 @@ app.get("/", (req, res) => {
 // router
 app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
-app.use('/board', boardsRouter);
+app.use("/board", boardsRouter);
 
 module.exports = app;
