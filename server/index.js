@@ -9,6 +9,7 @@ const morgan = require("morgan");
 
 const usersRouter = require("./routes/users");
 const gamesRouter = require("./routes/games");
+const boardsRouter = require('./routes/boards');
 
 app.use(express.json());
 // app.use(cookieParser());
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 // router
 app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
+app.use('/board', boardsRouter);
 
 const PORT = 80;
 server = app.listen(PORT, () => {

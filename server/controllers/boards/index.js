@@ -2,7 +2,7 @@ const { board } = require('../../models')
 
 module.exports = {
   newPost: (req, res) => {
-    res.send(ok)
+    res.send('ok');
   },
   listPost: (req, res) => {
 
