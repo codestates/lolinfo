@@ -1,150 +1,62 @@
 import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
-import socketClient from "socket.io-client";
+import io from "socket.io-client";
 
-// import ChattingApp from "./pageComponents/ChattingApp";
-
-// const Container = styled.div`
-//   justify-content: center;
-//   background-color: ${(props) => props.theme.ChattingBackgroundColor};
-// `;
-// const Space = styled.div`
-//   height: 100px;
-//   background-color: ${(props) => props.theme.ChattingBackgroundColor};
-// `;
-// const Dividedpart = styled.div`
-//   display: grid;
-//   grid-template-areas:
-//     " . chatting chatting chatting chatting user . "
-//     " . chatting chatting chatting chatting user . ";
-// `;
-// const ChattingDiv = styled.div`
-//   grid-area: chatting;
-//   height: 614px;
-// `;
-// const UserDiv = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(10, minmax(auto, 1fr));
-//   grid-template-rows: repeat(10, minmax(auto, 1fr));
-//   grid-area: user;
-//   background-color: ${(props) => props.theme.recordBgColor};
-//   border-top: 2px solid ${(props) => props.theme.ChattingLineColor};
-//   border-bottom: 2px solid ${(props) => props.theme.ChattingLineColor};
-//   border-right: 2px solid ${(props) => props.theme.ChattingLineColor};
-// `;
-// const NextHead = styled.header`
-//   font-weight: bold;
-//   font-size: 1.2rem;
-//   grid-row: 1/2;
-//   grid-column: 1/11;
-//   text-align: center;
-//   @media (max-width: 600px) {
-//     font-weight: bold;
-//     font-size: 0.6rem;
-//     grid-row: 1/2;
-//     grid-column: 1/11;
-//     text-align: center;
-//   }
-// `;
-// const UserList = styled.ul`
-//   grid-row: 2/10;
-//   grid-column: 2/10;
-// `;
-// const EachUser = styled.li`
-//   display: grid;
-//   grid-template-columns: repeat(10, minmax(auto, 1fr));
-//   grid-template-rows: repeat(2, minmax(auto, 1fr));
-//   grid-row: 2/10;
-//   grid-column: 2/10;
-// `;
-// const EachUserImg = styled.img`
-//   grid-row: 1/3;
-//   grid-column: 1/3;
-//   width: 30px;
-//   height: 30px;
-//   border-radius: 50%;
-//   overflow: hidden;
-//   @media (max-width: 600px) {
-//     grid-row: 1/3;
-//     grid-column: 1/3;
-//     width: 20px;
-//     height: 20px;
-//     border-radius: 50%;
-//     overflow: hidden;
-//   }
-// `;
-// const EachUserName = styled.span`
-//   grid-row: 1/3;
-//   grid-column: 3/10;
-//   font-size: 18px;
-//   font-weight: 500;
-//   @media (max-width: 600px) {
-//     grid-row: 1/3;
-//     grid-column: 3/10;
-//     font-size: 10px;
-//     font-weight: 500;
-//   }
-// `;
-
-function ChattingRoom({ urMsg, handleMyMsg }) {
+function ChattingRoom({ history }) {
   const [msgList, setMsgList] = useState([]);
-  const [msg, setMsg] = useState({ myMsg: "" });
+  // const [msgListUser, setMsgListUser] = useState([]);
+  const [msgListIdx, setMsgListIdx] = useState([]);
+  const [msgCTS, setMsgCTS] = useState("");
+  // const [msgSTC, setMsgSTC] = useState("");
+  // const [myID, setMyID] = useState("");
   const focusInput = useRef(null);
-  const SERVER = "http://localhost:8080";
-  const socket = socketClient(SERVER);
-  socket.on("connection", () => {
-    console.log("Im on IO server");
-  });
-  socket.on("send-message", (msg) => handleMyMsg(msg));
-  socket.on("message", (msg) => console.log(msg));
+  const msgRef = useRef(null);
+  const SERVER = "http://localhost:80";
 
+  const user = "User_" + String(new Date().getTime()).slice(9);
+  const scrollToBottom = () => {
+    msgRef.current.scrollIntoView({ behavior: "smooth" });
+  };
   useEffect(() => {
-    setMsg({ ioMsg: urMsg });
-  }, [urMsg]);
+    scrollToBottom();
+  }, [msgList]);
   useEffect(() => {
     focusInput.current.focus();
-  }, [msg]);
-  function handleInputMsg(e) {
-    setMsg({ myMsg: e.target.value });
-  }
-  function handleMsgList() {
-    if (!msg.myMsg) return;
-    setMsgList([...msgList.concat(msg)]);
-    handleMyMsg(msg);
-    setMsg({ myMsg: "" });
-  }
-  function handleSendTestMsg() {
-    setMsgList([...msgList, { ioMsg: "u ain nth bitch" }]);
-  }
-  function handleUrMsg() {
-    console.log(1);
-  }
-  function handleMyMsg(msg) {
-    console.log(1);
-  }
+  }, []);
+
+  //io client start
+  const socket = io.connect("http://127.0.0.1:80");
+  // const socket = io("/chat"); //namespace
+  // socket.on("connection", () => {
+  //   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+  // });
+
+  // socket.on("disconnect", () => {
+  //   console.log(socket.id); // undefined
+  // });
+
+  function handleCTS() {}
   return (
     <MainContainer>
       <Title>LOLINFO 채팅방</Title>
       <ToolContainer>
-        <MsgInput ref={focusInput} value={msg.myMsg || ""} onChange={(e) => handleInputMsg(e)}></MsgInput>
-        <MsgButton type="button" value="button" style={{ zIndex: 999 }} onClick={handleMsgList} />
-        <button style={{ zIndex: 999 }} onClick={handleSendTestMsg}>
-          test
-        </button>
+        <MsgInput ref={focusInput} value={msgCTS} onChange={(e) => setMsgCTS(e.target.value)} onKeyPress={(e) => (e.key === "Enter" ? handleCTS() : null)} />
+        <MsgButton type="button" value="button" onClick={() => handleCTS()} />
       </ToolContainer>
       <UserContainer>people</UserContainer>
       <ChatContainer>
         {msgList.map((x, i) =>
-          x.myMsg ? (
-            <MsgList key={i}>
-              <Message className="my">{x.myMsg}</Message>
+          msgListIdx[i] ? (
+            <MsgList key={"msg_" + i}>
+              <Message className="my">{x}</Message>
             </MsgList>
           ) : (
-            <MsgList key={i}>
-              <Message className="ur">{x.ioMsg}</Message>
+            <MsgList key={"msg_" + i}>
+              <Message className="ur">{x}</Message>
             </MsgList>
           ),
         )}
+        <div ref={msgRef} />
       </ChatContainer>
     </MainContainer>
   );
