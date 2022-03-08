@@ -16,7 +16,6 @@ import LoginPage from "./components/loginPage";
 import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
-
 function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(false);
@@ -28,6 +27,7 @@ function App() {
     submit: "",
     login: "",
   });
+
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
@@ -47,7 +47,7 @@ function App() {
             <Route path="/mypage/edit" element={<Edit />} />
             <Route path="/mypage/changePassword" element={<ChangePassword />} />
             <Route path="/mypage/deleteAccount" element={<DeleteAccount />} />
-            <Route path="/chat" element={<ChattingRoom />} />
+            <Route path="/chat" element={<ChattingRoom history={history} />} />
           </Routes>
         </Router>
       </ThemeProvider>
