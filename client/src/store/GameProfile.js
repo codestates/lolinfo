@@ -15,9 +15,10 @@ export default function gameProfile(state = initState, action) {
     case GET_PROFILE:
       return {
         ...state,
-        data: reducerUtils.initial(),
+        data: reducerUtils.loading(),
       };
     case GET_PROFILE_SUCCESS:
+      // console.log(action.type, action);
       return {
         ...state,
         data: reducerUtils.success(action.payload),

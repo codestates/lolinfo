@@ -15,7 +15,7 @@ export default function gameRecord(state = initState, action) {
     case GET_RECORD:
       return {
         ...state,
-        data: reducerUtils.initial(),
+        data: reducerUtils.loading(),
       };
     case GET_RECORD_SUCCESS:
       return {
