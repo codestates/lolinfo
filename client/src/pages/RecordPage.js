@@ -6,7 +6,6 @@ import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
 import Loading from "./Loading";
-import axios from "axios";
 
 const Content = styled.div`
   display: grid;
@@ -53,13 +52,13 @@ const LogWrapper = styled.div`
 
   background-color: ${(props) => props.theme.recordBgColor};
 `;
+
 function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
   // console.log("record", record);
   const dispatch = useDispatch();
 
-  const userName = "삼다칼잡이";
-  const version = "12.5.1";
+  const userName = "고양이";
   useEffect(() => {
     setHistory(true);
   }, []);
@@ -95,15 +94,14 @@ function RecordPage({ setHistory }) {
       // console.log("일=", Number(day));
 
       for (let j = 0; j < record.data[i].info.participants.length; ++j) {
-        const name = record.data[i].info.participants[j].summonerName;
-
-        const { kills, teamId } = record.data[i].info.participants[j];
+        const { queueId } = record.data[i].info;
+        const { kills, teamId, summonerName } = record.data[i].info.participants[j];
         if (teamId === 100) {
           blueTotalKill += kills;
         } else {
           redTotalKill += kills;
         }
-        if (name === userName) {
+        if (summonerName === userName) {
           const {
             profileIcon,
             summonerName,
@@ -158,6 +156,7 @@ function RecordPage({ setHistory }) {
             totalMinionsKilled,
             month,
             day,
+            queueId,
           });
         }
       }
