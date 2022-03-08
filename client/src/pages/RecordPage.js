@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
-import axios from "axios";
+import Loading from "./Loading";
 
 const Content = styled.div`
   display: grid;
@@ -52,25 +52,19 @@ const LogWrapper = styled.div`
 
   background-color: ${(props) => props.theme.recordBgColor};
 `;
-
-function RecordPage() {
+function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
-  console.log("record", record);
+  // console.log("record", record);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log("record:::", record);
-  // }, [record]);
-
   const userName = "고양이";
-
+  useEffect(() => {
+    setHistory(true);
+  }, []);
   useEffect(() => {
     const matchUrl = "http://localhost:80/games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
-
-  if (record.loading) return <div>로딩중...</div>;
-  if (!record.data) return <div>data null!...</div>;
 
   const needs = [];
   let chartData = {};
@@ -107,11 +101,12 @@ function RecordPage() {
             item5,
             item6,
             goldEarned,
+            challenges,
           } = record.data[i].info.participants[j];
           const oneGameTime = (gameLen / 60).toFixed(2);
           gameLen = parseInt(gameLen / 60);
           const item = [item0, item1, item2, item3, item4, item5, item6];
-
+          const killParticipation = challenges.killParticipation;
           needs.push({
             gameId,
             gameLen,
@@ -134,10 +129,11 @@ function RecordPage() {
             championName,
             item,
             goldEarned,
+            killParticipation,
           });
         }
       }
-      // console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+      // ("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
     }
 
     let k = 0,
@@ -186,10 +182,11 @@ function RecordPage() {
     chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate };
   }
 
+  if (record.loading) return <Loading />;
+  if (!record.data) return <div>data null!...</div>;
+  if (record.error) return <div>`error !!`</div>;
   if (!record.loading) extractData();
-  if (!record.data) <div>`data null!`</div>;
-  if (record.error) <div>`error !!`</div>;
-  console.log(needs);
+  // console.log(needs);
 
   return (
     <div>
@@ -199,7 +196,7 @@ function RecordPage() {
           <RecentChart className="RecentChart" chartData={chartData} />
           <div>
             <LogWrapper className="RecentGameLog">
-              {needs.map((v, i) => {
+              {needs.map((v) => {
                 return <RecentGameLog key={v.gameId} data={v} />;
               })}
             </LogWrapper>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -18,7 +18,7 @@ import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 function App() {
   const { isSticky, element } = useSticky();
-  const [history, setHistory] = useState(false);
+  const [history, setHistory] = useState(1);
   const [loginModal, setLoginModal] = useState("");
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -27,7 +27,6 @@ function App() {
     submit: "",
     login: "",
   });
-
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
@@ -41,13 +40,13 @@ function App() {
             </Modal>
           ) : null}
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/board" element={<Board />} />
-            <Route path="/record" element={<RecordPage />} />
-            <Route path="/mypage/edit" element={<Edit />} />
-            <Route path="/mypage/changePassword" element={<ChangePassword />} />
-            <Route path="/mypage/deleteAccount" element={<DeleteAccount />} />
-            <Route path="/chat" element={<ChattingRoom history={history} />} />
+            <Route path="/" element={<Home setHistory={setHistory} />} />
+            <Route path="/board" element={<Board setHistory={setHistory} />} />
+            <Route path="/record" element={<RecordPage setHistory={setHistory} />} />
+            <Route path="/mypage/edit" element={<Edit setHistory={setHistory} />} />
+            <Route path="/mypage/changePassword" element={<ChangePassword setHistory={setHistory} />} />
+            <Route path="/mypage/deleteAccount" element={<DeleteAccount setHistory={setHistory} />} />
+            <Route path="/chat" element={<ChattingRoom setHistory={setHistory} />} />
           </Routes>
         </Router>
       </ThemeProvider>

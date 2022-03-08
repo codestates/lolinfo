@@ -59,6 +59,7 @@ function RecentGameLog({ data }) {
     championName,
     item,
     goldEarned,
+    killParticipation,
   } = data;
 
   let result = "";
@@ -73,7 +74,7 @@ function RecentGameLog({ data }) {
       <RecentGameResult className="GameResult" win={win} gameTime={oneGameTime} gameType={gameType} />
       <ChampProfile className="ChampProfile" win={win} chapmName={championName} champLevel={champLevel} />
       <Skill className="Skill" />
-      <KDA className="KDA" kills={kills} deaths={deaths} assists={assists} quadraKills={quadraKills} pentaKills={pentaKills} tripleKills={tripleKills} doubleKills={doubleKills} />
+      <KDA className="KDA" kills={kills} deaths={deaths} assists={assists} quadraKills={quadraKills} pentaKills={pentaKills} tripleKills={tripleKills} doubleKills={doubleKills} killParticipation={killParticipation} />
       <Etc className="Etc" item={item} goldEarned={goldEarned} />
       <DropInfo className={`DropInfo ${result}`} result={result} />
     </RecentGameWrapper>
