@@ -13,7 +13,7 @@ const RecentGameWrapper = styled.div`
   /* grid-template-rows: repeat(auto-fill, minmax(1fr, 100px)); */
   grid-template-areas: "GameResult ChampProfile Skill KDA Etc DropInfo";
 
-  background: #aedce1;
+  background: ${(props) => (props.className === "win" ? "#22c4d560" : "#e5133c40")};
   margin: 0;
 
   > .GameResult {
@@ -37,15 +37,52 @@ const RecentGameWrapper = styled.div`
   }
 `;
 
-function RecentGameLog() {
+function RecentGameLog({ data }) {
+  const {
+    gameLen,
+    profileIcon,
+    summonerName,
+    summonerLevel,
+    teamId,
+    championId,
+    win,
+    kills,
+    deaths,
+    assists,
+    oneGameTime,
+    gameType,
+    champLevel,
+    quadraKills,
+    pentaKills,
+    tripleKills,
+    doubleKills,
+    championName,
+    item,
+    goldEarned,
+    totalKill,
+    totalMinionsKilled,
+    month,
+    day,
+    kp,
+  } = data;
+
+  let result = "";
+  if (win) {
+    result = "win";
+  } else {
+    result = "lose";
+  }
+
+  const date = `${month}/${day}`;
+
   return (
-    <RecentGameWrapper name="RecentGameWrapper">
-      <RecentGameResult className="GameResult" />
-      <ChampProfile className="ChampProfile" />
+    <RecentGameWrapper name="RecentGameWrapper" className={result}>
+      <RecentGameResult className="GameResult" win={win} gameTime={oneGameTime} gameType={gameType} date={date} />
+      <ChampProfile className="ChampProfile" win={win} chapmName={championName} champLevel={champLevel} />
       <Skill className="Skill" />
-      <KDA className="KDA" />
-      <Etc className="Etc" />
-      <DropInfo className="DropInfo" />
+      <KDA className="KDA" kills={kills} deaths={deaths} assists={assists} quadraKills={quadraKills} pentaKills={pentaKills} tripleKills={tripleKills} doubleKills={doubleKills} totalKill={totalKill} />
+      <Etc className="Etc" item={item} goldEarned={goldEarned} totalMinionsKilled={totalMinionsKilled} kp={kp} />
+      <DropInfo className={`DropInfo ${result}`} result={result} />
     </RecentGameWrapper>
   );
 }

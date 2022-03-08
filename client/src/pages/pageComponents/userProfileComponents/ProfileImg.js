@@ -35,12 +35,12 @@ const ProfileImg = styled.div`
     }
   }
 `;
-function UserProfileImg() {
+function UserProfileImg({ gameID, icon }) {
   return (
     <ProfileImg className="user-profile">
-      <img className="profile-img" src="https://ddragon.leagueoflegends.com/cdn/11.20.1/img/profileicon/4762.png" alt="Profile Icon" />
+      <img className="profile-img" src={`http://ddragon.leagueoflegends.com/cdn/12.5.1/img/profileicon/${icon}.png`} alt="Profile Icon" />
       <div className="user-id">
-        <span>고양이</span>
+        <span>{gameID}</span>
         <button>업데이트</button>
       </div>
     </ProfileImg>

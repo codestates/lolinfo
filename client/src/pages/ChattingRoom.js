@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import ChattingApp from "./pageComponents/ChattingApp";
+import React from "react";
+import io from "socket.io-client";
+import ChattingApp from './pageComponents/ChattingApp';
+
 
 const Container = styled.div`
   display: flex;
