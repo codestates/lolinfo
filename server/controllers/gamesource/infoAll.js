@@ -7,6 +7,7 @@ module.exports = {
     return data.data;
   },
   nametoUserInfo: async (nickname) => {
+    if (nickname.length === 2) nickname = `${nickname[0]} ${nickname[1]}`;
     let data = await axios.get(`https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(nickname)}`).catch((error) => console.log("Error in nametoUserInfo call: ", error.message));
     return data.data;
   },
