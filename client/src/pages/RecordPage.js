@@ -6,6 +6,7 @@ import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
 import Loading from "./Loading";
+import { profileDummyData, dummyChartData } from "../resource/RecordPagehelp";
 import axios from "axios";
 const Content = styled.div`
   display: grid;
@@ -60,17 +61,37 @@ function RecordPage({ setHistory, schBarInput }) {
   useEffect(() => {
     setHistory("/record");
   }, []);
+
   useEffect(() => {
+    if (userName === "") return;
+
     const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
 
   const needs = [];
+  let profileData = {};
   let chartData = {};
-  let totalKill = [];
-  let totalKP = 0;
-  //날짜
+  let isActiveDummy = false;
+
+  if (userName !== "") {
+    if (record.loading) return <Loading />;
+    if (!record.data) return <div>data null!...</div>;
+    if (record.error) return <div>`error !!`</div>;
+    if (!record.loading) {
+      if (record.data[0].length !== 0) {
+        extractData();
+        extractProfileData();
+      } else {
+        isActiveDummy = true;
+      }
+    }
+  } else {
+    isActiveDummy = true;
+  }
+
   function extractData() {
+    let totalKill = [];
     for (let i = 1; i < record.data.length; ++i) {
       const { gameType, gameDuration, gameId } = record.data[i].info;
       let gameLen = gameDuration;
@@ -92,15 +113,14 @@ function RecordPage({ setHistory, schBarInput }) {
       // console.log("일=", Number(day));
 
       for (let j = 0; j < record.data[i].info.participants.length; ++j) {
-        const name = record.data[i].info.participants[j].summonerName;
-
-        const { kills, teamId } = record.data[i].info.participants[j];
+        const { queueId } = record.data[i].info;
+        const { kills, teamId, summonerName } = record.data[i].info.participants[j];
         if (teamId === 100) {
           blueTotalKill += kills;
         } else {
           redTotalKill += kills;
         }
-        if (name === userName) {
+        if (summonerName === userName) {
           const {
             profileIcon,
             summonerName,
@@ -155,6 +175,7 @@ function RecordPage({ setHistory, schBarInput }) {
             totalMinionsKilled,
             month,
             day,
+            queueId,
           });
         }
       }
@@ -215,15 +236,8 @@ function RecordPage({ setHistory, schBarInput }) {
     totalLose = totalGame - totalWin;
     const victoryRate = (totalWin / totalGame) * 100;
 
-    chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate };
-  }
-
-  if (record.loading) return <Loading />;
-  if (!record.data) return <div>data null!...</div>;
-  if (record.error) return <div>`error !!`</div>;
-  if (!record.loading) {
-    extractData();
-    totalKP = calcKP();
+    const kp = calcKP();
+    chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate, kp };
   }
 
   function calcKP() {
@@ -291,20 +305,37 @@ function RecordPage({ setHistory, schBarInput }) {
     return { mainRune, subRune, spell1, spell2 };
   };
 
-  let result = ddragon(version, record.data, userName);
-  // .then((x) => console.log("result=", x));
+  function extractProfileData() {
+    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
+    const { profileIcon, summonerName } = needs[0];
+
+    profileData = {
+      leaguePoints,
+      wins,
+      losses,
+      tier,
+      rank,
+      queueType,
+      profileIcon,
+      summonerName,
+    };
+  }
+
+  let result = ddragon(version, record.data, userName).then((x) => console.log("result=", x));
   return (
     <div>
       <Content>
-        <UserProfile info={record.data[0][0]} icon={needs[0].profileIcon} gameID={needs[0].summonerName} />
+        <UserProfile profileData={isActiveDummy ? profileDummyData : profileData} />
         <BoxWrapper name="BoxWrapper">
-          <RecentChart className="RecentChart" chartData={chartData} totalKP={totalKP} />
+          <RecentChart className="RecentChart" chartData={isActiveDummy ? dummyChartData : chartData} />
           <div>
-            <LogWrapper className="RecentGameLog">
-              {needs.map((v) => {
-                return <RecentGameLog key={v.gameId} data={v} />;
-              })}
-            </LogWrapper>
+            {isActiveDummy ? null : (
+              <LogWrapper className="RecentGameLog">
+                {needs.map((v) => {
+                  return <RecentGameLog key={v.gameId} data={v} />;
+                })}
+              </LogWrapper>
+            )}
           </div>
         </BoxWrapper>
       </Content>
