@@ -21,12 +21,16 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         comment: "고유번호 UUID",
       },
-      title: DataTypes.STRING,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       hit: {
         type: DataTypes.INTEGER,
         comment: "좋아요 개수",
       },
       body: {
+        allowNull: false,
         type: DataTypes.TEXT,
         comment: "글 본문",
       },

@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
 import Loading from "./Loading";
 import axios from "axios";
+
 const Content = styled.div`
   display: grid;
   background-color: #fff;
@@ -57,7 +58,8 @@ function RecordPage({ setHistory }) {
   // console.log("record", record);
   const dispatch = useDispatch();
 
-  const userName = "고양이";
+  const userName = "삼다칼잡이";
+  const version = "12.5.1";
   useEffect(() => {
     setHistory(true);
   }, []);
@@ -70,7 +72,7 @@ function RecordPage({ setHistory }) {
   let chartData = {};
   let totalKill = [];
   let totalKP = 0;
-  //날짜
+
   function extractData() {
     for (let i = 1; i < record.data.length; ++i) {
       const { gameType, gameDuration, gameId } = record.data[i].info;

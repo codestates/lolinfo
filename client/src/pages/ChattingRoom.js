@@ -1,118 +1,123 @@
 import styled from "styled-components";
-import { useState, useRef, useEffect } from "react";
-import io from "socket.io-client";
+import React, { useEffect, useState } from "react";
+import ioClient from "socket.io-client";
+import ChattingApp from "./pageComponents/ChattingApp";
+import Loading from "./Loading";
+import { useSelector, useDispatch } from 'react-redux';
 
-function ChattingRoom({ setHistory }) {
-  const [msgList, setMsgList] = useState([]);
-  // const [msgListUser, setMsgListUser] = useState([]);
-  const [msgListIdx, setMsgListIdx] = useState([]);
-  const [msgCTS, setMsgCTS] = useState("");
-  // const [msgSTC, setMsgSTC] = useState("");
-  // const [myID, setMyID] = useState("");
-  const focusInput = useRef(null);
-  const msgRef = useRef(null);
-  const SERVER = "http://localhost:80";
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 87vh;
+  padding: 2rem 0.4445rem;
+  background-color: ${(props) => props.theme.ChattingBackgroundColor};
+`;
+const UserDiv = styled.div`
+  display: block;
+  background-color: ${(props) => props.theme.recordBgColor};
+  border: 2px solid ${(props) => props.theme.ChattingLineColor};
+  border-left: none;
+`;
+const UserCounter = styled.h2`
+  font-weight: bold;
+  padding: 5px;
+  font-size: 13pt;
+  text-align: center;
+`;
+const UserList = styled.ul`
+  list-style: none;
+  padding: 10px;
+`;
+const User = styled.li`
+  margin: 5px 0px;
+  display: flex;
+`;
+const UserImg = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  @media (max-width: 600px) {
+    width: 20px;
+    height: 20px;
+  }
+`;
+const UserName = styled.span`
+  font-size: 0.9rem;
+  margin-left: 5px;
+  padding-top: 5px;
+`;
 
-  const user = "User_" + String(new Date().getTime()).slice(9);
-  const scrollToBottom = () => {
-    msgRef.current.scrollIntoView({ behavior: "smooth" });
+let socket;
+
+function ChattingRoom() {
+  let userInfo = useSelector( state => state.userInfo );
+
+  let [userList, setUserList] = useState([]);
+
+  let [chatLog, setChatLog] = useState([]);
+
+  useEffect(() => {
+    socket = ioClient(process.env.REACT_APP_API_URL);
+    const name = userInfo.userName;
+    const room = "global";
+    const userImg = userInfo.userImg;
+
+    socket.emit("join", { name, room, userImg }, (error) => {
+      // console.log("error");
+      // 에러 처리
+      if (error) {
+        alert(error);
+      }
+    });
+    // Disconnect handle
+    // return () => {
+    //   socket.emit("disconnect");
+
+    //   socket.off();
+    // };
+  }, [userInfo.userImg, userInfo.userName]);
+
+  useEffect(() => {
+    // 서버에서 message 이벤트가 올 경우에 대해서 `on`
+    socket.on("message", (message) => {
+      setChatLog([...chatLog, message]);
+    });
+
+    socket.on("roomData", ({ users }) => {
+      setUserList(users);
+    });
+  }, [chatLog]);
+
+  useEffect(() => {
+    console.log("userList: ", userList);
+    console.log("chatLog: ", chatLog);
+  }, [userList, chatLog]);
+
+  const handleSubmit = (message) => {
+    console.log(message);
+    if (message) {
+      socket.emit("sendMessage", message);
+    }
   };
-  useEffect(() => {
-    scrollToBottom();
-  }, [msgList]);
-  useEffect(() => {
-    focusInput.current.focus();
-    setHistory(true);
-  }, []);
 
-  //io client start
-  // const socket = io.connect("http://127.0.0.1:80");
-  // const socket = io("/chat"); //namespace
-  // socket.on("connection", () => {
-  //   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-  // });
-
-  // socket.on("disconnect", () => {
-  //   console.log(socket.id); // undefined
-  // });
-
-  function handleCTS() {}
   return (
-    <MainContainer>
-      <Title>LOLINFO 채팅방</Title>
-      <ToolContainer>
-        <MsgInput ref={focusInput} value={msgCTS} onChange={(e) => setMsgCTS(e.target.value)} onKeyPress={(e) => (e.key === "Enter" ? handleCTS() : null)} />
-        <MsgButton type="button" value="button" onClick={() => handleCTS()} />
-      </ToolContainer>
-      <UserContainer>people</UserContainer>
-      <ChatContainer>
-        {msgList.map((x, i) =>
-          msgListIdx[i] ? (
-            <MsgList key={"msg_" + i}>
-              <Message className="my">{x}</Message>
-            </MsgList>
-          ) : (
-            <MsgList key={"msg_" + i}>
-              <Message className="ur">{x}</Message>
-            </MsgList>
-          ),
-        )}
-        <div ref={msgRef} />
-      </ChatContainer>
-    </MainContainer>
+    <Container>
+      <ChattingApp userInfo={userInfo} chatLog={chatLog} handleSubmit={handleSubmit} />
+      <UserDiv>
+        <UserCounter>접속해있는 소환사 총 {userList.length}명</UserCounter>
+        <UserList>
+          {userList.map((user, index) => {
+            return (
+              <User key={index}>
+                <UserImg src={user.userImg} />
+                <UserName>{user.userName}</UserName>
+              </User>
+            );
+          })}
+        </UserList>
+      </UserDiv>
+    </Container>
   );
 }
 
 export default ChattingRoom;
-const MainContainer = styled.div`
-  display: grid;
-  /* grid-template-areas: */
-  /* "title title title title title"
-    "chat chat chat chat user"
-    "chat chat chat chat user"
-    "chat chat chat chat user"
-    "chat chat chat chat user"
-    "tool tool tool tool tool" */
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 50px repeat(4, 1fr) 50px;
-  height: 80vh;
-  width: 100vw;
-`;
-const Title = styled.div`
-  grid-column: 1/-1;
-  grid-row: 1;
-  text-align: center;
-  font-size: 40px;
-  /* grid-area: title; */
-`;
-const ChatContainer = styled.ul`
-  /* grid-area: chat; */
-  grid-column: 1/-2;
-  grid-row: 2/6;
-  overflow-y: scroll;
-`;
-const UserContainer = styled.div`
-  /* grid-area: user; */
-  grid-column: 5/6;
-  grid-row: 2/6;
-  overflow-y: scroll;
-`;
-const ToolContainer = styled.div`
-  /* grid-area: tool; */
-  grid-column: 1/-1;
-  grid-row: -1;
-  z-index: 999;
-`;
-const MsgButton = styled.input``;
-const MsgInput = styled.input``;
-const MsgList = styled.li`
-  & .my {
-    text-align: right;
-  }
-  & .ur {
-    text-align: left;
-  }
-`;
-const Message = styled.div`
-  font-size: 50px;
-`;
