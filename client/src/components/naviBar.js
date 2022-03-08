@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-function NaviBar({ sticky, setLoginModal, setHistory }) {
+function NaviBar({ sticky, setLoginModal }) {
   let navigate = useNavigate();
   return (
     <div>
@@ -12,7 +12,6 @@ function NaviBar({ sticky, setLoginModal, setHistory }) {
             key={menuIdx}
             order={menuIdx}
             onClick={() => {
-              menuIdx ? setHistory(true) : setHistory(false);
               if (menuIdx === 0) navigate("/");
               else if (menuIdx === 1) navigate("/board");
               else if (menuIdx === 2) navigate("/record");

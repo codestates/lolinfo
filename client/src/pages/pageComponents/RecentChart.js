@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { RecentWapper, CircleGraphWapper, CircleGraph, TeamRate, GameTimeRate, TotalKDAWrapper, TotalKDA, Icon } from "./componentStyle/RecentChartStyle";
 import * as d3 from "d3";
 
-function RecentChart() {
+function RecentChart({ chartData, totalKP }) {
   const [rate, setRate] = useState(0);
   const [graphSize, setGraphSize] = useState(150);
   const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
@@ -12,7 +12,7 @@ function RecentChart() {
 
     const fn = async () => {
       await sleep(15);
-      if (rate < 85) {
+      if (rate < chartData.victoryRate) {
         if (!isUnmount) setRate(rate + 1);
       }
     };
@@ -24,7 +24,9 @@ function RecentChart() {
   }, [rate]);
 
   useEffect(() => {
-    const data = [100, 75];
+    const { blueRate, RedRate } = chartData;
+
+    const data = [RedRate, blueRate];
     const color = ["FireBrick", "DodgerBlue"];
     d3.select(".teamGraph")
       .selectAll("rect")
@@ -66,16 +68,18 @@ function RecentChart() {
   }, []);
 
   useEffect(() => {
+    const { rate25, rate30, rate35, rate35more } = chartData;
+
     const width = 190;
     const height = 160;
     const margin = { top: 30, left: 20, bottom: 20, right: 50 };
     const svg = d3.select(".GameTimeRate").append("svg").attr("width", width).attr("height", height);
 
     const data = [
-      { len: "0-25", value: 60 },
-      { len: "25-30", value: 47 },
-      { len: "30-35", value: 10 },
-      { len: "35분+", value: 95 },
+      { len: "0-25", value: rate25 },
+      { len: "25-30", value: rate30 },
+      { len: "30-35", value: rate35 },
+      { len: "35분+", value: rate35more },
     ];
 
     const x = d3
@@ -129,10 +133,12 @@ function RecentChart() {
       .attr("rx", 2);
   }, []);
 
+  const { k, d, a, totalGame, totalWin, totalLose } = chartData;
+
   return (
     <div>
       <RecentWapper name="RecentWapper">
-        <span className="title-record">{"4전 3승 1패"}</span>
+        <span className="title-record">{`${totalGame}전 ${totalWin}승 ${totalLose}패`}</span>
         <CircleGraphWapper className="CircleGraph" name="CircleGraphWapper">
           <CircleGraph rate={rate} name="CircleGraph">
             <div className="progress-circle"></div>
@@ -148,14 +154,14 @@ function RecentChart() {
         <span className="title-KDA">KDA</span>
         <TotalKDAWrapper className="TotalKDAWrapper">
           <TotalKDA>
-            <span className="kill">{44}</span>
+            <span className="kill">{`${k}`}</span>
             <span>{"/"}</span>
-            <span className="death">{1}</span>
+            <span className="death">{`${d}`}</span>
             <span>{"/"}</span>
-            <span className="assist">{33}</span>
+            <span className="assist">{`${a}`}</span>
             <Icon className="icon" size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
-            <span className="average">평점:{`${88.2}`}</span>
-            <span className="kill-assist">킬관여:{`70%`}</span>
+            <span className="average">평점:{`${(k + a / d).toFixed(2)}`}</span>
+            <span className="kill-assist">킬관여:{`${totalKP}%`}</span>
           </TotalKDA>
         </TotalKDAWrapper>
       </RecentWapper>
