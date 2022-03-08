@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
+import Loading from "./Loading";
+import { profileDummyData, dummyChartData } from "../resource/RecordPagehelp";
 import axios from "axios";
-
 const Content = styled.div`
   display: grid;
   background-color: #fff;
@@ -53,36 +54,75 @@ const LogWrapper = styled.div`
   background-color: ${(props) => props.theme.recordBgColor};
 `;
 
-function RecordPage() {
+function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
-  console.log("record", record);
+  // console.log("record", record);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log("record:::", record);
-  // }, [record]);
-
-  const userName = "고양이";
+  const userName = "나무무";
+  useEffect(() => {
+    setHistory(true);
+  }, []);
 
   useEffect(() => {
-    const matchUrl = "http://localhost:80/games/match?nickname=";
+    if (userName === "") return;
+
+    const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
 
-  if (record.loading) return <div>로딩중...</div>;
-  if (!record.data) return <div>data null!...</div>;
-
   const needs = [];
+  let profileData = {};
   let chartData = {};
+  let isActiveDummy = false;
 
-  //날짜
+  if (userName !== "") {
+    if (record.loading) return <Loading />;
+    if (!record.data) return <div>data null!...</div>;
+    if (record.error) return <div>`error !!`</div>;
+    if (!record.loading) {
+      if (record.data[0].length !== 0) {
+        extractData();
+        extractProfileData();
+      } else {
+        isActiveDummy = true;
+      }
+    }
+  } else {
+    isActiveDummy = true;
+  }
+
   function extractData() {
+    let totalKill = [];
     for (let i = 1; i < record.data.length; ++i) {
       const { gameType, gameDuration, gameId } = record.data[i].info;
       let gameLen = gameDuration;
+      let blueTotalKill = 0,
+        redTotalKill = 0;
+
+      let date = new Date(record.data[i].info.gameCreation);
+      let month = date.toString().split(" ")[1];
+      let day = date.toString().split(" ")[2];
+      let convertSTN = (m) => {
+        let result = "";
+        let temp = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].forEach((x, i) => (x === m ? (result = i + 1) : 0));
+        return result;
+      };
+
+      month = convertSTN(month);
+      day = Number(day);
+      // console.log("월=", convertSTN(month));
+      // console.log("일=", Number(day));
+
       for (let j = 0; j < record.data[i].info.participants.length; ++j) {
-        const name = record.data[i].info.participants[j].summonerName;
-        if (name === userName) {
+        const { queueId } = record.data[i].info;
+        const { kills, teamId, summonerName } = record.data[i].info.participants[j];
+        if (teamId === 100) {
+          blueTotalKill += kills;
+        } else {
+          redTotalKill += kills;
+        }
+        if (summonerName === userName) {
           const {
             profileIcon,
             summonerName,
@@ -107,11 +147,11 @@ function RecordPage() {
             item5,
             item6,
             goldEarned,
+            totalMinionsKilled,
           } = record.data[i].info.participants[j];
           const oneGameTime = (gameLen / 60).toFixed(2);
           gameLen = parseInt(gameLen / 60);
           const item = [item0, item1, item2, item3, item4, item5, item6];
-
           needs.push({
             gameId,
             gameLen,
@@ -134,10 +174,25 @@ function RecordPage() {
             championName,
             item,
             goldEarned,
+            totalMinionsKilled,
+            month,
+            day,
+            queueId,
           });
         }
       }
-      // console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+
+      totalKill.push({ blueTotalKill, redTotalKill });
+      // ("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+    }
+
+    for (let i = 0; i < needs.length; ++i) {
+      if (needs[i].teamId === 100) {
+        needs[i].totalKill = totalKill[i].blueTotalKill;
+      } else {
+        needs[i].totalKill = totalKill[i].redTotalKill;
+      }
+      // console.log("레코드페이지 토탈킬", totalKill[i]);
     }
 
     let k = 0,
@@ -167,9 +222,9 @@ function RecordPage() {
       if (needs[i].win) {
         ++totalWin;
         if (needs[i].gameLen <= 25) ++rate25;
-        if (needs[i].gameLen > 25 && needs[i].gameLen <= 30) ++rate30;
-        if (needs[i].gameLen > 30 && needs[i].gameLen < 35) ++rate35;
-        if (needs[i].gameLen > 35) ++rate35more;
+        else if (needs[i].gameLen > 25 && needs[i].gameLen <= 30) ++rate30;
+        else if (needs[i].gameLen > 30 && needs[i].gameLen < 35) ++rate35;
+        else if (needs[i].gameLen > 35) ++rate35more;
       }
     }
 
@@ -183,26 +238,106 @@ function RecordPage() {
     totalLose = totalGame - totalWin;
     const victoryRate = (totalWin / totalGame) * 100;
 
-    chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate };
+    const kp = calcKP();
+    chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate, kp };
   }
 
-  if (!record.loading) extractData();
-  if (!record.data) <div>`data null!`</div>;
-  if (record.error) <div>`error !!`</div>;
-  console.log(needs);
+  function calcKP() {
+    let recentKP = 0;
+    let temp = 0;
+    for (let i = 0; i < needs.length; i++) {
+      const { totalKill, kills, assists } = needs[i];
+      temp += (kills + assists) / totalKill;
+      needs[i].kp = parseInt(temp * 100);
+      recentKP = temp;
+    }
 
+    return (recentKP = parseInt((recentKP / needs.length) * 100));
+  }
+  const version = "12.5.1";
+
+  const ddragon = async (version, aux, user) => {
+    let pri = [];
+    let sub = [];
+    let perks = [];
+    let spell = [];
+    for (let i = 1; i < aux.length; i++) {
+      aux[i].info.participants.forEach((x) => {
+        if (x.summonerName === user) {
+          perks.push(x.perks.styles);
+          spell.push([x.summoner1Id, x.summoner2Id]);
+        }
+      });
+    }
+    perks.forEach((perk) => {
+      pri.push([perk[0].style, perk[0].selections[0].perk]);
+      sub.push(perk[1].style);
+    });
+    let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
+    let mainRune = [];
+    let subRune = [];
+    let perksInfo = data.data;
+    for (let i = 0; i < pri.length; i++) {
+      perksInfo.forEach((x) => {
+        if (x.id === pri[i][0]) {
+          x.slots.forEach((y) => (y.runes[0].id === pri[i][1] ? mainRune.push(y.runes[0].icon) : 0));
+        }
+      });
+      perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
+    }
+    let temp = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/summoner.json");
+
+    // console.log("spellTF=", spell);
+    // console.log(temp.data.data);
+
+    let spell1 = [];
+    let spell2 = [];
+    let spellAll = temp.data.data;
+    spell.forEach((x) => {
+      let cnt = 0;
+      for (let spellOne in spellAll) {
+        if (spellAll[spellOne].key === `${x[0]}`) {
+          spell1.push(spellAll[spellOne].id + ".png");
+        }
+        if (spellAll[spellOne].key === `${x[1]}`) {
+          spell2.push(spellAll[spellOne].id + ".png");
+        }
+      }
+    });
+    return { mainRune, subRune, spell1, spell2 };
+  };
+
+  function extractProfileData() {
+    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
+    const { profileIcon, summonerName } = needs[0];
+
+    profileData = {
+      leaguePoints,
+      wins,
+      losses,
+      tier,
+      rank,
+      queueType,
+      profileIcon,
+      summonerName,
+    };
+  }
+
+  let result = ddragon(version, record.data, userName).then((x) => console.log("result=", x));
   return (
     <div>
       <Content>
-        <UserProfile info={record.data[0][0]} icon={needs[0].profileIcon} gameID={needs[0].summonerName} />
+        <UserProfile profileData={isActiveDummy ? profileDummyData : profileData} />
         <BoxWrapper name="BoxWrapper">
-          <RecentChart className="RecentChart" chartData={chartData} />
+          <RecentChart className="RecentChart" chartData={isActiveDummy ? dummyChartData : chartData} />
           <div>
-            <LogWrapper className="RecentGameLog">
-              {needs.map((v, i) => {
-                return <RecentGameLog key={v.gameId} data={v} />;
-              })}
-            </LogWrapper>
+            {isActiveDummy ? null : (
+              <LogWrapper className="RecentGameLog">
+                {needs.map((v) => {
+                  return <RecentGameLog key={v.gameId} data={v} />;
+                })}
+              </LogWrapper>
+            )}
           </div>
         </BoxWrapper>
       </Content>

@@ -7,19 +7,22 @@ module.exports = {
     return data.data;
   },
   nametoUserInfo: async (nickname) => {
-    let data = await axios.get(`https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(nickname)}`).catch((error) => console.log("Error in nametoUserInfo call: ", error.message));
-    return data.data;
+    let temp;
+    if (nickname.length === 2) temp = `${nickname[0]} ${nickname[1]}`;
+    else temp = nickname;
+    let data = await axios.get(`https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(temp)}`).catch((error) => console.log("Error in nametoUserInfo call: ", error.message));
+    if (data) return data.data;
   },
   version: async () => {
     let data = await axios.get("https://ddragon.leagueoflegends.com/api/versions.json").catch((error) => console.log("Error in version call: ", error.message));
-    return data.data[0];
+    if (data) return data.data[0];
   },
   oneMatchInfo: async (matchId) => {
     let data = await axios.get(`https://asia.api.riotgames.com/lol/match/v5/matches/${matchId}`).catch((error) => console.log("Error in oneMatchInfo call: ", error.message));
-    return data ? data.data : data;
+    if (data) return data.data;
   },
   onePlayerInfo: async (Id) => {
     let data = await axios.get(`https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${Id}`).catch((error) => console.log("Error in onePlayerInfo call: ", error.message));
-    return data.data;
+    if (data) return data.data;
   },
 };

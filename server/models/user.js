@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         comment: "고유번호 UUID",
       },
       email: {
+        allowNull: false,
         type: DataTypes.STRING(100),
         validate: {
           isEmail: true,
@@ -29,14 +30,17 @@ module.exports = (sequelize, DataTypes) => {
         comment: "이메일",
       },
       password: {
+        allowNull: false,
         type: DataTypes.STRING(100),
         comment: "비밀번호",
       },
       name: {
+        allowNull: false,
         type: DataTypes.STRING(100),
         comment: "이름",
       },
       salt: {
+        allowNull: false,
         type: DataTypes.STRING(100),
       },
     },

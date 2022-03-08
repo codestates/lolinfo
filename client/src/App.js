@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -17,10 +17,13 @@ import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 import AlertModal from "./components/alertModal";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserSuccess } from "./store/User";
+
 
 function App() {
   const { isSticky, element } = useSticky();
-  const [history, setHistory] = useState(false);
+  const [history, setHistory] = useState(1);
   const [loginModal, setLoginModal] = useState("");
   const [loginState, setLoginState] = useState("");
   const [userInfo, setUserInfo] = useState({
@@ -30,6 +33,15 @@ function App() {
     submit: "",
     login: "",
   });
+
+  const user = useSelector((state) => state.user);
+  // console.log(user);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserSuccess(userInfo));
+  }, [dispatch, userInfo]);
 
   return (
     <div className="App" ref={element}>
@@ -46,13 +58,13 @@ function App() {
           ) : null}
           {loginState ? <AlertModal setLoginModal={setLoginModal} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/board" element={<Board />} />
-            <Route path="/record" element={<RecordPage />} />
-            <Route path="/mypage/edit" element={<Edit />} />
-            <Route path="/mypage/changePassword" element={<ChangePassword />} />
-            <Route path="/mypage/deleteAccount" element={<DeleteAccount />} />
-            <Route path="/chat" element={<ChattingRoom history={history} />} />
+            <Route path="/" element={<Home setHistory={setHistory} />} />
+            <Route path="/board" element={<Board setHistory={setHistory} />} />
+            <Route path="/record" element={<RecordPage setHistory={setHistory} />} />
+            <Route path="/mypage/edit" element={<Edit setHistory={setHistory} />} />
+            <Route path="/mypage/changePassword" element={<ChangePassword setHistory={setHistory} />} />
+            <Route path="/mypage/deleteAccount" element={<DeleteAccount setHistory={setHistory} />} />
+            <Route path="/chat" element={<ChattingRoom setHistory={setHistory} />} />
           </Routes>
         </Router>
       </ThemeProvider>

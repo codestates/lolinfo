@@ -133,7 +133,7 @@ function RecentChart({ chartData }) {
       .attr("rx", 2);
   }, []);
 
-  const { k, d, a, totalGame, totalWin, totalLose } = chartData;
+  const { k, d, a, totalGame, totalWin, totalLose, kp } = chartData;
 
   return (
     <div>
@@ -160,8 +160,8 @@ function RecentChart({ chartData }) {
             <span>{"/"}</span>
             <span className="assist">{`${a}`}</span>
             <Icon className="icon" size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
-            <span className="average">평점:{`${(k + a / d).toFixed(2)}`}</span>
-            <span className="kill-assist">킬관여:{`70%`}</span>
+            <span className="average">평점:{`${(k + a / d || 0).toFixed(2)}`}</span>
+            <span className="kill-assist">킬관여:{`${kp}%`}</span>
           </TotalKDA>
         </TotalKDAWrapper>
       </RecentWapper>
