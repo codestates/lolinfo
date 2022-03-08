@@ -8,7 +8,6 @@ module.exports = {
     if (email === undefined || reqPassword === undefined || name === undefined) {
       return res.status(401).send('insufficient parameters supplied')
     }
-
     let find = await User.findOne({
       where: {
         email: req.body.email
@@ -24,8 +23,7 @@ module.exports = {
       name: name,
       salt
     })
-    const accessToken = generateAccessToken({ email, name })
-    res.cookie('jwt', accessToken).status(201).json({
+    res.status(201).json({
       message: `You have registered your own ID: ${make.id}`,
       id: make.id
     })
