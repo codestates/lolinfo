@@ -1,5 +1,64 @@
 import styled from 'styled-components';
 import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponent'
+import { useState } from 'react'
+import { isMatchPassword, validPassword } from '../modules/validation'
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+
+function ChangePasswordPage() {
+    const [password, setPassword] = useState("")
+    const [newPassword, setNewPassword] = useState("")
+    const [newAgainPassword, setnewAgainPassword] = useState("")
+
+    const passwordConfirmation = async () => {
+        if (!validPassword(password)) {
+            setPassword("")
+            alert("비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다.")
+            return
+        }
+        if (!isMatchPassword(newPassword, newAgainPassword)) {
+            return alert("비밀번호가 일치하지 않습니다.")
+        }
+        const change = await axios.put("http://localhost:8090/users/userinfo",
+            { email: "kimcoding@korea.com", password: password, changedPassword: newPassword })
+        if (change.status === 200) {
+            setPassword("")
+            setNewPassword("")
+            setnewAgainPassword("")
+            return alert("비밀번호가 정상적으로 교체되었습니다.")
+        }
+
+    }
+
+    return (
+        <Container>
+            <SubMenu>
+                <MypageNavbar></MypageNavbar>
+            </SubMenu>
+            <ChangePwPage>
+                <ChangePasswordContainer>
+                    <Header>비밀번호 변경</Header>
+                    <SmallHeader>개인정보 보호를 위해 비밀번호를 주기적으로 변경해주세요.</SmallHeader>
+                    <ChangePasswordDiv>
+                        <CurrentPassword>
+                            <CurrentPasswordInput value={password} onChange={(e) => setPassword(e.target.value)} placeholder="현재 비밀번호 입력"></CurrentPasswordInput>
+                        </CurrentPassword>
+                        <NewPassword>
+                            <NewPasswordInput value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="신규 비밀번호 입력"></NewPasswordInput>
+                        </NewPassword>
+                        <NewPasswordCheck>
+                            <NewPasswordCheckInput value={newAgainPassword} onChange={(e) => setnewAgainPassword(e.target.value)} placeholder="신규 비밀번호 재입력"></NewPasswordCheckInput>
+                        </NewPasswordCheck>
+                        <SubmitButtonDiv>
+                            <SubmitButton onClick={passwordConfirmation}>확인</SubmitButton>
+                        </SubmitButtonDiv>
+                    </ChangePasswordDiv>
+                </ChangePasswordContainer>
+            </ChangePwPage>
+        </Container>
+    )
+}
 
 const Container = styled.div`
  display: grid;
@@ -127,35 +186,5 @@ const SubmitButton = styled.button`
  border: 0;
  cursor: pointer;
 `;
-function ChangePasswordPage() {
-
-    return (
-        <Container>
-            <SubMenu>
-                <MypageNavbar></MypageNavbar>
-            </SubMenu>
-            <ChangePwPage>
-                <ChangePasswordContainer>
-                    <Header>비밀번호 변경</Header>
-                    <SmallHeader>개인정보 보호를 위해 비밀번호를 주기적으로 변경해주세요.</SmallHeader>
-                    <ChangePasswordDiv>
-                        <CurrentPassword>
-                            <CurrentPasswordInput placeholder="현재 비밀번호 입력"></CurrentPasswordInput>
-                        </CurrentPassword>
-                        <NewPassword>
-                            <NewPasswordInput placeholder="신규 비밀번호 입력"></NewPasswordInput>
-                        </NewPassword>
-                        <NewPasswordCheck>
-                            <NewPasswordCheckInput placeholder="신규 비밀번호 재입력"></NewPasswordCheckInput>
-                        </NewPasswordCheck>
-                        <SubmitButtonDiv>
-                            <SubmitButton>확인</SubmitButton>
-                        </SubmitButtonDiv>
-                    </ChangePasswordDiv>
-                </ChangePasswordContainer>
-            </ChangePwPage>
-        </Container>
-    )
-}
 
 export default ChangePasswordPage;

@@ -35,7 +35,7 @@ function ChattingRoom({ history }) {
   //   console.log(socket.id); // undefined
   // });
 
-  function handleCTS() {}
+  function handleCTS() { }
   return (
     <MainContainer>
       <Title>LOLINFO 채팅방</Title>
