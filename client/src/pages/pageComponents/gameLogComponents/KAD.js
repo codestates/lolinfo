@@ -135,7 +135,7 @@ const KillCntWrapper = styled.div`
     margin-bottom: 0.1rem;
   }
 `;
-function KDA({ kills, deaths, assists, quadraKills, pentaKills, tripleKills, doubleKills }) {
+function KDA({ kills, deaths, assists, quadraKills, pentaKills, tripleKills, doubleKills, totalKill }) {
   let achive = "";
   if (pentaKills) achive = "펜타킬";
   else if (quadraKills) achive = "쿼드라킬";
@@ -158,7 +158,7 @@ function KDA({ kills, deaths, assists, quadraKills, pentaKills, tripleKills, dou
       </AverageWrapper>
       <KillAsiWrapper className="KillAsiWrapper">
         <span className="KillText">킬관여:</span>
-        <span className="KillText trans">33%</span>
+        <span className="KillText trans">{(((kills + assists) / totalKill) * 100).toFixed(0)}%</span>
       </KillAsiWrapper>
       {achive === "" ? null : (
         <KillCntWrapper className="KillCntWrapper">

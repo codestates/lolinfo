@@ -62,7 +62,9 @@ const EtcWrapper = styled.div`
   }
 `;
 
-function Etc({ item, goldEarned }) {
+function Etc({ item, goldEarned, totalMinionsKilled, kp }) {
+  const version = "12.4.1";
+
   return (
     <EtcWrapper name="EtcWrapper">
       <div className="item">
@@ -73,12 +75,12 @@ function Etc({ item, goldEarned }) {
                 <rect className="tooltipstered"></rect>
               </svg>
             );
-          return <img key={i} className="tooltipstered" src={`https://ddragon.bangingheads.net/cdn/11.20.1/img/item/${v}.png`} item-id={v} alt="item" />;
+          return <img key={i} className="tooltipstered" src={`https://ddragon.bangingheads.net/cdn/${version}/img/item/${v}.png`} item-id={v} alt="item" />;
         })}
       </div>
       <div className="cs">
-        <span>38</span>
-        <span>(3.5)</span>
+        <span>{totalMinionsKilled}</span>
+        <span>{`(${kp})`}</span>
       </div>
       <div className="icon">
         <img className="icon1" src="https://www.lolog.me/images/icon/mask-icon-cs.png" alt="i" />

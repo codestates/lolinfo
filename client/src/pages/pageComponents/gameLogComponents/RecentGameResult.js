@@ -68,7 +68,7 @@ const GameResultWrapper = styled.div`
   }
 `;
 
-function RecentGameResult({ win, gameTime, gameType }) {
+function RecentGameResult({ win, gameTime, gameType, date, queueId }) {
   let gameResult = "";
   let result = "";
   if (win) {
@@ -81,12 +81,11 @@ function RecentGameResult({ win, gameTime, gameType }) {
 
   gameTime = gameTime.split(".");
 
-  if (gameType === "MATCHED_GAME") {
-    gameType = "Match";
+  if (queueId === 420) {
+    gameType = "솔랭";
   } else {
-    gameType = "AI대전";
+    gameType = "일반";
   }
-  // console.log(gameType);
 
   return (
     <GameResultWrapper>
@@ -96,7 +95,7 @@ function RecentGameResult({ win, gameTime, gameType }) {
         {gameTime[0]}:{gameTime[1]}
       </div>
       <div className="gametype">{gameType}</div>
-      <div className="date">2/27</div>
+      <div className="date">{date}</div>
     </GameResultWrapper>
   );
 }
