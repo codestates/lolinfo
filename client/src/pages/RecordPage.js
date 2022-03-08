@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
-import axios from "axios";
+import Loading from "./Loading";
 
 const Content = styled.div`
   display: grid;
@@ -54,6 +54,7 @@ const LogWrapper = styled.div`
 `;
 function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
+  // console.log("record", record);
   const dispatch = useDispatch();
 
   const userName = "고양이";
@@ -65,46 +66,6 @@ function RecordPage({ setHistory }) {
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
 
-  if (record.loading) return <div>로딩중...</div>;
-  if (!record.data) return <div>data null!...</div>;
-  let temp = {};
-  let user = "고양이";
-  for (let i = 1; i < record.data.length; i++) {
-    if (!temp.gameDuration) temp.gameDuration = [];
-    temp.gameDuration.push(record.data[i].info.gameDuration);
-    if (!temp.gameMode) temp.gameMode = [];
-    temp.gameMode.push(record.data[i].info.gameMode);
-    //여기서 서머너이름에 따른 경기를 찾는다
-    let aux = record.data[i].info.participants;
-    for (let j = 0; j < aux.length; j++) {
-      if (aux[j].summonerName === user) {
-        if (!temp.assists) temp.assists = [];
-        temp.assists.push(aux[j].assists);
-        if (!temp.championName) temp.championName = [];
-        temp.championName.push(aux[j].championName);
-        if (!temp.championId) temp.championId = [];
-        temp.championId.push(aux[j].championId);
-        if (!temp.championName) temp.championName = [];
-        temp.championName.push(aux[j].championName);
-        if (!temp.deaths) temp.deaths = [];
-        temp.deaths.push(aux[j].deaths);
-        if (!temp.goldEarned) temp.goldEarned = [];
-        temp.goldEarned.push(aux[j].goldEarned);
-        if (!temp.item) temp.item = [];
-        temp.item.push([aux[j].item0, aux[j].item1, aux[j].item2, aux[j].item3, aux[j].item4, aux[j].item5, aux[j].item6]);
-        if (!temp.kills) temp.kills = [];
-        temp.kills.push(aux[j].kills);
-        if (!temp.profileIcon) temp.profileIcon = [];
-        temp.profileIcon.push(aux[j].profileIcon);
-        if (!temp.teamId) temp.teamId = [];
-        temp.teamId.push(aux[j].teamId);
-        if (!temp.win) temp.win = [];
-        temp.win.push(aux[j].win);
-        if (!temp.summonerspell) temp.summonerspell = [];
-        temp.win.push([aux[j].summoner1Id, aux[j].summoner2Id]);
-      }
-    }
-  }
   const needs = [];
   let chartData = {};
 
@@ -140,11 +101,12 @@ function RecordPage({ setHistory }) {
             item5,
             item6,
             goldEarned,
+            challenges,
           } = record.data[i].info.participants[j];
           const oneGameTime = (gameLen / 60).toFixed(2);
           gameLen = parseInt(gameLen / 60);
           const item = [item0, item1, item2, item3, item4, item5, item6];
-
+          const killParticipation = challenges.killParticipation;
           needs.push({
             gameId,
             gameLen,
@@ -167,6 +129,7 @@ function RecordPage({ setHistory }) {
             championName,
             item,
             goldEarned,
+            killParticipation,
           });
         }
       }
@@ -219,9 +182,11 @@ function RecordPage({ setHistory }) {
     chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate };
   }
 
+  if (record.loading) return <Loading />;
+  if (!record.data) return <div>data null!...</div>;
+  if (record.error) return <div>`error !!`</div>;
   if (!record.loading) extractData();
-  if (!record.data) <div>`data null!`</div>;
-  if (record.error) <div>`error !!`</div>;
+  // console.log(needs);
 
   return (
     <div>
@@ -231,7 +196,7 @@ function RecordPage({ setHistory }) {
           <RecentChart className="RecentChart" chartData={chartData} />
           <div>
             <LogWrapper className="RecentGameLog">
-              {needs.map((v, i) => {
+              {needs.map((v) => {
                 return <RecentGameLog key={v.gameId} data={v} />;
               })}
             </LogWrapper>

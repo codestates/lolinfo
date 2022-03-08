@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Board.belongsTo(models.User);
-      Board.hasMany(models.Reply)
+      Board.hasMany(models.Reply);
     }
   }
   Board.init(
