@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import Board from "./pages/Board";
 import Edit from "./pages/Mypage-Edit";
@@ -19,8 +19,9 @@ import Modal from "./components/modal";
 
 function App() {
   const { isSticky, element } = useSticky();
-  const [history, setHistory] = useState(1);
+  const [history, setHistory] = useState(0);
   const [loginModal, setLoginModal] = useState("");
+  const [schBarInput, setSchBarInput] = useState("유미유미");
   const [userInfo, setUserInfo] = useState({
     name: "",
     password: "",
@@ -28,23 +29,24 @@ function App() {
     submit: "",
     login: "",
   });
-
+  useEffect(() => {}, [history]);
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
-          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} setHistory={setHistory} />
-          {history ? <Search /> : null}
+          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
+          {history !== "/" ? <Search setSchBarInput={setSchBarInput} /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
               {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} /> : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />}
             </Modal>
           ) : null}
+          {<Link to={`${history}`}></Link>}
           <Routes>
-            <Route path="/" element={<Home setHistory={setHistory} />} />
+            <Route path="/" element={<Home setSchBarInput={setSchBarInput} setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />
-            <Route path="/record" element={<RecordPage setHistory={setHistory} />} />
+            <Route path="/record" element={<RecordPage schBarInput={schBarInput} setHistory={setHistory} />} />
             <Route path="/mypage/edit" element={<Edit setHistory={setHistory} />} />
             <Route path="/mypage/changePassword" element={<ChangePassword setHistory={setHistory} />} />
             <Route path="/mypage/deleteAccount" element={<DeleteAccount setHistory={setHistory} />} />

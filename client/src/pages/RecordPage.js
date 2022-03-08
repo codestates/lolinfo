@@ -52,14 +52,13 @@ const LogWrapper = styled.div`
 
   background-color: ${(props) => props.theme.recordBgColor};
 `;
-function RecordPage({ setHistory }) {
+function RecordPage({ setHistory, schBarInput }) {
   const { data: record } = useSelector((state) => state.gameRecord);
-  // console.log("record", record);
   const dispatch = useDispatch();
 
-  const userName = "고양이";
+  const userName = schBarInput || ``;
   useEffect(() => {
-    setHistory(true);
+    setHistory("/record");
   }, []);
   useEffect(() => {
     const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
@@ -292,7 +291,8 @@ function RecordPage({ setHistory }) {
     return { mainRune, subRune, spell1, spell2 };
   };
 
-  let result = ddragon(version, record.data, userName).then((x) => console.log("result=", x));
+  let result = ddragon(version, record.data, userName);
+  // .then((x) => console.log("result=", x));
   return (
     <div>
       <Content>

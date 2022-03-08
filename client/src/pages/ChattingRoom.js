@@ -22,7 +22,7 @@ function ChattingRoom({ setHistory }) {
   }, [msgList]);
   useEffect(() => {
     focusInput.current.focus();
-    setHistory(true);
+    setHistory("/chat");
   }, []);
 
   //io client start

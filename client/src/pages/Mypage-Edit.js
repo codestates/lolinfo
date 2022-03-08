@@ -167,7 +167,7 @@ const AccessButton = styled.button`
 `;
 function Mypage({ setHistory }) {
   useEffect(() => {
-    setHistory(true);
+    setHistory("/mypage/edit");
   }, []);
   return (
     <Container>

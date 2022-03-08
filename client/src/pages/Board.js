@@ -180,7 +180,7 @@ function Board({ setHistory }) {
   const [isWriteFormVisible, setWriteFormVisible] = useState(false);
 
   useEffect(() => {
-    setHistory(true);
+    setHistory("/board");
   }, []);
   const writeButtonHandler = () => {
     setWriteFormVisible(!isWriteFormVisible);

@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import chatImg from "../resource/CommunicationChatCircle.png";
 
-function Search() {
-  function onChangeHandler(e) {}
+function Search({ setSchBarInput }) {
+  function onChangeHandler(nickname) {
+    setSchBarInput(nickname);
+  }
   return (
     <div>
       <Container>

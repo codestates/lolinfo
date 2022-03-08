@@ -129,7 +129,7 @@ const SubmitButton = styled.button`
 `;
 function ChangePasswordPage({ setHistory }) {
   useEffect(() => {
-    setHistory(true);
+    setHistory("/mypage/changePassword");
   }, []);
   return (
     <Container>
