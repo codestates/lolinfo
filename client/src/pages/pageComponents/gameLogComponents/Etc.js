@@ -62,7 +62,7 @@ const EtcWrapper = styled.div`
   }
 `;
 
-function Etc({ item, goldEarned }) {
+function Etc({ item, goldEarned, totalMinionsKilled, kp }) {
   return (
     <EtcWrapper name="EtcWrapper">
       <div className="item">
@@ -77,8 +77,8 @@ function Etc({ item, goldEarned }) {
         })}
       </div>
       <div className="cs">
-        <span>38</span>
-        <span>(3.5)</span>
+        <span>{totalMinionsKilled}</span>
+        <span>{`(${kp})`}</span>
       </div>
       <div className="icon">
         <img className="icon1" src="https://www.lolog.me/images/icon/mask-icon-cs.png" alt="i" />
