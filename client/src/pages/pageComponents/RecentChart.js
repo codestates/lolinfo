@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { RecentWapper, CircleGraphWapper, CircleGraph, TeamRate, GameTimeRate, TotalKDAWrapper, TotalKDA, Icon } from "./componentStyle/RecentChartStyle";
 import * as d3 from "d3";
 
-function RecentChart({ chartData }) {
+function RecentChart({ chartData, totalKP }) {
   const [rate, setRate] = useState(0);
   const [graphSize, setGraphSize] = useState(150);
   const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
@@ -161,7 +161,7 @@ function RecentChart({ chartData }) {
             <span className="assist">{`${a}`}</span>
             <Icon className="icon" size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
             <span className="average">평점:{`${(k + a / d).toFixed(2)}`}</span>
-            <span className="kill-assist">킬관여:{`70%`}</span>
+            <span className="kill-assist">킬관여:{`${totalKP}%`}</span>
           </TotalKDA>
         </TotalKDAWrapper>
       </RecentWapper>

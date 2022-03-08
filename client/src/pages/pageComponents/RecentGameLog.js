@@ -43,14 +43,14 @@ function RecentGameLog({ data }) {
     profileIcon,
     summonerName,
     summonerLevel,
+    teamId,
+    championId,
     win,
     kills,
     deaths,
     assists,
-    teamId,
     oneGameTime,
     gameType,
-    championId,
     champLevel,
     quadraKills,
     pentaKills,
@@ -59,6 +59,11 @@ function RecentGameLog({ data }) {
     championName,
     item,
     goldEarned,
+    totalKill,
+    totalMinionsKilled,
+    month,
+    day,
+    kp,
   } = data;
 
   let result = "";
@@ -68,13 +73,15 @@ function RecentGameLog({ data }) {
     result = "lose";
   }
 
+  const date = `${month}/${day}`;
+
   return (
     <RecentGameWrapper name="RecentGameWrapper" className={result}>
-      <RecentGameResult className="GameResult" win={win} gameTime={oneGameTime} gameType={gameType} />
+      <RecentGameResult className="GameResult" win={win} gameTime={oneGameTime} gameType={gameType} date={date} />
       <ChampProfile className="ChampProfile" win={win} chapmName={championName} champLevel={champLevel} />
       <Skill className="Skill" />
-      <KDA className="KDA" kills={kills} deaths={deaths} assists={assists} quadraKills={quadraKills} pentaKills={pentaKills} tripleKills={tripleKills} doubleKills={doubleKills} />
-      <Etc className="Etc" item={item} goldEarned={goldEarned} />
+      <KDA className="KDA" kills={kills} deaths={deaths} assists={assists} quadraKills={quadraKills} pentaKills={pentaKills} tripleKills={tripleKills} doubleKills={doubleKills} totalKill={totalKill} />
+      <Etc className="Etc" item={item} goldEarned={goldEarned} totalMinionsKilled={totalMinionsKilled} kp={kp} />
       <DropInfo className={`DropInfo ${result}`} result={result} />
     </RecentGameWrapper>
   );
