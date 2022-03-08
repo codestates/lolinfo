@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
-import axios from "axios";
+import Loading from "./Loading";
 
 const Content = styled.div`
   display: grid;
@@ -54,6 +54,7 @@ const LogWrapper = styled.div`
 `;
 function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
+  // console.log("record", record);
   const dispatch = useDispatch();
 
   const userName = "고양이";
@@ -61,23 +62,45 @@ function RecordPage({ setHistory }) {
     setHistory(true);
   }, []);
   useEffect(() => {
-    const matchUrl = "http://localhost:80/games/match?nickname=";
+    const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
 
-  if (record.loading) return <div>로딩중...</div>;
-  if (!record.data) return <div>data null!...</div>;
-
   const needs = [];
   let chartData = {};
-
+  let totalKill = [];
+  let totalKP = 0;
   //날짜
   function extractData() {
     for (let i = 1; i < record.data.length; ++i) {
       const { gameType, gameDuration, gameId } = record.data[i].info;
       let gameLen = gameDuration;
+      let blueTotalKill = 0,
+        redTotalKill = 0;
+
+      let date = new Date(record.data[i].info.gameCreation);
+      let month = date.toString().split(" ")[1];
+      let day = date.toString().split(" ")[2];
+      let convertSTN = (m) => {
+        let result = "";
+        let temp = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].forEach((x, i) => (x === m ? (result = i + 1) : 0));
+        return result;
+      };
+
+      month = convertSTN(month);
+      day = Number(day);
+      // console.log("월=", convertSTN(month));
+      // console.log("일=", Number(day));
+
       for (let j = 0; j < record.data[i].info.participants.length; ++j) {
         const name = record.data[i].info.participants[j].summonerName;
+
+        const { kills, teamId } = record.data[i].info.participants[j];
+        if (teamId === 100) {
+          blueTotalKill += kills;
+        } else {
+          redTotalKill += kills;
+        }
         if (name === userName) {
           const {
             profileIcon,
@@ -103,11 +126,11 @@ function RecordPage({ setHistory }) {
             item5,
             item6,
             goldEarned,
+            totalMinionsKilled,
           } = record.data[i].info.participants[j];
           const oneGameTime = (gameLen / 60).toFixed(2);
           gameLen = parseInt(gameLen / 60);
           const item = [item0, item1, item2, item3, item4, item5, item6];
-
           needs.push({
             gameId,
             gameLen,
@@ -130,10 +153,24 @@ function RecordPage({ setHistory }) {
             championName,
             item,
             goldEarned,
+            totalMinionsKilled,
+            month,
+            day,
           });
         }
       }
+
+      totalKill.push({ blueTotalKill, redTotalKill });
       // ("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+    }
+
+    for (let i = 0; i < needs.length; ++i) {
+      if (needs[i].teamId === 100) {
+        needs[i].totalKill = totalKill[i].blueTotalKill;
+      } else {
+        needs[i].totalKill = totalKill[i].redTotalKill;
+      }
+      // console.log("레코드페이지 토탈킬", totalKill[i]);
     }
 
     let k = 0,
@@ -163,9 +200,9 @@ function RecordPage({ setHistory }) {
       if (needs[i].win) {
         ++totalWin;
         if (needs[i].gameLen <= 25) ++rate25;
-        if (needs[i].gameLen > 25 && needs[i].gameLen <= 30) ++rate30;
-        if (needs[i].gameLen > 30 && needs[i].gameLen < 35) ++rate35;
-        if (needs[i].gameLen > 35) ++rate35more;
+        else if (needs[i].gameLen > 25 && needs[i].gameLen <= 30) ++rate30;
+        else if (needs[i].gameLen > 30 && needs[i].gameLen < 35) ++rate35;
+        else if (needs[i].gameLen > 35) ++rate35more;
       }
     }
 
@@ -182,19 +219,35 @@ function RecordPage({ setHistory }) {
     chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate };
   }
 
-  if (!record.loading) extractData();
-  if (!record.data) <div>`data null!`</div>;
-  if (record.error) <div>`error !!`</div>;
+  if (record.loading) return <Loading />;
+  if (!record.data) return <div>data null!...</div>;
+  if (record.error) return <div>`error !!`</div>;
+  if (!record.loading) {
+    extractData();
+    totalKP = calcKP();
+  }
+
+  function calcKP() {
+    let recentKP = 0;
+    let temp = 0;
+    for (let i = 0; i < needs.length; i++) {
+      const { totalKill, kills, assists } = needs[i];
+      temp += (kills + assists) / totalKill;
+      needs[i].kp = parseInt(temp * 100);
+      recentKP = temp;
+    }
+    return (recentKP = parseInt((recentKP / needs.length) * 100));
+  }
 
   return (
     <div>
       <Content>
         <UserProfile info={record.data[0][0]} icon={needs[0].profileIcon} gameID={needs[0].summonerName} />
         <BoxWrapper name="BoxWrapper">
-          <RecentChart className="RecentChart" chartData={chartData} />
+          <RecentChart className="RecentChart" chartData={chartData} totalKP={totalKP} />
           <div>
             <LogWrapper className="RecentGameLog">
-              {needs.map((v, i) => {
+              {needs.map((v) => {
                 return <RecentGameLog key={v.gameId} data={v} />;
               })}
             </LogWrapper>
