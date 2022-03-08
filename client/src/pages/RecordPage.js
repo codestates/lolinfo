@@ -67,44 +67,7 @@ function RecordPage({ setHistory }) {
 
   if (record.loading) return <div>로딩중...</div>;
   if (!record.data) return <div>data null!...</div>;
-  let temp = {};
-  let user = "고양이";
-  for (let i = 1; i < record.data.length; i++) {
-    if (!temp.gameDuration) temp.gameDuration = [];
-    temp.gameDuration.push(record.data[i].info.gameDuration);
-    if (!temp.gameMode) temp.gameMode = [];
-    temp.gameMode.push(record.data[i].info.gameMode);
-    //여기서 서머너이름에 따른 경기를 찾는다
-    let aux = record.data[i].info.participants;
-    for (let j = 0; j < aux.length; j++) {
-      if (aux[j].summonerName === user) {
-        if (!temp.assists) temp.assists = [];
-        temp.assists.push(aux[j].assists);
-        if (!temp.championName) temp.championName = [];
-        temp.championName.push(aux[j].championName);
-        if (!temp.championId) temp.championId = [];
-        temp.championId.push(aux[j].championId);
-        if (!temp.championName) temp.championName = [];
-        temp.championName.push(aux[j].championName);
-        if (!temp.deaths) temp.deaths = [];
-        temp.deaths.push(aux[j].deaths);
-        if (!temp.goldEarned) temp.goldEarned = [];
-        temp.goldEarned.push(aux[j].goldEarned);
-        if (!temp.item) temp.item = [];
-        temp.item.push([aux[j].item0, aux[j].item1, aux[j].item2, aux[j].item3, aux[j].item4, aux[j].item5, aux[j].item6]);
-        if (!temp.kills) temp.kills = [];
-        temp.kills.push(aux[j].kills);
-        if (!temp.profileIcon) temp.profileIcon = [];
-        temp.profileIcon.push(aux[j].profileIcon);
-        if (!temp.teamId) temp.teamId = [];
-        temp.teamId.push(aux[j].teamId);
-        if (!temp.win) temp.win = [];
-        temp.win.push(aux[j].win);
-        if (!temp.summonerspell) temp.summonerspell = [];
-        temp.win.push([aux[j].summoner1Id, aux[j].summoner2Id]);
-      }
-    }
-  }
+
   const needs = [];
   let chartData = {};
 
