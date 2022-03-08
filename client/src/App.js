@@ -27,8 +27,6 @@ function App() {
     submit: "",
     login: "",
   });
-  // window.localStorage.setItem("history", history);
-  // console.log(window.localStorage.history);
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
