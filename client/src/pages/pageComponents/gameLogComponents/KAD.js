@@ -10,15 +10,19 @@ const Icon = styled.img`
 
 const KDAWrapper = styled.div`
   display: grid;
-  grid-template-columns: minmax(5rem, 40%) minmax(5rem, 60%);
+  grid-template-columns: minmax(5.5rem, 40%) minmax(5rem, 60%);
   grid-template-rows: minmax(auto, 33%) minmax(auto, 33%) minmax(auto, 33%);
+  grid-template-areas:
+    "kdakda kdakda"
+    "AverageWrapper KillAsiWrapper"
+    "KillCntWrapper KillCntWrapper";
+
   width: 100%;
   font-size: ${(props) => props.theme.kdaFontDefault};
   margin: 0;
 
   > .kdakda {
-    grid-row: 1/2;
-    grid-column: 1/3;
+    grid-area: kdakda;
 
     display: grid;
     grid-template-columns: repeat(6, minmax(5%, auto));
@@ -26,6 +30,18 @@ const KDAWrapper = styled.div`
     gap: 0.25rem;
     justify-content: center;
     align-items: center;
+  }
+
+  > .AverageWrapper {
+    grid-area: AverageWrapper;
+  }
+
+  > .KillAsiWrapper {
+    grid-area: KillAsiWrapper;
+  }
+
+  > .KillCntWrapper {
+    grid-area: KillCntWrapper;
   }
 
   @media all and (max-width: 652px) {
@@ -99,8 +115,6 @@ const KillAsiWrapper = styled.div`
 
 const KillCntWrapper = styled.div`
   color: #fff;
-  grid-column: 1/3;
-  grid-row: 3/4;
 
   display: grid;
   align-items: center;
@@ -121,28 +135,36 @@ const KillCntWrapper = styled.div`
     margin-bottom: 0.1rem;
   }
 `;
-function KDA() {
+function KDA({ kills, deaths, assists, quadraKills, pentaKills, tripleKills, doubleKills }) {
+  let achive = "";
+  if (pentaKills) achive = "펜타킬";
+  else if (quadraKills) achive = "쿼드라킬";
+  else if (tripleKills) achive = "트리플킬";
+  else if (doubleKills) achive = "더블킬";
+
   return (
     <KDAWrapper name="KDAWrapper">
       <div className="kdakda">
-        <span>{19}</span>
+        <span>{kills}</span>
         <span>{"/"}</span>
-        <span>{0}</span>
+        <span>{deaths}</span>
         <span>{"/"}</span>
-        <span>{23}</span>
+        <span>{assists}</span>
         <Icon className="kdakda icon" size={15} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
       </div>
-      <AverageWrapper>
+      <AverageWrapper className="AverageWrapper">
         <span className="AveText trans">평점:</span>
-        <span className="AveText">{34.5}</span>
+        <span className="AveText">{((kills + assists) / deaths).toFixed(2)}</span>
       </AverageWrapper>
-      <KillAsiWrapper>
+      <KillAsiWrapper className="KillAsiWrapper">
         <span className="KillText">킬관여:</span>
         <span className="KillText trans">33%</span>
       </KillAsiWrapper>
-      <KillCntWrapper>
-        <div className="medal">펜타킬</div>
-      </KillCntWrapper>
+      {achive === "" ? null : (
+        <KillCntWrapper className="KillCntWrapper">
+          <div className="medal">{achive}</div>
+        </KillCntWrapper>
+      )}
     </KDAWrapper>
   );
 }
