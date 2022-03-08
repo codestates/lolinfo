@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -9,7 +9,7 @@ import { Fire as Hot } from "@styled-icons/remix-line/Fire";
 import { Time } from "@styled-icons/boxicons-regular/Time";
 import { Recommend } from "@styled-icons/material/Recommend";
 import { NewMessage } from "@styled-icons/entypo/NewMessage";
-import { CheckSquare } from '@styled-icons/bootstrap/CheckSquare'
+import { CheckSquare } from "@styled-icons/bootstrap/CheckSquare";
 
 const colorStyles = css`
   ${({ theme }) => {
@@ -32,23 +32,21 @@ const colorStyles = css`
 
 const Form = styled.form`
   grid-area: form;
-  display: ${({ active }) => active ? 'grid' : 'none'};
+  display: ${({ active }) => (active ? "grid" : "none")};
   grid-template-columns: 1fr 28rem;
   grid-template-areas:
     ". title"
     "submit text";
   justify-items: end;
-  
-
 `;
 
 const WriteContainer = styled.div`
   grid-area: title;
   width: 100%;
   display: grid;
-    grid-template-areas: 
-      ".    .    button"
-      "form form form";
+  grid-template-areas:
+    ".    .    button"
+    "form form form";
 
   form .title {
     grid-area: title;
@@ -78,11 +76,11 @@ const WriteContainer = styled.div`
     border-radius: 5px;
     border: 3px solid silver;
   }
-`
+`;
 
 const Button = styled.button`
   grid-area: button;
-    justify-self: end;
+  justify-self: end;
   border-style: none;
   cursor: pointer;
   ${colorStyles}
@@ -93,7 +91,7 @@ const SubmitButton = styled(Button)`
   justify-self: end;
   align-self: end;
   margin: 8px 7px;
-`
+`;
 
 const NewIcon = styled(NewMessage)`
   width: 30px;
@@ -178,12 +176,15 @@ const StH2 = styled.h2`
 
 const keyword = "최근";
 
-function Board() {
+function Board({ setHistory }) {
   const [isWriteFormVisible, setWriteFormVisible] = useState(false);
 
+  useEffect(() => {
+    setHistory(true);
+  }, []);
   const writeButtonHandler = () => {
     setWriteFormVisible(!isWriteFormVisible);
-  }
+  };
 
   return (
     <StWrapper>
@@ -192,17 +193,17 @@ function Board() {
           <Button onClick={writeButtonHandler}>
             <NewIcon />
           </Button>
-          <Form 
-            active={isWriteFormVisible} 
-            onSubmit={e => {
+          <Form
+            active={isWriteFormVisible}
+            onSubmit={(e) => {
               e.preventDefault();
             }}
           >
-            <input placeholder="제목" className="title" /> 
+            <input placeholder="제목" className="title" />
             <SubmitButton type="submit">
-              <CheckSquare size='2rem'/>
+              <CheckSquare size="2rem" />
             </SubmitButton>
-            <textarea placeholder="내용" className="body"/>
+            <textarea placeholder="내용" className="body" />
           </Form>
         </WriteContainer>
         <OrderBy>

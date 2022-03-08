@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useRef, useEffect } from "react";
 import io from "socket.io-client";
 
-function ChattingRoom({ history }) {
+function ChattingRoom({ setHistory }) {
   const [msgList, setMsgList] = useState([]);
   // const [msgListUser, setMsgListUser] = useState([]);
   const [msgListIdx, setMsgListIdx] = useState([]);
@@ -22,10 +22,11 @@ function ChattingRoom({ history }) {
   }, [msgList]);
   useEffect(() => {
     focusInput.current.focus();
+    setHistory(true);
   }, []);
 
   //io client start
-  const socket = io.connect("http://127.0.0.1:80");
+  // const socket = io.connect("http://127.0.0.1:80");
   // const socket = io("/chat"); //namespace
   // socket.on("connection", () => {
   //   console.log(socket.id); // x8WIv7-mJelg7on_ALbx

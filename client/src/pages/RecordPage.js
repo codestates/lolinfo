@@ -52,18 +52,15 @@ const LogWrapper = styled.div`
 
   background-color: ${(props) => props.theme.recordBgColor};
 `;
-
-function RecordPage() {
+function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
   // console.log("record", record);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log("record:::", record);
-  // }, [record]);
-
   const userName = "고양이";
-
+  useEffect(() => {
+    setHistory(true);
+  }, []);
   useEffect(() => {
     const matchUrl = "http://localhost:80/games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
@@ -136,7 +133,7 @@ function RecordPage() {
           });
         }
       }
-      // console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+      // ("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
     }
 
     let k = 0,
