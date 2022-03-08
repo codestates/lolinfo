@@ -46,11 +46,18 @@ const ChampWrapper = styled.div`
     font-weight: 2;
   }
 `;
-function ChampProfile() {
+function ChampProfile({ win, chapmName, champLevel }) {
+  let result = "";
+  if (win) {
+    result = "win";
+  } else {
+    result = "lose";
+  }
+
   return (
     <ChampWrapper>
-      <img className="champ-icon " src="https://ddragon.leagueoflegends.com/cdn/11.20.1/img/champion/Seraphine.png" alt="champicon" />
-      <span className="champ-level">{10}</span>
+      <img className={`champ-icon ${result}`} src={`https://ddragon.leagueoflegends.com/cdn/12.5.1/img/champion/${chapmName}.png`} alt="champicon" />
+      <span className="champ-level">{champLevel}</span>
     </ChampWrapper>
   );
 }
