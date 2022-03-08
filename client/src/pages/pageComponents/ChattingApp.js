@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
-const Header = styled.header`
+const Header = styled.h2`
+  padding: 3px;
+  padding-left: 5px;
   grid-row: 1/2;
   grid-column: 1/11;
   font-size: 1.2rem;
@@ -10,18 +12,10 @@ const Header = styled.header`
   font-weight: bold;
 `;
 const ChattingDiv = styled.div`
+  width: 90vh;
   display: grid;
   grid-template-columns: repeat(10, minmax(auto, 1fr));
   grid-template-rows: 40px repeat(8, minmax(auto, 1fr)) 60px;
-  grid-area: chatting;
-  height: 614px;
-`;
-const ChattingScripts = styled.ul`
-  grid-row: 2/10;
-  grid-column: 1/11;
-  background: #fff;
-  border-right: 2px solid ${(props) => props.theme.ChattingLineColor};
-  border-left: 2px solid ${(props) => props.theme.ChattingLineColor};
 `;
 const ChattingInputDiv = styled.div`
   display: grid;
@@ -40,64 +34,66 @@ const ChattingInputForm = styled.form`
   grid-column: 1/20;
   padding: 5px 5px 5px 10px;
 `;
-const EachUserTalkingBox = styled.div`
-  height: 5vw;
+const ChatLogContainer = styled.ul`
+  grid-row: 2/10;
   grid-column: 1/11;
-  grid-column: 2/10;
-`;
-const SentMessage = styled.li`
-  width: 90%;
-  padding: 0.3rem;
+  background: #fff;
+  border-right: 2px solid ${(props) => props.theme.ChattingLineColor};
+  border-left: 2px solid ${(props) => props.theme.ChattingLineColor};
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`;
+
+const ReceiveMessage = styled.li`
+  align-self: flex-start;
+  display: flex;
+  width: fit-content;
+  padding: 0.3rem;
   justify-content: flex-start;
   align-items: flex-end;
   margin-top: 0.5rem;
+
+  .message {
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-size: 14px;
+    margin: 0px 3px 5px 0px;
+    background: ${(props) => props.theme.recordBgColor};
+  }
+`;
+
+const SentMessage = styled(ReceiveMessage)`
+  align-self: flex-end;
   flex-direction: row-reverse;
-  float: right;
+  .message {
+    text-align: right;
+    background: ${(props) => props.theme.ChattingRoomSentMessageColor};
+  }
 `;
-const RecieveMessage = styled.li`
-  width: 90%;
-  padding: 0.3rem;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  margin-top: 0.5rem;
-`;
-const ChattingRoomProFile = styled.span`
+
+const Profile = styled.span`
   display: flex;
   flex-direction: column;
   align-items: center;
   flex: 1;
+
+  > img {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+  }
+
+  > span {
+    word-break: keep-all;
+    font-size: 0.68rem;
+    margin-bottom: 0.3rem;
+  }
 `;
-const ChattingRoomProFileName = styled.span`
-  font-size: 10px;
-  margin-bottom: 0.3rem;
-`;
-const ChattingRoomProFileImage = styled.img`
-  border-radius: 50%;
-  object-fit: cover;
-  width: 50px;
-  height: 50px;
-`;
-const ChattingRoomRecieveMessage = styled.span`
-  border-radius: 5px;
-  padding: 0.5rem;
-  font-size: 14px;
-  margin: 0.5px;
-  flex: 7;
-  background: ${(props) => props.theme.recordBgColor};
-`;
-const ChattingRoomSentMessage = styled.span`
-  border-radius: 5px;
-  padding: 0.5rem;
-  font-size: 14px;
-  margin: 0.5px;
-  flex: 7;
-  background: ${(props) => props.theme.ChattingRoomSentMessageColor};
-`;
-const ChattingRoomTime = styled.span`
-  font-size: 10px;
-  margin: 0 5px;
+const ChatTime = styled.span`
+  font-size: 0.63rem;
+  margin: 4px;
 `;
 const ChattingInput = styled.input`
   grid-row: 1/11;
@@ -110,38 +106,70 @@ const ChattingSubmitButton = styled.button`
   grid-row: 1/11;
   grid-column: 18/21;
 `;
-function ChattingApp() {
-    return (
-        <ChattingDiv>
-            <Header>LOLINFO 채팅방</Header>
-            <ChattingScripts>
-                <EachUserTalkingBox>
-                    <SentMessage>
-                        <ChattingRoomProFile>
-                            <ChattingRoomProFileName>응가뿡뿡</ChattingRoomProFileName>
-                            <ChattingRoomProFileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU"></ChattingRoomProFileImage>
-                        </ChattingRoomProFile>
-                        <ChattingRoomSentMessage>안녕하세요</ChattingRoomSentMessage>
-                        <ChattingRoomTime>20:18</ChattingRoomTime>
-                    </SentMessage>
-                    <RecieveMessage>
-                        <ChattingRoomProFile>
-                            <ChattingRoomProFileName>푸르매2012</ChattingRoomProFileName>
-                            <ChattingRoomProFileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU"></ChattingRoomProFileImage>
-                        </ChattingRoomProFile>
-                        <ChattingRoomRecieveMessage>네 안녕하세요</ChattingRoomRecieveMessage>
-                        <ChattingRoomTime>20:22</ChattingRoomTime>
-                    </RecieveMessage>
-                </EachUserTalkingBox>
-            </ChattingScripts>
-            <ChattingInputDiv>
-                <ChattingInputForm>
-                    <ChattingInput placeholder="메세지를 입력해주세요"></ChattingInput>
-                    <ChattingSubmitButton>전송</ChattingSubmitButton>
-                </ChattingInputForm>
-            </ChattingInputDiv>
-        </ChattingDiv>
-    );
+
+// TODO: 채팅을 보낼때, 서버에서 악세스토큰  검증 로직을 넣을것.
+function ChattingApp(props) {
+  // 현재 로그인한 유저의 정보, 리덕스에서 가져올것
+
+  const { userInfo = {}, chatLog = [] } = props;
+  const [ messageInput, setMessageInput ] = useState('');
+
+  // useEffect(() => {
+  //   console.log(messageInput);
+  // }, [messageInput])
+
+  //TODO: react.memo 
+  const onSubmit = e => {
+    e.preventDefault();
+    setMessageInput('');
+    props.handleSubmit(messageInput);
+    inputRef.current.focus();
+  };
+
+  const handleTextChange = e => {
+    setMessageInput(e.target.value);
+  }
+
+  const inputRef = useRef();
+
+  return (
+    <ChattingDiv>
+      <Header>LOLINFO 채팅방</Header>
+      <ChatLogContainer>
+        {chatLog.map((chat, idx) => {
+          if (chat.userName === userInfo.userName) {
+            return (
+              <SentMessage key={idx}>
+                <Profile>
+                  <span>{chat.userName}</span>
+                  <img alt="userProfile" src={chat.userImg} />
+                </Profile>
+                <span className="message">{chat.message}</span>
+                <ChatTime>{chat.time}</ChatTime>
+              </SentMessage>
+            );
+          } else {
+            return (
+              <ReceiveMessage key={idx}>
+                <Profile>
+                  <span>{chat.userName}</span>
+                  <img alt="userProfile" src={chat.userImg} />
+                </Profile>
+                <span className="message">{chat.message}</span>
+                <ChatTime>{chat.time}</ChatTime>
+              </ReceiveMessage>
+            );
+          }
+        })}
+      </ChatLogContainer>
+      <ChattingInputDiv>
+        <ChattingInputForm onSubmit={onSubmit}>
+          <ChattingInput ref={inputRef} placeholder="메세지를 입력해주세요" onChange={handleTextChange} value={messageInput} />
+          <ChattingSubmitButton type="submit">전송</ChattingSubmitButton>
+        </ChattingInputForm>
+      </ChattingInputDiv>
+    </ChattingDiv>
+  );
 }
 
 export default ChattingApp;
