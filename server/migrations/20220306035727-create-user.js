@@ -9,12 +9,15 @@ module.exports = {
         type: Sequelize.UUID,
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       password: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -30,7 +33,7 @@ module.exports = {
         type: Sequelize.DATE,
       },
       salt: {
-        type: DataTypes.STRING(100),
+        type: Sequelize.STRING(100),
         allowNull: false,
       },
     });
