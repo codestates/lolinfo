@@ -238,9 +238,63 @@ function RecordPage({ setHistory }) {
       needs[i].kp = parseInt(temp * 100);
       recentKP = temp;
     }
+
     return (recentKP = parseInt((recentKP / needs.length) * 100));
   }
+  const version = "12.5.1";
 
+  const ddragon = async (version, aux, user) => {
+    let pri = [];
+    let sub = [];
+    let perks = [];
+    let spell = [];
+    for (let i = 1; i < aux.length; i++) {
+      aux[i].info.participants.forEach((x) => {
+        if (x.summonerName === user) {
+          perks.push(x.perks.styles);
+          spell.push([x.summoner1Id, x.summoner2Id]);
+        }
+      });
+    }
+    perks.forEach((perk) => {
+      pri.push([perk[0].style, perk[0].selections[0].perk]);
+      sub.push(perk[1].style);
+    });
+    let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
+    let mainRune = [];
+    let subRune = [];
+    let perksInfo = data.data;
+    for (let i = 0; i < pri.length; i++) {
+      perksInfo.forEach((x) => {
+        if (x.id === pri[i][0]) {
+          x.slots.forEach((y) => (y.runes[0].id === pri[i][1] ? mainRune.push(y.runes[0].icon) : 0));
+        }
+      });
+      perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
+    }
+    let temp = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/summoner.json");
+
+    // console.log("spellTF=", spell);
+    // console.log(temp.data.data);
+
+    let spell1 = [];
+    let spell2 = [];
+    let spellAll = temp.data.data;
+    spell.forEach((x) => {
+      let cnt = 0;
+      for (let spellOne in spellAll) {
+        if (spellAll[spellOne].key === `${x[0]}`) {
+          spell1.push(spellAll[spellOne].id + ".png");
+        }
+        if (spellAll[spellOne].key === `${x[1]}`) {
+          spell2.push(spellAll[spellOne].id + ".png");
+        }
+      }
+    });
+    return { mainRune, subRune, spell1, spell2 };
+  };
+
+  let result = ddragon(version, record.data, userName).then((x) => console.log("result=", x));
   return (
     <div>
       <Content>
