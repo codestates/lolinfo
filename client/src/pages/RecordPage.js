@@ -52,17 +52,14 @@ const LogWrapper = styled.div`
 
   background-color: ${(props) => props.theme.recordBgColor};
 `;
-function RecordPage() {
+function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
-  console.log("record", record);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log("record:::", record);
-  // }, [record]);
-
   const userName = "고양이";
-
+  useEffect(() => {
+    setHistory(true);
+  }, []);
   useEffect(() => {
     const matchUrl = "http://localhost:80/games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
@@ -81,7 +78,6 @@ function RecordPage() {
     let aux = record.data[i].info.participants;
     for (let j = 0; j < aux.length; j++) {
       if (aux[j].summonerName === user) {
-        console.log(aux[j]);
         if (!temp.assists) temp.assists = [];
         temp.assists.push(aux[j].assists);
         if (!temp.championName) temp.championName = [];
@@ -174,7 +170,7 @@ function RecordPage() {
           });
         }
       }
-      // console.log("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+      // ("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
     }
 
     let k = 0,
@@ -226,7 +222,6 @@ function RecordPage() {
   if (!record.loading) extractData();
   if (!record.data) <div>`data null!`</div>;
   if (record.error) <div>`error !!`</div>;
-  console.log(needs);
 
   return (
     <div>

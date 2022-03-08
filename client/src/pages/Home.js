@@ -15,16 +15,16 @@ const StWrapper = styled.div`
 `;
 
 const BodyRow = styled.div`
-    display: grid;
-    grid-template-areas:
-        "title title title"
-        "search search search"
-        ". bodytitle ."
-        ". body ."
-        ". more .";
-    width: 100%;
-    height: 100%;
-    text-align: center;
+  display: grid;
+  grid-template-areas:
+    "title title title"
+    "search search search"
+    ". bodytitle ."
+    ". body ."
+    ". more .";
+  width: 100%;
+  height: 100%;
+  text-align: center;
 
   padding: 0rem 1rem;
 `;
@@ -95,7 +95,7 @@ const StButton = styled.button`
   cursor: pointer;
 `;
 
-function Home() {
+function Home({ setHistory }) {
   useEffect(() => {
     d3.select(".main-title")
       .transition()
@@ -110,6 +110,7 @@ function Home() {
       .duration(1500)
       .style("color", "#2e2f32")
       .text("LOLINFO");
+    setHistory(false);
   }, []);
 
   return (
