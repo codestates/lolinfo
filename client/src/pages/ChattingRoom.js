@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import React from "react";
-import io from "socket.io-client";
-import ChattingApp from './pageComponents/ChattingApp';
-
+import React, { useEffect, useState } from "react";
+import ioClient from "socket.io-client";
+import ChattingApp from "./pageComponents/ChattingApp";
+import Loading from "./Loading";
+import { useSelector, useDispatch } from 'react-redux';
 
 const Container = styled.div`
   display: flex;
@@ -46,67 +47,66 @@ const UserName = styled.span`
   padding-top: 5px;
 `;
 
+let socket;
+
 function ChattingRoom() {
-  let userInfo = {
-    userName: "응가뿡뿡",
-    userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
-  };
+  let userInfo = useSelector( state => state.userInfo );
 
-  let users = [
-    {
-      userName: "응가뿡뿡",
-      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
-    },
-    {
-      userName: "푸르매2012",
-      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
-    },
-    {
-      userName: "고양이",
-      userImg: "https://ddragon.leagueoflegends.com/cdn/12.5.1/img/profileicon/4561.png",
-    },
-  ];
+  let [userList, setUserList] = useState([]);
 
-  let chatLog = [
-    {
-      userName: "응가뿡뿡",
-      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
-      message: "안녕하세요",
-      time: "13:30:03",
-    },
-    {
-      userName: "푸르매2012",
-      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
-      message: "네 안녕하세요",
-      time: "13:30:06",
-    },
-    {
-      userName: "푸르매2012",
-      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
-      message: "뭐하고계세요",
-      time: "13:30:09",
-    },
-  ];
+  let [chatLog, setChatLog] = useState([]);
+
+  useEffect(() => {
+    socket = ioClient(process.env.REACT_APP_API_URL);
+    const name = userInfo.userName;
+    const room = "global";
+    const userImg = userInfo.userImg;
+
+    socket.emit("join", { name, room, userImg }, (error) => {
+      // console.log("error");
+      // 에러 처리
+      if (error) {
+        alert(error);
+      }
+    });
+    // Disconnect handle
+    // return () => {
+    //   socket.emit("disconnect");
+
+    //   socket.off();
+    // };
+  }, [userInfo.userImg, userInfo.userName]);
+
+  useEffect(() => {
+    // 서버에서 message 이벤트가 올 경우에 대해서 `on`
+    socket.on("message", (message) => {
+      setChatLog([...chatLog, message]);
+    });
+
+    socket.on("roomData", ({ users }) => {
+      setUserList(users);
+    });
+  }, [chatLog]);
+
+  useEffect(() => {
+    console.log("userList: ", userList);
+    console.log("chatLog: ", chatLog);
+  }, [userList, chatLog]);
 
   const handleSubmit = (message) => {
     console.log(message);
-    // socket 
-    /* 
-    { 
-      userId: userInfo.userId, // 'asda1-asdasd-asdasd'
-      message,
+    if (message) {
+      socket.emit("sendMessage", message);
     }
-    형식으로 emit 할것
-    */
   };
 
   return (
     <Container>
       <ChattingApp userInfo={userInfo} chatLog={chatLog} handleSubmit={handleSubmit} />
       <UserDiv>
-        <UserCounter>접속해있는 소환사 총 {users.length}명</UserCounter>
+        <UserCounter>접속해있는 소환사 총 {userList.length}명</UserCounter>
         <UserList>
-          {users.map((user, index) => {
+          {userList.map((user, index) => {
             return (
               <User key={index}>
                 <UserImg src={user.userImg} />

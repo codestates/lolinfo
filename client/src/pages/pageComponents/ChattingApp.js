@@ -114,10 +114,6 @@ function ChattingApp(props) {
   const { userInfo = {}, chatLog = [] } = props;
   const [ messageInput, setMessageInput ] = useState('');
 
-  // useEffect(() => {
-  //   console.log(messageInput);
-  // }, [messageInput])
-
   //TODO: react.memo 
   const onSubmit = e => {
     e.preventDefault();
