@@ -63,6 +63,8 @@ const EtcWrapper = styled.div`
 `;
 
 function Etc({ item, goldEarned, totalMinionsKilled, kp }) {
+  const version = "12.4.1";
+
   return (
     <EtcWrapper name="EtcWrapper">
       <div className="item">
@@ -73,7 +75,7 @@ function Etc({ item, goldEarned, totalMinionsKilled, kp }) {
                 <rect className="tooltipstered"></rect>
               </svg>
             );
-          return <img key={i} className="tooltipstered" src={`https://ddragon.bangingheads.net/cdn/11.20.1/img/item/${v}.png`} item-id={v} alt="item" />;
+          return <img key={i} className="tooltipstered" src={`https://ddragon.bangingheads.net/cdn/${version}/img/item/${v}.png`} item-id={v} alt="item" />;
         })}
       </div>
       <div className="cs">

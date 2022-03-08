@@ -6,6 +6,7 @@ import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
 import Loading from "./Loading";
+import { profileDummyData, dummyChartData } from "../resource/RecordPagehelp";
 
 const Content = styled.div`
   display: grid;
@@ -58,21 +59,41 @@ function RecordPage({ setHistory }) {
   // console.log("record", record);
   const dispatch = useDispatch();
 
-  const userName = "고양이";
+  const userName = "나무무";
   useEffect(() => {
     setHistory(true);
   }, []);
+
   useEffect(() => {
+    if (userName === "") return;
+
     const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
 
   const needs = [];
+  let profileData = {};
   let chartData = {};
-  let totalKill = [];
-  let totalKP = 0;
+  let isActiveDummy = false;
+
+  if (userName !== "") {
+    if (record.loading) return <Loading />;
+    if (!record.data) return <div>data null!...</div>;
+    if (record.error) return <div>`error !!`</div>;
+    if (!record.loading) {
+      if (record.data[0].length !== 0) {
+        extractData();
+        extractProfileData();
+      } else {
+        isActiveDummy = true;
+      }
+    }
+  } else {
+    isActiveDummy = true;
+  }
 
   function extractData() {
+    let totalKill = [];
     for (let i = 1; i < record.data.length; ++i) {
       const { gameType, gameDuration, gameId } = record.data[i].info;
       let gameLen = gameDuration;
@@ -217,15 +238,8 @@ function RecordPage({ setHistory }) {
     totalLose = totalGame - totalWin;
     const victoryRate = (totalWin / totalGame) * 100;
 
-    chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate };
-  }
-
-  if (record.loading) return <Loading />;
-  if (!record.data) return <div>data null!...</div>;
-  if (record.error) return <div>`error !!`</div>;
-  if (!record.loading) {
-    extractData();
-    totalKP = calcKP();
+    const kp = calcKP();
+    chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate, kp };
   }
 
   function calcKP() {
@@ -240,18 +254,36 @@ function RecordPage({ setHistory }) {
     return (recentKP = parseInt((recentKP / needs.length) * 100));
   }
 
+  function extractProfileData() {
+    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
+    const { profileIcon, summonerName } = needs[0];
+
+    profileData = {
+      leaguePoints,
+      wins,
+      losses,
+      tier,
+      rank,
+      queueType,
+      profileIcon,
+      summonerName,
+    };
+  }
+
   return (
     <div>
       <Content>
-        <UserProfile info={record.data[0][0]} icon={needs[0].profileIcon} gameID={needs[0].summonerName} />
+        <UserProfile profileData={isActiveDummy ? profileDummyData : profileData} />
         <BoxWrapper name="BoxWrapper">
-          <RecentChart className="RecentChart" chartData={chartData} totalKP={totalKP} />
+          <RecentChart className="RecentChart" chartData={isActiveDummy ? dummyChartData : chartData} />
           <div>
-            <LogWrapper className="RecentGameLog">
-              {needs.map((v) => {
-                return <RecentGameLog key={v.gameId} data={v} />;
-              })}
-            </LogWrapper>
+            {isActiveDummy ? null : (
+              <LogWrapper className="RecentGameLog">
+                {needs.map((v) => {
+                  return <RecentGameLog key={v.gameId} data={v} />;
+                })}
+              </LogWrapper>
+            )}
           </div>
         </BoxWrapper>
       </Content>

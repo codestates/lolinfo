@@ -81,10 +81,10 @@ function RecentGameResult({ win, gameTime, gameType, date, queueId }) {
 
   gameTime = gameTime.split(".");
 
-  if (queueId === 430) {
-    gameType = "일반";
-  } else if (queueId === 420) {
+  if (queueId === 420) {
     gameType = "솔랭";
+  } else {
+    gameType = "일반";
   }
 
   return (
