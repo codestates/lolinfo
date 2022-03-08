@@ -1,118 +1,123 @@
 import styled from "styled-components";
-import { useState, useRef, useEffect } from "react";
+import React from "react";
 import io from "socket.io-client";
+import ChattingApp from './pageComponents/ChattingApp';
 
-function ChattingRoom({ setHistory }) {
-  const [msgList, setMsgList] = useState([]);
-  // const [msgListUser, setMsgListUser] = useState([]);
-  const [msgListIdx, setMsgListIdx] = useState([]);
-  const [msgCTS, setMsgCTS] = useState("");
-  // const [msgSTC, setMsgSTC] = useState("");
-  // const [myID, setMyID] = useState("");
-  const focusInput = useRef(null);
-  const msgRef = useRef(null);
-  const SERVER = "http://localhost:80";
 
-  const user = "User_" + String(new Date().getTime()).slice(9);
-  const scrollToBottom = () => {
-    msgRef.current.scrollIntoView({ behavior: "smooth" });
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 87vh;
+  padding: 2rem 0.4445rem;
+  background-color: ${(props) => props.theme.ChattingBackgroundColor};
+`;
+const UserDiv = styled.div`
+  display: block;
+  background-color: ${(props) => props.theme.recordBgColor};
+  border: 2px solid ${(props) => props.theme.ChattingLineColor};
+  border-left: none;
+`;
+const UserCounter = styled.h2`
+  font-weight: bold;
+  padding: 5px;
+  font-size: 13pt;
+  text-align: center;
+`;
+const UserList = styled.ul`
+  list-style: none;
+  padding: 10px;
+`;
+const User = styled.li`
+  margin: 5px 0px;
+  display: flex;
+`;
+const UserImg = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  @media (max-width: 600px) {
+    width: 20px;
+    height: 20px;
+  }
+`;
+const UserName = styled.span`
+  font-size: 0.9rem;
+  margin-left: 5px;
+  padding-top: 5px;
+`;
+
+function ChattingRoom() {
+  let userInfo = {
+    userName: "응가뿡뿡",
+    userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
   };
-  useEffect(() => {
-    scrollToBottom();
-  }, [msgList]);
-  useEffect(() => {
-    focusInput.current.focus();
-    setHistory(true);
-  }, []);
 
-  //io client start
-  // const socket = io.connect("http://127.0.0.1:80");
-  // const socket = io("/chat"); //namespace
-  // socket.on("connection", () => {
-  //   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-  // });
+  let users = [
+    {
+      userName: "응가뿡뿡",
+      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
+    },
+    {
+      userName: "푸르매2012",
+      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
+    },
+    {
+      userName: "고양이",
+      userImg: "https://ddragon.leagueoflegends.com/cdn/12.5.1/img/profileicon/4561.png",
+    },
+  ];
 
-  // socket.on("disconnect", () => {
-  //   console.log(socket.id); // undefined
-  // });
+  let chatLog = [
+    {
+      userName: "응가뿡뿡",
+      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
+      message: "안녕하세요",
+      time: "13:30:03",
+    },
+    {
+      userName: "푸르매2012",
+      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
+      message: "네 안녕하세요",
+      time: "13:30:06",
+    },
+    {
+      userName: "푸르매2012",
+      userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
+      message: "뭐하고계세요",
+      time: "13:30:09",
+    },
+  ];
 
-  function handleCTS() {}
+  const handleSubmit = (message) => {
+    console.log(message);
+    // socket 
+    /* 
+    { 
+      userId: userInfo.userId, // 'asda1-asdasd-asdasd'
+      message,
+    }
+    형식으로 emit 할것
+    */
+  };
+
   return (
-    <MainContainer>
-      <Title>LOLINFO 채팅방</Title>
-      <ToolContainer>
-        <MsgInput ref={focusInput} value={msgCTS} onChange={(e) => setMsgCTS(e.target.value)} onKeyPress={(e) => (e.key === "Enter" ? handleCTS() : null)} />
-        <MsgButton type="button" value="button" onClick={() => handleCTS()} />
-      </ToolContainer>
-      <UserContainer>people</UserContainer>
-      <ChatContainer>
-        {msgList.map((x, i) =>
-          msgListIdx[i] ? (
-            <MsgList key={"msg_" + i}>
-              <Message className="my">{x}</Message>
-            </MsgList>
-          ) : (
-            <MsgList key={"msg_" + i}>
-              <Message className="ur">{x}</Message>
-            </MsgList>
-          ),
-        )}
-        <div ref={msgRef} />
-      </ChatContainer>
-    </MainContainer>
+    <Container>
+      <ChattingApp userInfo={userInfo} chatLog={chatLog} handleSubmit={handleSubmit} />
+      <UserDiv>
+        <UserCounter>접속해있는 소환사 총 {users.length}명</UserCounter>
+        <UserList>
+          {users.map((user, index) => {
+            return (
+              <User key={index}>
+                <UserImg src={user.userImg} />
+                <UserName>{user.userName}</UserName>
+              </User>
+            );
+          })}
+        </UserList>
+      </UserDiv>
+    </Container>
   );
 }
 
 export default ChattingRoom;
-const MainContainer = styled.div`
-  display: grid;
-  /* grid-template-areas: */
-  /* "title title title title title"
-    "chat chat chat chat user"
-    "chat chat chat chat user"
-    "chat chat chat chat user"
-    "chat chat chat chat user"
-    "tool tool tool tool tool" */
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 50px repeat(4, 1fr) 50px;
-  height: 80vh;
-  width: 100vw;
-`;
-const Title = styled.div`
-  grid-column: 1/-1;
-  grid-row: 1;
-  text-align: center;
-  font-size: 40px;
-  /* grid-area: title; */
-`;
-const ChatContainer = styled.ul`
-  /* grid-area: chat; */
-  grid-column: 1/-2;
-  grid-row: 2/6;
-  overflow-y: scroll;
-`;
-const UserContainer = styled.div`
-  /* grid-area: user; */
-  grid-column: 5/6;
-  grid-row: 2/6;
-  overflow-y: scroll;
-`;
-const ToolContainer = styled.div`
-  /* grid-area: tool; */
-  grid-column: 1/-1;
-  grid-row: -1;
-  z-index: 999;
-`;
-const MsgButton = styled.input``;
-const MsgInput = styled.input``;
-const MsgList = styled.li`
-  & .my {
-    text-align: right;
-  }
-  & .ur {
-    text-align: left;
-  }
-`;
-const Message = styled.div`
-  font-size: 50px;
-`;
