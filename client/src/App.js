@@ -16,6 +16,7 @@ import LoginPage from "./components/loginPage";
 import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
+
 function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(1);
@@ -27,6 +28,7 @@ function App() {
     submit: "",
     login: "",
   });
+
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>

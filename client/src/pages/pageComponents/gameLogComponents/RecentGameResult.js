@@ -68,7 +68,7 @@ const GameResultWrapper = styled.div`
   }
 `;
 
-function RecentGameResult({ win, gameTime, gameType }) {
+function RecentGameResult({ win, gameTime, gameType, date }) {
   let gameResult = "";
   let result = "";
   if (win) {
@@ -96,7 +96,7 @@ function RecentGameResult({ win, gameTime, gameType }) {
         {gameTime[0]}:{gameTime[1]}
       </div>
       <div className="gametype">{gameType}</div>
-      <div className="date">2/27</div>
+      <div className="date">{date}</div>
     </GameResultWrapper>
   );
 }
