@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-function NaviBar({ sticky, setLoginModal, setHistory }) {
+function NaviBar({ sticky, setLoginModal }) {
   let navigate = useNavigate();
   return (
     <div>
