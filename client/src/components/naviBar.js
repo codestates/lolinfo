@@ -12,7 +12,6 @@ function NaviBar({ sticky, setLoginModal, setHistory }) {
             key={menuIdx}
             order={menuIdx}
             onClick={() => {
-              setHistory(menuIdx);
               if (menuIdx === 0) navigate("/");
               else if (menuIdx === 1) navigate("/board");
               else if (menuIdx === 2) navigate("/record");
