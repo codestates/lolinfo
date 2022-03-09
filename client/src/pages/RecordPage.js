@@ -67,7 +67,7 @@ function RecordPage({ setHistory, schBarInput }) {
   useEffect(() => {
     if (userName === "") return;
 
-    const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
+    const matchUrl = process.env.REACT_APP_API_URL + "/games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
 
@@ -254,7 +254,23 @@ function RecordPage({ setHistory, schBarInput }) {
 
     return (recentKP = parseInt((recentKP / needs.length) * 100));
   }
-  const version = "12.5.1";
+
+  function extractProfileData() {
+    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
+    const { profileIcon, summonerName } = needs[0];
+
+    profileData = {
+      leaguePoints,
+      wins,
+      losses,
+      tier,
+      rank,
+      queueType,
+      profileIcon,
+      summonerName,
+    };
+  }
+
   const ddragon = async (version, aux, user) => {
     let pri = [];
     let sub = [];
@@ -311,23 +327,8 @@ function RecordPage({ setHistory, schBarInput }) {
     return { mainRune, subRune, spell1, spell2 };
   };
 
-  function extractProfileData() {
-    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
-    const { profileIcon, summonerName } = needs[0];
+  ddragon("12.4.1", record.data, userName);
 
-    profileData = {
-      leaguePoints,
-      wins,
-      losses,
-      tier,
-      rank,
-      queueType,
-      profileIcon,
-      summonerName,
-    };
-  }
-
-  let result = ddragon(version, record.data, userName).then((x) => console.log("result=", x));
   return (
     <div>
       <Content>

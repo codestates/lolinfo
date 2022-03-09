@@ -23,12 +23,15 @@ function ChangePasswordPage({ setHistory }) {
     if (!isMatchPassword(newPassword, newAgainPassword)) {
       return alert("비밀번호가 일치하지 않습니다.");
     }
-    const change = await axios.put("http://localhost:8090/users/userinfo", { email: "kimcoding@korea.com", password: password, changedPassword: newPassword });
+    const change = await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: "kimcoding@korea.com", password: password, changedPassword: newPassword });
     if (change.status === 200) {
       setPassword("");
       setNewPassword("");
       setnewAgainPassword("");
       return alert("비밀번호가 정상적으로 교체되었습니다.");
+    }
+    if (!isMatchPassword(newPassword, newAgainPassword)) {
+      return alert("비밀번호가 일치하지 않습니다.");
     }
   };
 

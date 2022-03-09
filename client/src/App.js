@@ -27,6 +27,7 @@ function App() {
   const [schBarInput, setSchBarInput] = useState("고양이");
   const [loginState, setLoginState] = useState("");
   const [userInfo, setUserInfo] = useState({
+    email: "",
     name: "",
     password: "",
     passwordC: "",
@@ -55,7 +56,7 @@ function App() {
               {loginModal === "login" ? (
                 <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} />
               ) : (
-                <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />
+                <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} userInfo={userInfo} />
               )}
             </Modal>
           ) : null}

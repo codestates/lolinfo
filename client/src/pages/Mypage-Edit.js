@@ -13,7 +13,7 @@ function Mypage({ setHistory }) {
   const [change, setChange] = useState("");
   const something = async () => {
     console.log(change);
-    await axios.put("http://localhost:8090/users/userinfo", { email: "kimcoding@korea.com", name: change });
+    await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: "kimcoding@korea.com", name: change });
     alert("닉네임이 정상적으로 바뀌었습니다.");
   };
   return (
