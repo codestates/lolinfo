@@ -23,7 +23,7 @@ function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(0);
   const [loginModal, setLoginModal] = useState("");
-  const [schBarInput, setSchBarInput] = useState("유미유미");
+  const [schBarInput, setSchBarInput] = useState("고양이");
   const [userInfo, setUserInfo] = useState({
     name: "",
     password: "",
@@ -53,7 +53,7 @@ function App() {
               {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} /> : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />}
             </Modal>
           ) : null}
-          {<Link to={`${history}`}></Link>}
+
           <Routes>
             <Route path="/" element={<Home setSchBarInput={setSchBarInput} setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />

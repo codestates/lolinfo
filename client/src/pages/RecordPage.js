@@ -253,7 +253,6 @@ function RecordPage({ setHistory, schBarInput }) {
     return (recentKP = parseInt((recentKP / needs.length) * 100));
   }
   const version = "12.5.1";
-
   const ddragon = async (version, aux, user) => {
     let pri = [];
     let sub = [];
@@ -271,6 +270,8 @@ function RecordPage({ setHistory, schBarInput }) {
       pri.push([perk[0].style, perk[0].selections[0].perk]);
       sub.push(perk[1].style);
     });
+    console.log("pri=", pri);
+    console.log("sub=", sub);
     let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
     let mainRune = [];
     let subRune = [];
@@ -278,7 +279,11 @@ function RecordPage({ setHistory, schBarInput }) {
     for (let i = 0; i < pri.length; i++) {
       perksInfo.forEach((x) => {
         if (x.id === pri[i][0]) {
-          x.slots.forEach((y) => (y.runes[0].id === pri[i][1] ? mainRune.push(y.runes[0].icon) : 0));
+          for (let j = 0; j < x.slots.length; j++) {
+            for (let k = 0; k < x.slots[j].runes.length; k++) {
+              if (x.slots[j].runes[k].id === pri[i][1]) mainRune.push(x.slots[j].runes[k].icon);
+            }
+          }
         }
       });
       perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
@@ -292,7 +297,6 @@ function RecordPage({ setHistory, schBarInput }) {
     let spell2 = [];
     let spellAll = temp.data.data;
     spell.forEach((x) => {
-      let cnt = 0;
       for (let spellOne in spellAll) {
         if (spellAll[spellOne].key === `${x[0]}`) {
           spell1.push(spellAll[spellOne].id + ".png");
