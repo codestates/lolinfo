@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 function NaviBar({ sticky, setLoginModal }) {
   const userInfo = useSelector((state) => state.user);
-  console.log("userInfo:::", userInfo);
 
   let navigate = useNavigate();
   return (
