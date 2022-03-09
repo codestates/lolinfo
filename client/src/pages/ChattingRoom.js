@@ -50,7 +50,7 @@ const UserName = styled.span`
 let socket;
 
 function ChattingRoom() {
-  let userInfo = useSelector( state => state.userInfo );
+  let userInfo = useSelector(state => state.userInfo);
 
   let [userList, setUserList] = useState([]);
 
@@ -99,6 +99,8 @@ function ChattingRoom() {
       socket.emit("sendMessage", message);
     }
   };
+
+  function handleCTS() { }
 
   return (
     <Container>
