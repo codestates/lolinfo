@@ -68,7 +68,7 @@ function RecordPage({ setHistory }) {
   useEffect(() => {
     if (userName === "") return;
 
-    const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
+    const matchUrl = process.env.REACT_APP_API_URL + "/games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
 
