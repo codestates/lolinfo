@@ -56,6 +56,7 @@ const LogWrapper = styled.div`
 
 function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
+  axios.defaults.withCredentials = false;
   // console.log("record", record);
   const dispatch = useDispatch();
 
