@@ -56,6 +56,7 @@ const LogWrapper = styled.div`
 
 function RecordPage({ setHistory }) {
   const { data: record } = useSelector((state) => state.gameRecord);
+  axios.defaults.withCredentials = false;
   // console.log("record", record);
   const dispatch = useDispatch();
 
@@ -67,7 +68,7 @@ function RecordPage({ setHistory }) {
   useEffect(() => {
     if (userName === "") return;
 
-    const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
+    const matchUrl = process.env.REACT_APP_API_URL + "/games/match?nickname=";
     dispatch(getRecord("get", matchUrl, userName));
   }, [dispatch]);
 
@@ -254,7 +255,22 @@ function RecordPage({ setHistory }) {
 
     return (recentKP = parseInt((recentKP / needs.length) * 100));
   }
-  const version = "12.5.1";
+
+  function extractProfileData() {
+    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
+    const { profileIcon, summonerName } = needs[0];
+
+    profileData = {
+      leaguePoints,
+      wins,
+      losses,
+      tier,
+      rank,
+      queueType,
+      profileIcon,
+      summonerName,
+    };
+  }
 
   const ddragon = async (version, aux, user) => {
     let pri = [];
@@ -273,6 +289,8 @@ function RecordPage({ setHistory }) {
       pri.push([perk[0].style, perk[0].selections[0].perk]);
       sub.push(perk[1].style);
     });
+    console.log("pri=", pri);
+    console.log("sub=", sub);
     let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
     let mainRune = [];
     let subRune = [];
@@ -280,7 +298,11 @@ function RecordPage({ setHistory }) {
     for (let i = 0; i < pri.length; i++) {
       perksInfo.forEach((x) => {
         if (x.id === pri[i][0]) {
-          x.slots.forEach((y) => (y.runes[0].id === pri[i][1] ? mainRune.push(y.runes[0].icon) : 0));
+          for (let j = 0; j < x.slots.length; j++) {
+            for (let k = 0; k < x.slots[j].runes.length; k++) {
+              if (x.slots[j].runes[k].id === pri[i][1]) mainRune.push(x.slots[j].runes[k].icon);
+            }
+          }
         }
       });
       perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
@@ -294,7 +316,6 @@ function RecordPage({ setHistory }) {
     let spell2 = [];
     let spellAll = temp.data.data;
     spell.forEach((x) => {
-      let cnt = 0;
       for (let spellOne in spellAll) {
         if (spellAll[spellOne].key === `${x[0]}`) {
           spell1.push(spellAll[spellOne].id + ".png");
@@ -307,23 +328,8 @@ function RecordPage({ setHistory }) {
     return { mainRune, subRune, spell1, spell2 };
   };
 
-  function extractProfileData() {
-    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
-    const { profileIcon, summonerName } = needs[0];
+  ddragon("12.4.1", record.data, userName);
 
-    profileData = {
-      leaguePoints,
-      wins,
-      losses,
-      tier,
-      rank,
-      queueType,
-      profileIcon,
-      summonerName,
-    };
-  }
-
-  let result = ddragon(version, record.data, userName).then((x) => console.log("result=", x));
   return (
     <div>
       <Content>
