@@ -22,19 +22,25 @@ module.exports = {
       // cant find
       return res.status(401).send("please check your email or password again");
     }
-    const { id, name, createdAt } = Value.dataValues;
+    const { id, name, createdAt, userImg } = Value.dataValues;
     if (Value.dataValues === undefined) {
       return res.status(401).send("please check your email or password again");
     }
+
+    console.log("Value", Value);
     const payload = {
       id,
       name,
       email,
+      userImg,
       createdAt,
     };
+
     const accessToken = generateAccessToken(payload);
     // const refreshToken = generateRefreshToken();
     // sendRefreshToken(res, refreshToken);
-    sendAccessToken(res, accessToken);
+
+    payload.accessToken = accessToken;
+    sendAccessToken(res, payload);
   },
 };

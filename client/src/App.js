@@ -17,8 +17,6 @@ import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 import AlertModal from "./components/alertModal";
-import { useSelector, useDispatch } from "react-redux";
-import { getUserSuccess } from "./store/User";
 
 function App() {
   const { isSticky, element } = useSticky();
@@ -40,14 +38,6 @@ function App() {
     submit: "",
     login: "",
   });
-
-  const user = useSelector((state) => state.user);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getUserSuccess(userInfo));
-  }, [dispatch, userInfo]);
 
   return (
     <div className="App" ref={element}>

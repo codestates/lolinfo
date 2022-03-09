@@ -1,76 +1,58 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { validEmail, validPassword, isMatchPassword } from "../modules/validation"
+import { validEmail, validPassword, isMatchPassword } from "../modules/validation";
 
 axios.defaults.withCredentials = true;
 
 function SignupPage({ setLoginModal, setUserInfo, userInfo, setemailState, setPasswordState, setPasswordCheckState, setRegisterState }) {
-
   const EmailInputFunction = (e) => {
-    setUserInfo(Object.assign(userInfo, { "email": e.target.value }))
-  }
+    setUserInfo(Object.assign(userInfo, { email: e.target.value }));
+  };
   const NicknameInputFunction = (e) => {
-    setUserInfo(Object.assign(userInfo, { "name": e.target.value }))
-  }
+    setUserInfo(Object.assign(userInfo, { name: e.target.value }));
+  };
   const PasswordInputFunction = (e) => {
-    setUserInfo(Object.assign(userInfo, { "password": e.target.value }))
-  }
+    setUserInfo(Object.assign(userInfo, { password: e.target.value }));
+  };
   const PasswordCInputFunction = (e) => {
-    setUserInfo(Object.assign(userInfo, { "passwordC": e.target.value }))
-  }
+    setUserInfo(Object.assign(userInfo, { passwordC: e.target.value }));
+  };
 
   const infoSandler = async () => {
     // info.submit = true;
     // // setLoginModal("");
     // console.log(info)
     // console.log(userInfo); //이해를 돕기위해 남겨놓겠습니다.
-    const { name, email, password, passwordC } = userInfo
+    const { name, email, password, passwordC } = userInfo;
     if (!validEmail(email)) {
-      return setemailState("change")// 이메일 형식이 아니라면 모달창
+      return setemailState("change"); // 이메일 형식이 아니라면 모달창
     }
     if (!validPassword(password)) {
-      return setPasswordState("change")//비밀번호 조건이 틀리면 모달창
+      return setPasswordState("change"); //비밀번호 조건이 틀리면 모달창
     }
     if (!isMatchPassword(password, passwordC)) {
-      return setPasswordCheckState("change")//두 개의 비밀번호가 틀리면 모달창
+      return setPasswordCheckState("change"); //두 개의 비밀번호가 틀리면 모달창
     }
-    const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/register", { name: name, email: email, password: password })
+    const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/register", { name: name, email: email, password: password });
     if (LoginReturnValue.status === 201) {
-      setRegisterState("change")
-      setLoginModal("login")
+      setRegisterState("change");
+      setLoginModal("login");
     }
   };
   return (
     <div>
       <Container>
         <TitleOPGG>LOLINFO</TitleOPGG>
-        <IDInput
-          type="text"
-          placeholder="Username or Email"
-          required
-          onChange={(e) => EmailInputFunction(e)}
-        />
-        <NicknameInput
-          placeholder="Enter your Nickname"
-          onChange={(e) => NicknameInputFunction(e)}
-        />
-        <PasswordInput
-          placeholder="Enter your Password"
-          onChange={(e) => PasswordInputFunction(e)}
-        />
-        <PasswordInputC
-          placeholder="Confirm your Password"
-          onChange={(e) => PasswordCInputFunction(e)}
-        />
+        <IDInput type="text" placeholder="Username or Email" required onChange={(e) => EmailInputFunction(e)} />
+        <NicknameInput placeholder="Enter your Nickname" onChange={(e) => NicknameInputFunction(e)} />
+        <PasswordInput placeholder="Enter your Password" onChange={(e) => PasswordInputFunction(e)} />
+        <PasswordInputC placeholder="Confirm your Password" onChange={(e) => PasswordCInputFunction(e)} />
         <SignUpButton onClick={infoSandler}>Submit</SignUpButton>
         <TextMessage>Already have an acount?</TextMessage>
         <SignIn onClick={() => setLoginModal("login")}>Login</SignIn>
         <SocialContainer>
-          <SocialButton
-            src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-github-icon-35.png"
-            alt=""
-          />
+          <SocialButton src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-github-icon-35.png" alt="" />
         </SocialContainer>
       </Container>
     </div>

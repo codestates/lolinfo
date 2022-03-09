@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function NaviBar({ sticky, setLoginModal, loginState }) {
   let navigate = useNavigate();
+
   return (
     <div>
       <NaviContainer sticky={sticky} className={sticky ? "naviBar-sticky" : "navibar-nomal"}>
