@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import MypageNavbar from "./pageComponents/MypageComponents/MypageNavbarComponent";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
   display: grid;
@@ -197,17 +197,21 @@ const Disagree = styled.button`
   font-size: 18px;
 `;
 const Agree = styled.button`
+  /* ${(props) => (props.check ? "yellow" : "black")}; */
   grid-row: 2/10;
   grid-column: 8/11;
-  background-color: ${(props) => props.theme.MypageLineColor};
-  color: #fff;
+  background-color: ${(props) => (props.check ? "#fff" : props.theme.MypageLineColor)};
+  color: ${(props) => (!props.check ? "#fff" : "black")};
+  border: ${(props) => (props.check ? "2px " + "solid " + props.theme.MypageLineColor : 0)};
+  cursor: ${(props) => (props.check ? "pointer" : null)};
   font-weight: 700;
-  border: 0;
   font-size: 18px;
 `;
 function DeleteAccountPage({ setHistory }) {
+  const [check, setCheck] = useState(false);
+
   useEffect(() => {
-    setHistory(true);
+    setHistory("/mypage/deleteAccount");
   }, []);
   return (
     <Container>
@@ -239,12 +243,12 @@ function DeleteAccountPage({ setHistory }) {
             <FifthLawdetail>탈퇴 처리된 이메일 ID는 30일동안 재가입이 불가합니다.</FifthLawdetail>
           </FifthLaw>
           <CheckBoxDiv>
-            <CheckBox type="checkbox"></CheckBox>
+            <CheckBox type="checkbox" onClick={() => setCheck(!check)}></CheckBox>
             <CheckBoxDetail>회원탈퇴 시 유의사항을 확인하였으며, 모두 동의합니다.</CheckBoxDetail>
           </CheckBoxDiv>
           <AgreeORDisAgree>
             <Disagree>비동의</Disagree>
-            <Agree>동의</Agree>
+            <Agree check={check}>동의</Agree>
           </AgreeORDisAgree>
         </DeleteAccountContainer>
       </DeletePage>

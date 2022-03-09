@@ -3,9 +3,9 @@ import styled from "styled-components";
 import axios from "axios";
 import { validEmail, validPassword, isMatchPassword } from "../modules/validation"
 
-
 axios.defaults.withCredentials = true;
-function SignupPage({ setLoginModal, setUserInfo, userInfo }) {
+
+function SignupPage({ setLoginModal, setUserInfo, userInfo, setemailState, setPasswordState, setPasswordCheckState, setRegisterState }) {
 
   const EmailInputFunction = (e) => {
     setUserInfo(Object.assign(userInfo, { "email": e.target.value }))
@@ -27,17 +27,17 @@ function SignupPage({ setLoginModal, setUserInfo, userInfo }) {
     // console.log(userInfo); //이해를 돕기위해 남겨놓겠습니다.
     const { name, email, password, passwordC } = userInfo
     if (!validEmail(email)) {
-      return alert("이메일 형식이 아닙니다.")
+      return setemailState("change")// 이메일 형식이 아니라면 모달창
     }
     if (!validPassword(password)) {
-      return alert("비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다.")
+      return setPasswordState("change")//비밀번호 조건이 틀리면 모달창
     }
     if (!isMatchPassword(password, passwordC)) {
-      return alert("비밀번호가 일치하지 않습니다.")
+      return setPasswordCheckState("change")//두 개의 비밀번호가 틀리면 모달창
     }
-    const LoginReturnValue = await axios.post(`${process.env.REACT_APP_API_URL}/users/register`, { name: name, email: email, password: password })
+    const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/register", { name: name, email: email, password: password })
     if (LoginReturnValue.status === 201) {
-      alert("정상적으로 회원가입이 되었습니다.")
+      setRegisterState("change")
       setLoginModal("login")
     }
   };

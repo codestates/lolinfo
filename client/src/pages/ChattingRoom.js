@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import ioClient from "socket.io-client";
 import ChattingApp from "./pageComponents/ChattingApp";
 import Loading from "./Loading";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 
 const Container = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ const UserName = styled.span`
 let socket;
 
 function ChattingRoom() {
-  let userInfo = useSelector(state => state.userInfo);
+  let userInfo = useSelector((state) => state.userInfo);
 
   let [userList, setUserList] = useState([]);
 
@@ -69,12 +69,6 @@ function ChattingRoom() {
         alert(error);
       }
     });
-    // Disconnect handle
-    // return () => {
-    //   socket.emit("disconnect");
-
-    //   socket.off();
-    // };
   }, [userInfo.userImg, userInfo.userName]);
 
   useEffect(() => {
@@ -100,7 +94,7 @@ function ChattingRoom() {
     }
   };
 
-  function handleCTS() { }
+  function handleCTS() {}
 
   return (
     <Container>

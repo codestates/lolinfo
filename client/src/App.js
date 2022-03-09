@@ -17,15 +17,19 @@ import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 import AlertModal from "./components/alertModal";
-import { useSelector, useDispatch } from "react-redux";
-import { getUserSuccess } from "./store/User";
-
 
 function App() {
   const { isSticky, element } = useSticky();
-  const [history, setHistory] = useState(1);
+  const [history, setHistory] = useState(0);
   const [loginModal, setLoginModal] = useState("");
+  const [schBarInput, setSchBarInput] = useState("");
   const [loginState, setLoginState] = useState("");
+  const [loginFailState, setloginFailState] = useState("");
+  const [emailState, setemailState] = useState("");
+  const [passwordState, setPasswordState] = useState("");
+  const [passwordCheckState, setPasswordCheckState] = useState("");
+  const [registerState, setRegisterState] = useState("");
+  const [replaceState, setReplaceState] = useState("");
   const [userInfo, setUserInfo] = useState({
     email: "",
     name: "",
@@ -35,35 +39,44 @@ function App() {
     login: "",
   });
 
-  const user = useSelector((state) => state.user);
-  // console.log(user);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getUserSuccess(userInfo));
-  }, [dispatch, userInfo]);
-
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
-          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} setHistory={setHistory} />
-          {history ? <Search /> : null}
+          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
+          {history !== "/" ? <Search setSchBarInput={setSchBarInput} schBarInput={schBarInput} /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
-              {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} />
-                : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} userInfo={userInfo} />}
+              {loginModal === "login" ? (
+                <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} setloginFailState={setloginFailState} />
+              ) : (
+                <SignupPage
+                  setLoginModal={setLoginModal}
+                  setUserInfo={setUserInfo}
+                  userInfo={userInfo}
+                  setemailState={setemailState}
+                  setPasswordState={setPasswordState}
+                  setPasswordCheckState={setPasswordCheckState}
+                  setRegisterState={setRegisterState}
+                />
+              )}
             </Modal>
           ) : null}
-          {loginState ? <AlertModal setLoginModal={setLoginModal} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
+          {loginState ? <AlertModal setLoginState={setLoginState} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
+          {loginFailState ? <AlertModal setLoginState={setloginFailState} visible={true} children="로그인에 실패했습니다."></AlertModal> : <div></div>}
+          {emailState ? <AlertModal setLoginState={setemailState} visible={true} children="이메일 형식이 아닙니다."></AlertModal> : <div></div>}
+          {passwordState ? <AlertModal setLoginState={setPasswordState} visible={true} children="비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다."></AlertModal> : <div></div>}
+          {passwordCheckState ? <AlertModal setLoginState={setPasswordCheckState} visible={true} children="비밀번호가 일치하지 않습니다."></AlertModal> : <div></div>}
+          {registerState ? <AlertModal setLoginState={setRegisterState} visible={true} children="회원가입에 성공했습니다!"></AlertModal> : <div></div>}
+          {replaceState ? <AlertModal setLoginState={setReplaceState} visible={true} children="정상적으로 교체되었습니다!"></AlertModal> : <div></div>}
+
           <Routes>
-            <Route path="/" element={<Home setHistory={setHistory} />} />
+            <Route path="/" element={<Home setSchBarInput={setSchBarInput} setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />
             <Route path="/record" element={<RecordPage setHistory={setHistory} />} />
-            <Route path="/mypage/edit" element={<Edit setHistory={setHistory} />} />
-            <Route path="/mypage/changePassword" element={<ChangePassword setHistory={setHistory} />} />
+            <Route path="/mypage/edit" element={<Edit setHistory={setHistory} setReplaceState={setReplaceState} />} />
+            <Route path="/mypage/changePassword" element={<ChangePassword setHistory={setHistory} setPasswordState={setPasswordState} setPasswordCheckState={setPasswordCheckState} setReplaceState={setReplaceState} />} />
             <Route path="/mypage/deleteAccount" element={<DeleteAccount setHistory={setHistory} />} />
             <Route path="/chat" element={<ChattingRoom setHistory={setHistory} />} />
           </Routes>
