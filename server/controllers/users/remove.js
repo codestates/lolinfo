@@ -2,7 +2,7 @@ const { User } = require("../../models/index");
 const makePasswordHashed = require("../../modules/makePasswordHashed");
 
 module.exports = {
-    delete: (req, res) => {
+    delete: async (req, res) => {
         if (req.body.email === undefined || req.body.password === undefined) {
             return res.status(400).send('Not Enough Data');
         }

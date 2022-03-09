@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { useSelector } from "react-redux";
 
 function MypageEditUserInfoManage({ setChange }) {
+    const userInfo = useSelector((state) => state.user.payload);
+    console.log("accountPage:::", userInfo.email);
     return (
         <Container>
             <EmailDiv>
