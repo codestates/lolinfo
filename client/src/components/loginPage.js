@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -17,11 +17,14 @@ function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState, setlog
     setLoginModal("");
     const { name, password } = userInfo
     const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/login", { email: name, password: password })
+    console.log(LoginReturnValue)
+    if (LoginReturnValue.status === 401) {
+      return setloginFailState("loginFail")//로그인실패시 모달창
+    }
     if (LoginReturnValue.status === 200) {
       setUserInfo(Object.assign(userInfo, { "login": true }))
       return setLoginState("SuLogin")//로그인성공시 모달창
     }
-    setloginFailState("loginFail")//로그인실패시 모달창
   };
   return (
     <div>
