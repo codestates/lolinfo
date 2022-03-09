@@ -11,7 +11,6 @@ module.exports = {
     const { email, password } = req.body;
     //암호화 코드 작성
     const findPassword = await makePasswordHashed(email, password)
-    console.log(findPassword)
     if (findPassword === undefined) {
       return res.status(401).send("please check your email or password again")
     }
