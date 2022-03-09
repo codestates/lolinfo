@@ -112,7 +112,7 @@ function ChattingApp(props) {
   // 현재 로그인한 유저의 정보, 리덕스에서 가져올것
 
   const { userInfo = {}, chatLog = [] } = props;
-  const [ messageInput, setMessageInput ] = useState('');
+  const [messageInput, setMessageInput] = useState('');
 
   //TODO: react.memo 
   const onSubmit = e => {

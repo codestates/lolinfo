@@ -100,6 +100,8 @@ function ChattingRoom() {
     }
   };
 
+  function handleCTS() {}
+
   return (
     <Container>
       <ChattingApp userInfo={userInfo} chatLog={chatLog} handleSubmit={handleSubmit} />

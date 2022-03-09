@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import { validEmail, validPassword, isMatchPassword } from "../modules/validation"
 
-function SignupPage({ setLoginModal, setUserInfo }) {
-  let info = {};
-  const infoHandler = (e, tag) => (info[tag] = e.target.value);
-  const infoSandler = () => {
+
+axios.defaults.withCredentials = true;
+function SignupPage({ setLoginModal, setUserInfo, userInfo }) {
+
+  const [info, setInfo] = useState(userInfo)
+  const infoHandler = (e, tag) => setInfo(Object.assign(info, { tag: e.target.value }));
+  const infoSandler = async () => {
     info.submit = true;
-    setUserInfo(info);
-    setLoginModal("");
-    console.log(info); //이해를 돕기위해 남겨놓겠습니다.
+    // setLoginModal("");
+    console.log(info)
+    console.log(userInfo); //이해를 돕기위해 남겨놓겠습니다.
+    const { name, email, password, passwordC } = userInfo
+    if (!validEmail(email)) {
+      return alert("이메일 형식이 아닙니다.")
+    }
+    if (!validPassword(password)) {
+      return alert("비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다.")
+    }
+    if (!isMatchPassword(password, passwordC)) {
+      return alert("비밀번호가 일치하지 않습니다.")
+    }
+    const LoginReturnValue = await axios.post("http://localhost:8090/users/register", { name: name, email: email, password: password })
+    if (LoginReturnValue.status === 201) {
+      alert("정상적으로 회원가입이 되었습니다.")
+      setLoginModal("login")
+    }
   };
   return (
     <div>
@@ -18,6 +38,10 @@ function SignupPage({ setLoginModal, setUserInfo }) {
           type="text"
           placeholder="Username or Email"
           required
+          onChange={(e) => infoHandler(e, "email")}
+        />
+        <NicknameInput
+          placeholder="Enter your Nickname"
           onChange={(e) => infoHandler(e, "name")}
         />
         <PasswordInput
@@ -50,7 +74,7 @@ const Container = styled.div`
   color: ${(props) => props.theme.fontColor};
   display: grid;
   grid-template-columns: 1fr repeat(6, 30px) 1.1fr;
-  grid-template-rows: 20px 30px repeat(6, 1fr);
+  grid-template-rows: 20px 30px repeat(7, 1fr);
 `;
 const TitleOPGG = styled.div`
   grid-column: 3;
@@ -75,9 +99,7 @@ const IDInput = styled.input`
     color: ${(props) => props.theme.placeHolderColor};
   }
 `;
-const PasswordInput = styled.input.attrs((_) => ({
-  type: "password",
-}))`
+const NicknameInput = styled.input`
   padding: 5px;
   min-width: 200px;
   max-width: 300px;
@@ -92,7 +114,7 @@ const PasswordInput = styled.input.attrs((_) => ({
     color: ${(props) => props.theme.placeHolderColor};
   }
 `;
-const PasswordInputC = styled.input.attrs((_) => ({
+const PasswordInput = styled.input.attrs((_) => ({
   type: "password",
 }))`
   padding: 5px;
@@ -109,11 +131,28 @@ const PasswordInputC = styled.input.attrs((_) => ({
     color: ${(props) => props.theme.placeHolderColor};
   }
 `;
+const PasswordInputC = styled.input.attrs((_) => ({
+  type: "password",
+}))`
+  padding: 5px;
+  min-width: 200px;
+  max-width: 300px;
+  color: ${(props) => props.theme.fontColorForLoginPageAndSignupPage};
+  background: ${(props) => props.theme.mainColor};
+  border-width: 0 0 1px 0;
+  border-color: ${(props) => props.theme.inputBorderColor};
+  grid-column: 2/5;
+  grid-row: 6/7;
+  font-size: large;
+  ::-webkit-input-placeholder {
+    color: ${(props) => props.theme.placeHolderColor};
+  }
+`;
 const SocialContainer = styled.div`
   display: grid;
   width: 200px;
   grid-column: 2/6;
-  grid-row: 6/7;
+  grid-row: 7/8;
   grid-template-columns: repeat(3, 70px);
   img {
     cursor: pointer;
@@ -129,7 +168,7 @@ const SocialButton = styled.img`
 const SignUpButton = styled.button`
   cursor: pointer;
   grid-column: 4/5;
-  grid-row: 7/8;
+  grid-row: 8/9;
   width: 60px;
   height: 60px;
   border-radius: 60px;
@@ -141,12 +180,12 @@ const TextMessage = styled.div`
   color: ${(props) => props.theme.fontColorForLoginPageAndSignupPage};
   font-size: small;
   grid-column: 2/7;
-  grid-row: 8/9;
+  grid-row: 9/10;
 `;
 const SignIn = styled.div`
   cursor: pointer;
   grid-column: 7;
-  grid-row: 8/9;
+  grid-row: 9/10;
   font-size: small;
   color: ${(props) => props.theme.fontColor2};
 `;
