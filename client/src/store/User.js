@@ -4,8 +4,18 @@ const GET_USER_ERROR = "GET_USER_ERROR";
 
 export const setUserLoginedInfo = (payload) => ({ type: GET_USER_LOGINED_INFO, payload });
 
+let defaultUserInfo = {
+  accessToken: "",
+  createdAt: "",
+  email: "",
+  id: "",
+  isLogined: false,
+  name: "",
+  userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
+};
+
 const initState = {
-  payload: null,
+  payload: defaultUserInfo,
   error: null,
 };
 
