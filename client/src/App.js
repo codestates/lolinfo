@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Board from "./pages/Board";
 import Edit from "./pages/Mypage-Edit";
@@ -24,7 +24,7 @@ function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(0);
   const [loginModal, setLoginModal] = useState("");
-  const [schBarInput, setSchBarInput] = useState("고양이");
+  const [schBarInput, setSchBarInput] = useState("");
   const [loginState, setLoginState] = useState("");
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -36,7 +36,6 @@ function App() {
   });
 
   const user = useSelector((state) => state.user);
-  // console.log(user);
 
   const dispatch = useDispatch();
 
@@ -50,7 +49,7 @@ function App() {
         <Router>
           <GlobalStyle />
           <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
-          {history !== "/" ? <Search setSchBarInput={setSchBarInput} /> : null}
+          {history !== "/" ? <Search setSchBarInput={setSchBarInput} schBarInput={schBarInput} /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
               {loginModal === "login" ? (
@@ -64,7 +63,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home setSchBarInput={setSchBarInput} setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />
-            <Route path="/record" element={<RecordPage schBarInput={schBarInput} setHistory={setHistory} />} />
+            <Route path="/record" element={<RecordPage schBarInput={schBarInput} setHistory={setHistory} setSchBarInput={setSchBarInput} />} />
             <Route path="/mypage/edit" element={<Edit setHistory={setHistory} />} />
             <Route path="/mypage/changePassword" element={<ChangePassword setHistory={setHistory} />} />
             <Route path="/mypage/deleteAccount" element={<DeleteAccount setHistory={setHistory} />} />

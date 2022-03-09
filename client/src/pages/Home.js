@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CardContainer from "../containers/CardContainer";
 import * as d3 from "d3";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 //Body
 const StWrapper = styled.div`
   display: flex;
@@ -97,13 +97,14 @@ const StButton = styled.button`
 `;
 
 function Home({ setHistory, setSchBarInput }) {
+  let navigate = useNavigate();
   const [nick, setNick] = useState("");
   function handleSend(e, tag) {
     if (e.key === "Enter" || tag) {
       setSchBarInput(nick);
       setHistory("/record");
-      console.log(1);
-    }
+      navigate("/record");
+    } else setNick(e.target.value);
   }
   useEffect(() => {
     d3.select(".main-title")
@@ -129,8 +130,10 @@ function Home({ setHistory, setSchBarInput }) {
           <h1 className="main-title">LOLINFO</h1>
         </BodyHeader>
         <SearchBox>
-          <StInput placeholder="Search" autoComplete="off" onChange={(e) => setNick(e.target.value)} onKeyUp={handleSend}></StInput>
-          <StSearchIcon onClick={() => handleSend(false, true)} />
+          <StInput placeholder="Search" autoComplete="off" onChange={(e) => handleSend(e)} onKeyUp={handleSend}></StInput>
+          <Link to="/record">
+            <StSearchIcon onClick={() => handleSend(false, true)} />
+          </Link>
         </SearchBox>
         <StH2>게시판</StH2>
         <CardContainer />

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
@@ -54,29 +54,28 @@ const LogWrapper = styled.div`
 
   background-color: ${(props) => props.theme.recordBgColor};
 `;
-function RecordPage({ setHistory, schBarInput }) {
+function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   axios.defaults.withCredentials = false;
   const { data: record } = useSelector((state) => state.gameRecord);
   const dispatch = useDispatch();
 
-  const userName = schBarInput || ``;
+  // let schBarInput = "";
   useEffect(() => {
     setHistory("/record");
   }, []);
 
   useEffect(() => {
-    if (userName === "") return;
-
+    if (schBarInput === "") return;
     const matchUrl = process.env.REACT_APP_API_URL + "/games/match?nickname=";
-    dispatch(getRecord("get", matchUrl, userName));
-  }, [dispatch]);
+    dispatch(getRecord("get", matchUrl, schBarInput));
+  }, [dispatch, schBarInput]);
 
   const needs = [];
   let profileData = {};
   let chartData = {};
   let isActiveDummy = false;
 
-  if (userName !== "") {
+  if (schBarInput !== "") {
     if (record.loading) return <Loading />;
     if (!record.data) return <div>data null!...</div>;
     if (record.error) return <div>`error !!`</div>;
@@ -122,7 +121,7 @@ function RecordPage({ setHistory, schBarInput }) {
         } else {
           redTotalKill += kills;
         }
-        if (summonerName === userName) {
+        if (summonerName === schBarInput) {
           const {
             profileIcon,
             summonerName,
@@ -271,63 +270,63 @@ function RecordPage({ setHistory, schBarInput }) {
     };
   }
 
-  const ddragon = async (version, aux, user) => {
-    let pri = [];
-    let sub = [];
-    let perks = [];
-    let spell = [];
-    for (let i = 1; i < aux.length; i++) {
-      aux[i].info.participants.forEach((x) => {
-        if (x.summonerName === user) {
-          perks.push(x.perks.styles);
-          spell.push([x.summoner1Id, x.summoner2Id]);
-        }
-      });
-    }
-    perks.forEach((perk) => {
-      pri.push([perk[0].style, perk[0].selections[0].perk]);
-      sub.push(perk[1].style);
-    });
-    // console.log("pri=", pri);
-    // console.log("sub=", sub);
-    let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
-    let mainRune = [];
-    let subRune = [];
-    let perksInfo = data.data;
-    for (let i = 0; i < pri.length; i++) {
-      perksInfo.forEach((x) => {
-        if (x.id === pri[i][0]) {
-          for (let j = 0; j < x.slots.length; j++) {
-            for (let k = 0; k < x.slots[j].runes.length; k++) {
-              if (x.slots[j].runes[k].id === pri[i][1]) mainRune.push(x.slots[j].runes[k].icon);
-            }
-          }
-        }
-      });
-      perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
-    }
-    let temp = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/summoner.json");
+  // const ddragon = async (version, aux, user) => {
+  //   let pri = [];
+  //   let sub = [];
+  //   let perks = [];
+  //   let spell = [];
+  //   for (let i = 1; i < aux.length; i++) {
+  //     aux[i].info.participants.forEach((x) => {
+  //       if (x.summonerName === user) {
+  //         perks.push(x.perks.styles);
+  //         spell.push([x.summoner1Id, x.summoner2Id]);
+  //       }
+  //     });
+  //   }
+  //   perks.forEach((perk) => {
+  //     pri.push([perk[0].style, perk[0].selections[0].perk]);
+  //     sub.push(perk[1].style);
+  //   });
+  //   // console.log("pri=", pri);
+  //   // console.log("sub=", sub);
+  //   let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
+  //   let mainRune = [];
+  //   let subRune = [];
+  //   let perksInfo = data.data;
+  //   for (let i = 0; i < pri.length; i++) {
+  //     perksInfo.forEach((x) => {
+  //       if (x.id === pri[i][0]) {
+  //         for (let j = 0; j < x.slots.length; j++) {
+  //           for (let k = 0; k < x.slots[j].runes.length; k++) {
+  //             if (x.slots[j].runes[k].id === pri[i][1]) mainRune.push(x.slots[j].runes[k].icon);
+  //           }
+  //         }
+  //       }
+  //     });
+  //     perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
+  //   }
+  //   let temp = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/summoner.json");
 
-    // console.log("spellTF=", spell);
-    // console.log(temp.data.data);
+  //   // console.log("spellTF=", spell);
+  //   // console.log(temp.data.data);
 
-    let spell1 = [];
-    let spell2 = [];
-    let spellAll = temp.data.data;
-    spell.forEach((x) => {
-      for (let spellOne in spellAll) {
-        if (spellAll[spellOne].key === `${x[0]}`) {
-          spell1.push(spellAll[spellOne].id + ".png");
-        }
-        if (spellAll[spellOne].key === `${x[1]}`) {
-          spell2.push(spellAll[spellOne].id + ".png");
-        }
-      }
-    });
-    return { mainRune, subRune, spell1, spell2 };
-  };
+  //   let spell1 = [];
+  //   let spell2 = [];
+  //   let spellAll = temp.data.data;
+  //   spell.forEach((x) => {
+  //     for (let spellOne in spellAll) {
+  //       if (spellAll[spellOne].key === `${x[0]}`) {
+  //         spell1.push(spellAll[spellOne].id + ".png");
+  //       }
+  //       if (spellAll[spellOne].key === `${x[1]}`) {
+  //         spell2.push(spellAll[spellOne].id + ".png");
+  //       }
+  //     }
+  //   });
+  //   return { mainRune, subRune, spell1, spell2 };
+  // };
 
-  ddragon("12.4.1", record.data, userName);
+  // ddragon("12.4.1", record.data, schBarInput);
 
   return (
     <div>
