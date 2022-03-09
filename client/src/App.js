@@ -17,7 +17,6 @@ import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 import AlertModal from "./components/alertModal";
-
 function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(0);

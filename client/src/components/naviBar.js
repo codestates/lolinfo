@@ -3,15 +3,15 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-function NaviBar({ sticky, setLoginModal, loginState }) {
+function NaviBar({ sticky, setLoginModal }) {
   let navigate = useNavigate();
-
+  let userInfo = useSelector((state) => state.user.payload);
   return (
     <div>
       <NaviContainer sticky={sticky} className={sticky ? "naviBar-sticky" : "navibar-nomal"}>
         {menuNameList.map((ele, menuIdx) => (
           <Menu
-            loginState={loginState}
+            loginState={userInfo.isLogined}
             className={menuNameList[menuIdx]}
             key={menuNameList[menuIdx]}
             order={menuIdx}
