@@ -10,18 +10,27 @@ function ChangePasswordPage({ setHistory }) {
   useEffect(() => {
     setHistory(true);
   }, []);
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newAgainPassword, setnewAgainPassword] = useState("");
+
+  const [password, setPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [newAgainPassword, setnewAgainPassword] = useState("")
 
   const passwordConfirmation = async () => {
     if (!validPassword(password)) {
-      setPassword("");
-      alert("비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다.");
-      return;
+      setPassword("")
+      alert("비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다.")
+      return
     }
     if (!isMatchPassword(newPassword, newAgainPassword)) {
-      return alert("비밀번호가 일치하지 않습니다.");
+      return alert("비밀번호가 일치하지 않습니다.")
+    }
+    const change = await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo",
+      { email: "kimcoding@korea.com", password: password, changedPassword: newPassword })
+    if (change.status === 200) {
+      setPassword("")
+      setNewPassword("")
+      setnewAgainPassword("")
+      return alert("비밀번호가 정상적으로 교체되었습니다.")
     }
     const change = await axios.put("http://localhost:8090/users/userinfo", { email: "kimcoding@korea.com", password: password, changedPassword: newPassword });
     if (change.status === 200) {
@@ -31,6 +40,10 @@ function ChangePasswordPage({ setHistory }) {
       return alert("비밀번호가 정상적으로 교체되었습니다.");
     }
   };
+
+
+  }
+
 
   return (
     <Container>
@@ -58,7 +71,9 @@ function ChangePasswordPage({ setHistory }) {
         </ChangePasswordContainer>
       </ChangePwPage>
     </Container>
+
   );
+  )
 }
 
 const Container = styled.div`
