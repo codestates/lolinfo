@@ -1,16 +1,15 @@
-import styled from "styled-components";
-import MypageNavbar from "./pageComponents/MypageComponents/MypageNavbarComponent";
-import { useState, useEffect } from "react";
-import { isMatchPassword, validPassword } from "../modules/validation";
+import styled from 'styled-components';
+import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponent'
+import { useState, useEffect } from 'react'
+import { isMatchPassword, validPassword } from '../modules/validation'
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-function ChangePasswordPage({ setHistory }) {
+function ChangePasswordPage({ setHistory, setPasswordState, setPasswordCheckState, setReplaceState }) {
   useEffect(() => {
     setHistory(true);
   }, []);
-
   const [password, setPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [newAgainPassword, setnewAgainPassword] = useState("")
@@ -18,11 +17,12 @@ function ChangePasswordPage({ setHistory }) {
   const passwordConfirmation = async () => {
     if (!validPassword(password)) {
       setPassword("")
-      alert("비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다.")
+      setPasswordState("change")
       return
     }
     if (!isMatchPassword(newPassword, newAgainPassword)) {
-      return alert("비밀번호가 일치하지 않습니다.")
+      setPasswordCheckState("change")
+      return
     }
     const change = await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo",
       { email: "kimcoding@korea.com", password: password, changedPassword: newPassword })
@@ -30,20 +30,11 @@ function ChangePasswordPage({ setHistory }) {
       setPassword("")
       setNewPassword("")
       setnewAgainPassword("")
-      return alert("비밀번호가 정상적으로 교체되었습니다.")
+      setReplaceState("change")
+      return
     }
-    const change = await axios.put("http://localhost:8090/users/userinfo", { email: "kimcoding@korea.com", password: password, changedPassword: newPassword });
-    if (change.status === 200) {
-      setPassword("");
-      setNewPassword("");
-      setnewAgainPassword("");
-      return alert("비밀번호가 정상적으로 교체되었습니다.");
-    }
-  };
-
 
   }
-
 
   return (
     <Container>
@@ -71,8 +62,6 @@ function ChangePasswordPage({ setHistory }) {
         </ChangePasswordContainer>
       </ChangePwPage>
     </Container>
-
-  );
   )
 }
 
@@ -202,5 +191,6 @@ const SubmitButton = styled.button`
   border: 0;
   cursor: pointer;
 `;
+
 
 export default ChangePasswordPage;

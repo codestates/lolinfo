@@ -2,18 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-function AlertModal({ setModalOn, visible, children }) {
-  document.addEventListener(
-    "click",
-    (e) => (e.target.matches(".modal-outside") ? setModalOn("") : 0),
-    false
-  );
+function AlertModal({ setLoginState, visible, children }) {
+
+  const downFunction = () => {
+    setLoginState("")
+  }
   return (
     <>
       <ModalOverlay visible={visible} />
       <ModalWrapper className="modal-outside" visible={visible}>
-        <ModalInner className="modal-inside">{children}</ModalInner>
-        <button>확인</button>
+
+        <ModalInner className="modal-inside">{children}
+          <ModalButton onClick={() => downFunction()}>확인</ModalButton>
+        </ModalInner>
       </ModalWrapper>
     </>
   );
@@ -46,16 +47,30 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalInner = styled.div`
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   position: relative;
   width: 350px;
-  height: 100px;
-  border-radius:30px;
+  height: 200px;
+  border-radius:10px;
   text-align: center;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
-  background-color: white
+  background-color: white;
+  font-size:20px
+`;
+
+const ModalButton = styled.button`
+box-sizing: border-box;
+  position: relative;
+  width: 70px;
+  height: 40px;
+  border-radius:10px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 auto;
 `;
 
 export default AlertModal;
