@@ -64,6 +64,59 @@ const SmallHeader = styled.h4`
     color: ${(props) => props.theme.MypageSmallHeader};
   }
 `;
+const CheckBoxDiv = styled.div`
+  display: grid;
+  grid-template-columns: repeat(9, minmax(auto, 1fr));
+  grid-template-rows: repeat(1, minmax(auto, 1fr));
+  grid-row: 8/9;
+  grid-column: 2/10;
+`;
+const CheckBox = styled.input`
+  grid-row: 1;
+  grid-column: 1/2;
+  width: 20px;
+  height: 20px;
+  outline: 0;
+  margin: 26px 5px 5px 0px;
+  cursor: pointer;
+`;
+const CheckBoxDetail = styled.div`
+  grid-row: 1;
+  grid-column: 2/10;
+  margin: 24px 5px 5px -30px;
+  @media (max-width: 700px) {
+    grid-row: 1;
+    grid-column: 2/10;
+    font-size: 13px;
+    margin: 26px 5px 5px -15px;
+  }
+`;
+const AgreeORDisAgree = styled.div`
+  display: grid;
+  grid-template-columns: repeat(13, minmax(auto, 1fr));
+  grid-template-rows: repeat(10, minmax(auto, 1fr));
+  grid-row: 10/11;
+  grid-column: 2/10;
+`;
+const Disagree = styled.button`
+  grid-row: 2/10;
+  grid-column: 4/7;
+  background-color: #fff;
+  border: 2px solid ${(props) => props.theme.MypageLineColor};
+  cursor: pointer;
+  font-size: 18px;
+`;
+const Agree = styled.button`
+  /* ${(props) => (props.check ? "yellow" : "black")}; */
+  grid-row: 2/10;
+  grid-column: 8/11;
+  background-color: ${(props) => (props.check ? "#fff" : props.theme.MypageLineColor)};
+  color: ${(props) => (!props.check ? "#fff" : "black")};
+  border: ${(props) => (props.check ? "2px " + "solid " + props.theme.MypageLineColor : 0)};
+  cursor: ${(props) => (props.check ? "pointer" : null)};
+  font-weight: 700;
+  font-size: 18px;
+`;
 const FirstLaw = styled.div`
   display: grid;
   grid-template-columns: repeat(9, minmax(auto, 1fr));
@@ -154,65 +207,14 @@ const FifthLawdetail = styled.div`
   font-size: 12px;
   font-weight: 400;
 `;
-const CheckBoxDiv = styled.div`
-  display: grid;
-  grid-template-columns: repeat(9, minmax(auto, 1fr));
-  grid-template-rows: repeat(1, minmax(auto, 1fr));
-  grid-row: 8/9;
-  grid-column: 2/10;
-`;
-const CheckBox = styled.input`
-  grid-row: 1;
-  grid-column: 1/2;
-  width: 20px;
-  height: 20px;
-  outline: 0;
-  margin: 26px 5px 5px 0px;
-  cursor: pointer;
-`;
-const CheckBoxDetail = styled.div`
-  grid-row: 1;
-  grid-column: 2/10;
-  margin: 24px 5px 5px -30px;
-  @media (max-width: 700px) {
-    grid-row: 1;
-    grid-column: 2/10;
-    font-size: 13px;
-    margin: 26px 5px 5px -15px;
-  }
-`;
-const AgreeORDisAgree = styled.div`
-  display: grid;
-  grid-template-columns: repeat(13, minmax(auto, 1fr));
-  grid-template-rows: repeat(10, minmax(auto, 1fr));
-  grid-row: 10/11;
-  grid-column: 2/10;
-`;
-const Disagree = styled.button`
-  grid-row: 2/10;
-  grid-column: 4/7;
-  background-color: #fff;
-  border: 2px solid ${(props) => props.theme.MypageLineColor};
-  cursor: pointer;
-  font-size: 18px;
-`;
-const Agree = styled.button`
-  /* ${(props) => (props.check ? "yellow" : "black")}; */
-  grid-row: 2/10;
-  grid-column: 8/11;
-  background-color: ${(props) => (props.check ? "#fff" : props.theme.MypageLineColor)};
-  color: ${(props) => (!props.check ? "#fff" : "black")};
-  border: ${(props) => (props.check ? "2px " + "solid " + props.theme.MypageLineColor : 0)};
-  cursor: ${(props) => (props.check ? "pointer" : null)};
-  font-weight: 700;
-  font-size: 18px;
-`;
+
 function DeleteAccountPage({ setHistory }) {
   const [check, setCheck] = useState(false);
 
   useEffect(() => {
     setHistory("/mypage/deleteAccount");
   }, []);
+
   return (
     <Container>
       <SubMenu>
@@ -222,6 +224,7 @@ function DeleteAccountPage({ setHistory }) {
         <DeleteAccountContainer>
           <Header>회원탈퇴</Header>
           <SmallHeader>회원탈퇴 전에 반드시 유의사항을 확인하고 진행해 주세요.</SmallHeader>
+
           <FirstLaw>
             <FirstLawName>개인정보 및 서비스 이용 기록 삭제</FirstLawName>
             <FirstLawdetail>개인정보 및 개인화 서비스 이용기록이 모두 삭제 되며, 삭제된 데이터는 복구되지 않습니다. 필요한 데이터는 미리 백업해 주시기 바랍니다.</FirstLawdetail>
@@ -257,3 +260,7 @@ function DeleteAccountPage({ setHistory }) {
 }
 
 export default DeleteAccountPage;
+
+// ChattingRoom에서 handleText라는 함수를
+// chattingapp한테
+// props로 내려준다고하면요
