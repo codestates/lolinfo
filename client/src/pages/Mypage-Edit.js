@@ -6,15 +6,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-function Mypage({ setHistory }) {
+function Mypage({ setHistory, setReplaceState }) {
   useEffect(() => {
     setHistory(true);
   }, []);
   const [change, setChange] = useState("");
   const something = async () => {
-    console.log(change);
     await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: "kimcoding@korea.com", name: change });
-    alert("닉네임이 정상적으로 바뀌었습니다.");
+    setReplaceState("change"); // 정상적으로 교체되면 나오는 모달
   };
   return (
     <Container>
