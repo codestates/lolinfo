@@ -1,8 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function NaviBar({ sticky, setLoginModal }) {
+  const userInfo = useSelector((state) => state.user);
+
   let navigate = useNavigate();
   return (
     <div>

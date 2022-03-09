@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
@@ -6,6 +6,8 @@ import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import { getRecord } from "../store/GameRecord";
 import Loading from "./Loading";
+import { profileDummyData, dummyChartData } from "../resource/RecordPagehelp";
+import axios from "axios";
 
 const Content = styled.div`
   display: grid;
@@ -52,26 +54,45 @@ const LogWrapper = styled.div`
 
   background-color: ${(props) => props.theme.recordBgColor};
 `;
-function RecordPage({ setHistory }) {
+function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
+  axios.defaults.withCredentials = false;
   const { data: record } = useSelector((state) => state.gameRecord);
-  // console.log("record", record);
   const dispatch = useDispatch();
 
-  const userName = "고양이";
+  // let schBarInput = "";
   useEffect(() => {
-    setHistory(true);
+    setHistory("/record");
   }, []);
+
   useEffect(() => {
-    const matchUrl = process.env.REACT_APP_API_URL + "games/match?nickname=";
-    dispatch(getRecord("get", matchUrl, userName));
-  }, [dispatch]);
+    if (schBarInput === "") return;
+    const matchUrl = process.env.REACT_APP_API_URL + "/games/match?nickname=";
+    dispatch(getRecord("get", matchUrl, schBarInput));
+  }, [dispatch, schBarInput]);
 
   const needs = [];
+  let profileData = {};
   let chartData = {};
-  let totalKill = [];
-  let totalKP = 0;
-  //날짜
+  let isActiveDummy = false;
+
+  if (schBarInput !== "") {
+    if (record.loading) return <Loading />;
+    if (!record.data) return <div>data null!...</div>;
+    if (record.error) return <div>`error !!`</div>;
+    if (!record.loading) {
+      if (record.data[0].length !== 0) {
+        extractData();
+        extractProfileData();
+      } else {
+        isActiveDummy = true;
+      }
+    }
+  } else {
+    isActiveDummy = true;
+  }
+
   function extractData() {
+    let totalKill = [];
     for (let i = 1; i < record.data.length; ++i) {
       const { gameType, gameDuration, gameId } = record.data[i].info;
       let gameLen = gameDuration;
@@ -93,15 +114,14 @@ function RecordPage({ setHistory }) {
       // console.log("일=", Number(day));
 
       for (let j = 0; j < record.data[i].info.participants.length; ++j) {
-        const name = record.data[i].info.participants[j].summonerName;
-
-        const { kills, teamId } = record.data[i].info.participants[j];
+        const { queueId } = record.data[i].info;
+        const { kills, teamId, summonerName } = record.data[i].info.participants[j];
         if (teamId === 100) {
           blueTotalKill += kills;
         } else {
           redTotalKill += kills;
         }
-        if (name === userName) {
+        if (summonerName === schBarInput) {
           const {
             profileIcon,
             summonerName,
@@ -156,6 +176,7 @@ function RecordPage({ setHistory }) {
             totalMinionsKilled,
             month,
             day,
+            queueId,
           });
         }
       }
@@ -216,15 +237,8 @@ function RecordPage({ setHistory }) {
     totalLose = totalGame - totalWin;
     const victoryRate = (totalWin / totalGame) * 100;
 
-    chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate };
-  }
-
-  if (record.loading) return <Loading />;
-  if (!record.data) return <div>data null!...</div>;
-  if (record.error) return <div>`error !!`</div>;
-  if (!record.loading) {
-    extractData();
-    totalKP = calcKP();
+    const kp = calcKP();
+    chartData = { k, d, a, blueRate, RedRate, rate25, rate30, rate35, rate35more, totalGame, totalWin, totalLose, victoryRate, kp };
   }
 
   function calcKP() {
@@ -236,21 +250,98 @@ function RecordPage({ setHistory }) {
       needs[i].kp = parseInt(temp * 100);
       recentKP = temp;
     }
+
     return (recentKP = parseInt((recentKP / needs.length) * 100));
   }
+
+  function extractProfileData() {
+    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
+    const { profileIcon, summonerName } = needs[0];
+
+    profileData = {
+      leaguePoints,
+      wins,
+      losses,
+      tier,
+      rank,
+      queueType,
+      profileIcon,
+      summonerName,
+    };
+  }
+
+  // const ddragon = async (version, aux, user) => {
+  //   let pri = [];
+  //   let sub = [];
+  //   let perks = [];
+  //   let spell = [];
+  //   for (let i = 1; i < aux.length; i++) {
+  //     aux[i].info.participants.forEach((x) => {
+  //       if (x.summonerName === user) {
+  //         perks.push(x.perks.styles);
+  //         spell.push([x.summoner1Id, x.summoner2Id]);
+  //       }
+  //     });
+  //   }
+  //   perks.forEach((perk) => {
+  //     pri.push([perk[0].style, perk[0].selections[0].perk]);
+  //     sub.push(perk[1].style);
+  //   });
+  //   // console.log("pri=", pri);
+  //   // console.log("sub=", sub);
+  //   let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
+  //   let mainRune = [];
+  //   let subRune = [];
+  //   let perksInfo = data.data;
+  //   for (let i = 0; i < pri.length; i++) {
+  //     perksInfo.forEach((x) => {
+  //       if (x.id === pri[i][0]) {
+  //         for (let j = 0; j < x.slots.length; j++) {
+  //           for (let k = 0; k < x.slots[j].runes.length; k++) {
+  //             if (x.slots[j].runes[k].id === pri[i][1]) mainRune.push(x.slots[j].runes[k].icon);
+  //           }
+  //         }
+  //       }
+  //     });
+  //     perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
+  //   }
+  //   let temp = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/summoner.json");
+
+  //   // console.log("spellTF=", spell);
+  //   // console.log(temp.data.data);
+
+  //   let spell1 = [];
+  //   let spell2 = [];
+  //   let spellAll = temp.data.data;
+  //   spell.forEach((x) => {
+  //     for (let spellOne in spellAll) {
+  //       if (spellAll[spellOne].key === `${x[0]}`) {
+  //         spell1.push(spellAll[spellOne].id + ".png");
+  //       }
+  //       if (spellAll[spellOne].key === `${x[1]}`) {
+  //         spell2.push(spellAll[spellOne].id + ".png");
+  //       }
+  //     }
+  //   });
+  //   return { mainRune, subRune, spell1, spell2 };
+  // };
+
+  // ddragon("12.4.1", record.data, schBarInput);
 
   return (
     <div>
       <Content>
-        <UserProfile info={record.data[0][0]} icon={needs[0].profileIcon} gameID={needs[0].summonerName} />
+        <UserProfile profileData={isActiveDummy ? profileDummyData : profileData} />
         <BoxWrapper name="BoxWrapper">
-          <RecentChart className="RecentChart" chartData={chartData} totalKP={totalKP} />
+          <RecentChart className="RecentChart" chartData={isActiveDummy ? dummyChartData : chartData} />
           <div>
-            <LogWrapper className="RecentGameLog">
-              {needs.map((v) => {
-                return <RecentGameLog key={v.gameId} data={v} />;
-              })}
-            </LogWrapper>
+            {isActiveDummy ? null : (
+              <LogWrapper className="RecentGameLog">
+                {needs.map((v) => {
+                  return <RecentGameLog key={v.gameId} data={v} />;
+                })}
+              </LogWrapper>
+            )}
           </div>
         </BoxWrapper>
       </Content>

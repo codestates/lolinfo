@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
 
 const Header = styled.h2`
@@ -43,6 +43,7 @@ const ChatLogContainer = styled.ul`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow-y: scroll;
 `;
 
 const ReceiveMessage = styled.li`
@@ -111,33 +112,41 @@ const ChattingSubmitButton = styled.button`
 function ChattingApp(props) {
   // 현재 로그인한 유저의 정보, 리덕스에서 가져올것
 
-  const { userInfo = {}, chatLog = [] } = props;
-  const [ messageInput, setMessageInput ] = useState('');
+  const { userInfo = {}, chatLog = [], handleSubmit } = props;
+  const [messageInput, setMessageInput] = useState("");
 
-  //TODO: react.memo 
-  const onSubmit = e => {
-    e.preventDefault();
-    setMessageInput('');
-    props.handleSubmit(messageInput);
-    inputRef.current.focus();
-  };
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      setMessageInput("");
+      handleSubmit(messageInput);
+      inputRef.current.focus();
+    },
+    [messageInput, handleSubmit],
+  );
 
-  const handleTextChange = e => {
+  const handleTextChange = useCallback((e) => {
     setMessageInput(e.target.value);
-  }
+  }, []);
 
   const inputRef = useRef();
+  let ulRef = useRef();
+
+  // 채팅 업데이트시 스크롤 맨 아래로
+  useEffect(() => {
+    ulRef.current.scrollTop = ulRef.current.scrollHeight - ulRef.current.clientHeight;
+  }, [chatLog]);
 
   return (
     <ChattingDiv>
       <Header>LOLINFO 채팅방</Header>
-      <ChatLogContainer>
+      <ChatLogContainer ref={ulRef}>
         {chatLog.map((chat, idx) => {
-          if (chat.userName === userInfo.userName) {
+          if (chat.name === userInfo.name) {
             return (
               <SentMessage key={idx}>
                 <Profile>
-                  <span>{chat.userName}</span>
+                  <span>{chat.name}</span>
                   <img alt="userProfile" src={chat.userImg} />
                 </Profile>
                 <span className="message">{chat.message}</span>
@@ -148,7 +157,7 @@ function ChattingApp(props) {
             return (
               <ReceiveMessage key={idx}>
                 <Profile>
-                  <span>{chat.userName}</span>
+                  <span>{chat.name}</span>
                   <img alt="userProfile" src={chat.userImg} />
                 </Profile>
                 <span className="message">{chat.message}</span>
@@ -168,4 +177,4 @@ function ChattingApp(props) {
   );
 }
 
-export default ChattingApp;
+export default React.memo(ChattingApp, (prevProps, nextProps) => prevProps.userInfo === nextProps.userInfo && prevProps.chatLog === nextProps.chatLog);

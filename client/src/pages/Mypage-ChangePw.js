@@ -1,6 +1,70 @@
-import styled from "styled-components";
-import MypageNavbar from "./pageComponents/MypageComponents/MypageNavbarComponent";
-import { useEffect } from "react";
+import styled from 'styled-components';
+import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponent'
+import { useState, useEffect } from 'react'
+import { isMatchPassword, validPassword } from '../modules/validation'
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+
+function ChangePasswordPage({ setHistory, setPasswordState, setPasswordCheckState, setReplaceState }) {
+  useEffect(() => {
+    setHistory(true);
+  }, []);
+  const [password, setPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [newAgainPassword, setnewAgainPassword] = useState("")
+
+  const passwordConfirmation = async () => {
+    if (!validPassword(password)) {
+      setPassword("")
+      setPasswordState("change")
+      return
+    }
+    if (!isMatchPassword(newPassword, newAgainPassword)) {
+      setPasswordCheckState("change")
+      return
+    }
+    const change = await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo",
+      { email: "kimcoding@korea.com", password: password, changedPassword: newPassword })
+    if (change.status === 200) {
+      setPassword("")
+      setNewPassword("")
+      setnewAgainPassword("")
+      setReplaceState("change")
+      return
+    }
+
+  }
+
+  return (
+    <Container>
+      <SubMenu>
+        <MypageNavbar></MypageNavbar>
+      </SubMenu>
+      <ChangePwPage>
+        <ChangePasswordContainer>
+          <Header>비밀번호 변경</Header>
+          <SmallHeader>개인정보 보호를 위해 비밀번호를 주기적으로 변경해주세요.</SmallHeader>
+          <ChangePasswordDiv>
+            <CurrentPassword>
+              <CurrentPasswordInput value={password} onChange={(e) => setPassword(e.target.value)} placeholder="현재 비밀번호 입력"></CurrentPasswordInput>
+            </CurrentPassword>
+            <NewPassword>
+              <NewPasswordInput value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="신규 비밀번호 입력"></NewPasswordInput>
+            </NewPassword>
+            <NewPasswordCheck>
+              <NewPasswordCheckInput value={newAgainPassword} onChange={(e) => setnewAgainPassword(e.target.value)} placeholder="신규 비밀번호 재입력"></NewPasswordCheckInput>
+            </NewPasswordCheck>
+            <SubmitButtonDiv>
+              <SubmitButton onClick={passwordConfirmation}>확인</SubmitButton>
+            </SubmitButtonDiv>
+          </ChangePasswordDiv>
+        </ChangePasswordContainer>
+      </ChangePwPage>
+    </Container>
+  )
+}
+
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(10, minmax(auto, 1fr));
@@ -127,37 +191,6 @@ const SubmitButton = styled.button`
   border: 0;
   cursor: pointer;
 `;
-function ChangePasswordPage({ setHistory }) {
-  useEffect(() => {
-    setHistory(true);
-  }, []);
-  return (
-    <Container>
-      <SubMenu>
-        <MypageNavbar></MypageNavbar>
-      </SubMenu>
-      <ChangePwPage>
-        <ChangePasswordContainer>
-          <Header>비밀번호 변경</Header>
-          <SmallHeader>개인정보 보호를 위해 비밀번호를 주기적으로 변경해주세요.</SmallHeader>
-          <ChangePasswordDiv>
-            <CurrentPassword>
-              <CurrentPasswordInput placeholder="현재 비밀번호 입력"></CurrentPasswordInput>
-            </CurrentPassword>
-            <NewPassword>
-              <NewPasswordInput placeholder="신규 비밀번호 입력"></NewPasswordInput>
-            </NewPassword>
-            <NewPasswordCheck>
-              <NewPasswordCheckInput placeholder="신규 비밀번호 재입력"></NewPasswordCheckInput>
-            </NewPasswordCheck>
-            <SubmitButtonDiv>
-              <SubmitButton>확인</SubmitButton>
-            </SubmitButtonDiv>
-          </ChangePasswordDiv>
-        </ChangePasswordContainer>
-      </ChangePwPage>
-    </Container>
-  );
-}
+
 
 export default ChangePasswordPage;

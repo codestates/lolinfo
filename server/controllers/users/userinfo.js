@@ -45,7 +45,7 @@ module.exports = {
         });
         if (!Value) {
           // cant find
-          return res.status(400).sned("please check your email or password again");
+          return res.status(400).send("please check your email or password again")
         }
         const encryptPassword = await createHashedPassword(changedPassword);
         await User.update({ password: encryptPassword.password, salt: encryptPassword.salt }, { where: { email: email } });
