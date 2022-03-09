@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export const createPromiseThunk = (type) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
 
@@ -24,12 +25,12 @@ export const createPromiseThunk = (type) => {
         }
       }
 
-      const { data: payload } = resData;
-      // console.log("createPromiseThunk:", payload);
+      console.log("썽크", { type: SUCCESS, payload: resData.data });
 
-      dispatch({ type: SUCCESS, payload });
+      dispatch({ type: SUCCESS, payload: resData.data });
     } catch (e) {
-      dispatch({ type: ERROR, payload: e, error: true });
+      console.log("썽크에러", { type: ERROR, e });
+      dispatch({ type: ERROR, errorMsg: e });
     }
   };
 };
@@ -43,7 +44,7 @@ export const reducerUtils = {
 
   loading: (prevState = null) => ({
     loading: true,
-    data: prevState,
+    payload: prevState,
     error: null,
   }),
 
@@ -55,7 +56,7 @@ export const reducerUtils = {
 
   error: (error) => ({
     loading: false,
-    data: null,
+    payload: null,
     error: error,
   }),
 };

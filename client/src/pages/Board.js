@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 
 import CardContainer from "../containers/CardContainer";
 
@@ -192,17 +192,17 @@ function Board({ setHistory }) {
   };
 
   const URL = process.env.REACT_APP_API_URL;
-  const token = ''
+  const token = "";
   const axiosInstance = axios.create({
     baseURL: URL,
     withCredentials: true,
     headers: {
-      Authorization: 'Bearer ' + token
-    }
-  })
+      Authorization: "Bearer " + token,
+    },
+  });
   const axiosPost = async (title, body) => {
-    axiosInstance.post()
-  }
+    axiosInstance.post();
+  };
 
   const handleTitle = (e) => {
     setPost({
@@ -220,12 +220,11 @@ function Board({ setHistory }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
   };
 
   //log
   useEffect(() => {
-    console.log(post);
+    // console.log(post);
   }, [post]);
 
   return (
