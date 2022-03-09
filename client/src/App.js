@@ -54,7 +54,7 @@ function App() {
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
               {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} />
-                : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />}
+                : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} userInfo={userInfo} />}
             </Modal>
           ) : null}
           {loginState ? <AlertModal setLoginModal={setLoginModal} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
