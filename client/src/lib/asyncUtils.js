@@ -49,7 +49,7 @@ export const reducerUtils = {
 
   success: (payload) => ({
     loading: false,
-    data: payload,
+    payload,
     error: null,
   }),
 

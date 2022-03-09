@@ -1,10 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUserLoginedInfo } from "../store/User";
 
 axios.defaults.withCredentials = true;
 
 function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState, setloginFailState }) {
+  const dispatch = useDispatch();
   const IdInputFunction = (e) => {
     setUserInfo(Object.assign(userInfo, { name: e.target.value }));
   };
@@ -17,9 +20,12 @@ function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState, setlog
     const { name, password } = userInfo;
     const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/login", { email: name, password: password });
 
+    LoginReturnValue.data.data.isLogined = true;
+    dispatch(setUserLoginedInfo(LoginReturnValue.data.data));
+    console.log(LoginReturnValue.data.data);
+
     if (LoginReturnValue.status === 200) {
       setUserInfo(Object.assign(userInfo, { login: true }));
-
       return setLoginState("SuLogin"); //로그인성공시 모달창
     }
   };
