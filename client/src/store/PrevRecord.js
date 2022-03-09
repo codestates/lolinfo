@@ -7,7 +7,7 @@ const initState = {
 };
 
 export default function prevRecord(state = initState, action) {
-  console.log(action);
+  // console.log(action);
 
   switch (action.type) {
     case SET_PREV_RECORD:

@@ -19,13 +19,13 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   }, []);
 
   let isDummy = false;
-  console.log("로딩전", "loading", loading, "prevRecord", prevRecord, "schBarInput", schBarInput, payload);
+  // console.log("로딩전", "loading", loading, "prevRecord", prevRecord, "schBarInput", schBarInput, payload);
   if (loading || schBarInput !== prevRecord) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
   if (error || schBarInput === "") {
     isDummy = true;
   }
 
-  console.log("로딩후", loading, prevRecord, schBarInput, payload);
+  // console.log("로딩후", loading, prevRecord, schBarInput, payload);
   const { chartData, needs } = extractData(payload, schBarInput);
   const profileData = extractProfileData(payload, needs);
   if (!profileData) isDummy = true;
