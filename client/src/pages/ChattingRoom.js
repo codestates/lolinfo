@@ -50,7 +50,7 @@ const UserName = styled.span`
 let socket;
 
 function ChattingRoom() {
-  let userInfo = useSelector((state) => state.userInfo);
+  let userInfo = useSelector((state) => state.user);
 
   let [userList, setUserList] = useState([]);
 
@@ -58,7 +58,8 @@ function ChattingRoom() {
 
   useEffect(() => {
     socket = ioClient(process.env.REACT_APP_API_URL);
-    const name = userInfo.userName;
+    const name = userInfo.name;
+    console.log('현재 state.user.data.data.name: ', userInfo.data.data.name);
     const room = "global";
     const userImg = userInfo.userImg;
 
@@ -69,7 +70,7 @@ function ChattingRoom() {
         alert(error);
       }
     });
-  }, [userInfo.userImg, userInfo.userName]);
+  }, [userInfo.userImg, userInfo.name]);
 
   useEffect(() => {
     // 서버에서 message 이벤트가 올 경우에 대해서 `on`
@@ -93,8 +94,6 @@ function ChattingRoom() {
       socket.emit("sendMessage", message);
     }
   };
-
-  function handleCTS() {}
 
   return (
     <Container>

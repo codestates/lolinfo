@@ -133,7 +133,7 @@ function ChattingApp(props) {
       <Header>LOLINFO 채팅방</Header>
       <ChatLogContainer>
         {chatLog.map((chat, idx) => {
-          if (chat.userName === userInfo.userName) {
+          if (chat.userName === userInfo.name) {
             return (
               <SentMessage key={idx}>
                 <Profile>
