@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
+import axios from 'axios'
 
 import CardContainer from "../containers/CardContainer";
 
@@ -178,6 +179,10 @@ const keyword = "최근";
 
 function Board({ setHistory }) {
   const [isWriteFormVisible, setWriteFormVisible] = useState(false);
+  const [post, setPost] = useState({
+    title: "",
+    body: "",
+  });
 
   useEffect(() => {
     setHistory("/board");
@@ -186,6 +191,43 @@ function Board({ setHistory }) {
     setWriteFormVisible(!isWriteFormVisible);
   };
 
+  const URL = process.env.REACT_APP_API_URL;
+  const token = ''
+  const axiosInstance = axios.create({
+    baseURL: URL,
+    withCredentials: true,
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
+  })
+  const axiosPost = async (title, body) => {
+    axiosInstance.post()
+  }
+
+  const handleTitle = (e) => {
+    setPost({
+      ...post,
+      title: e.target.value,
+    });
+  };
+
+  const handleBody = (e) => {
+    setPost({
+      ...post,
+      body: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+  };
+
+  //log
+  useEffect(() => {
+    console.log(post);
+  }, [post]);
+
   return (
     <StWrapper>
       <BodyRow>
@@ -193,17 +235,12 @@ function Board({ setHistory }) {
           <Button onClick={writeButtonHandler}>
             <NewIcon />
           </Button>
-          <Form
-            active={isWriteFormVisible}
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <input placeholder="제목" className="title" />
+          <Form active={isWriteFormVisible} onSubmit={handleSubmit}>
+            <input placeholder="제목" className="title" value={post.title} onChange={handleTitle} />
             <SubmitButton type="submit">
               <CheckSquare size="2rem" />
             </SubmitButton>
-            <textarea placeholder="내용" className="body" />
+            <textarea placeholder="내용" className="body" value={post.body} onChange={handleBody} />
           </Form>
         </WriteContainer>
         <OrderBy>

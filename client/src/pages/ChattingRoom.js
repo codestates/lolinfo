@@ -69,12 +69,6 @@ function ChattingRoom() {
         alert(error);
       }
     });
-    // Disconnect handle
-    // return () => {
-    //   socket.emit("disconnect");
-
-    //   socket.off();
-    // };
   }, [userInfo.userImg, userInfo.userName]);
 
   useEffect(() => {
