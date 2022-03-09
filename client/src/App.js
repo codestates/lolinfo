@@ -17,7 +17,6 @@ import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 import AlertModal from "./components/alertModal";
-
 function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(0);
@@ -44,7 +43,7 @@ function App() {
       <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
-          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
+          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} loginState={loginState} />
           {history !== "/" ? <Search setSchBarInput={setSchBarInput} schBarInput={schBarInput} /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
