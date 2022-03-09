@@ -1,13 +1,12 @@
-import { createPromiseThunk, reducerUtils } from "../lib/asyncUtils";
-
 const GET_USER = "GET_USER";
-const GET_USER_SUCCESS = "GET_USER_SUCCESS";
+const GET_USER_LOGINED_INFO = "GET_USER_LOGINED_INFO";
 const GET_USER_ERROR = "GET_USER_ERROR";
 
-export const getUser = createPromiseThunk(GET_USER);
+export const setUserLoginedInfo = (payload) => ({ type: GET_USER_LOGINED_INFO, payload });
 
 const initState = {
-  data: reducerUtils.initial(),
+  payload: null,
+  error: null,
 };
 
 export default function user(state = initState, action) {
@@ -15,17 +14,18 @@ export default function user(state = initState, action) {
     case GET_USER:
       return {
         ...state,
-        data: reducerUtils.initial(),
+        payload: null,
+        error: null,
       };
-    case GET_USER_SUCCESS:
+    case GET_USER_LOGINED_INFO:
       return {
         ...state,
-        data: reducerUtils.success(action.payload),
+        payload: action.payload,
       };
     case GET_USER_ERROR:
       return {
         ...state,
-        data: reducerUtils.error(action.error),
+        error: action.error,
       };
     default:
       return state;

@@ -1,7 +1,51 @@
-import styled from "styled-components";
-import MypageNavbar from "./pageComponents/MypageComponents/MypageNavbarComponent";
-import MypageEditUserInfoManage from "./pageComponents/MypageComponents/MypageEditUserInfoManage";
-import { useEffect } from "react";
+import styled from 'styled-components';
+import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponent'
+import MypageEditUserInfoManage from './pageComponents/MypageComponents/MypageEditUserInfoManage';
+import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+function Mypage({ setHistory, setReplaceState }) {
+  useEffect(() => {
+    setHistory(true);
+  }, []);
+  const [change, setChange] = useState("")
+  const something = async () => {
+    await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: "kimcoding@korea.com", name: change })
+    setReplaceState("change")// 정상적으로 교체되면 나오는 모달
+  }
+  return (
+    <Container>
+      <SubMenu>
+        <MypageNavbar></MypageNavbar>
+      </SubMenu>
+      <EditPage>
+        <EditAccountContainer>
+          <Header>개인정보관리</Header>
+          <UserInfoManage>
+            <MypageEditUserInfoManage setChange={setChange} ></MypageEditUserInfoManage>
+          </UserInfoManage>
+          <ConnectedAccount>소셜계정연결</ConnectedAccount>
+          <ConnectedAccountContainer>
+            <GithubAccount>
+              <GithubAccountName>Github</GithubAccountName>
+              <GithubAccountValue>연결되지않음</GithubAccountValue>
+              <GithubAccountButtonDiv>
+                <GithubAccountButton>연결</GithubAccountButton>
+              </GithubAccountButtonDiv>
+            </GithubAccount>
+          </ConnectedAccountContainer>
+          <AccessOrDenyButtonDiv>
+            <DenyButton><Link to="/">취소</Link></DenyButton>
+            <AccessButton onClick={() => something()}>저장</AccessButton>
+          </AccessOrDenyButtonDiv>
+        </EditAccountContainer>
+      </EditPage>
+    </Container>
+  )
+}
+
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(10, minmax(auto, 1fr));
@@ -156,48 +200,15 @@ const DenyButton = styled.button`
   border-radius: 3px;
 `;
 const AccessButton = styled.button`
-  grid-row: 2/10;
-  grid-column: 9/13;
-  background-color: #1ea1f7;
-  border: none;
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  border-radius: 3px;
+ grid-row: 2/10;
+ grid-column: 9/13;
+ background-color: #1ea1f7;
+ border: none;
+ color: #fff;
+ font-weight: 700;
+ cursor: pointer;
+ border-radius: 3px;
 `;
-function Mypage({ setHistory }) {
-  useEffect(() => {
-    setHistory(true);
-  }, []);
-  return (
-    <Container>
-      <SubMenu>
-        <MypageNavbar></MypageNavbar>
-      </SubMenu>
-      <EditPage>
-        <EditAccountContainer>
-          <Header>개인정보관리</Header>
-          <UserInfoManage>
-            <MypageEditUserInfoManage></MypageEditUserInfoManage>
-          </UserInfoManage>
-          <ConnectedAccount>소셜계정연결</ConnectedAccount>
-          <ConnectedAccountContainer>
-            <GithubAccount>
-              <GithubAccountName>Github</GithubAccountName>
-              <GithubAccountValue>연결되지않음</GithubAccountValue>
-              <GithubAccountButtonDiv>
-                <GithubAccountButton>연결</GithubAccountButton>
-              </GithubAccountButtonDiv>
-            </GithubAccount>
-          </ConnectedAccountContainer>
-          <AccessOrDenyButtonDiv>
-            <DenyButton>취소</DenyButton>
-            <AccessButton>저장</AccessButton>
-          </AccessOrDenyButtonDiv>
-        </EditAccountContainer>
-      </EditPage>
-    </Container>
-  );
-}
+
 
 export default Mypage;

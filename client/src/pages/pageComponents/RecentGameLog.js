@@ -64,6 +64,7 @@ function RecentGameLog({ data }) {
     month,
     day,
     kp,
+    queueId,
   } = data;
 
   let result = "";
@@ -77,7 +78,7 @@ function RecentGameLog({ data }) {
 
   return (
     <RecentGameWrapper name="RecentGameWrapper" className={result}>
-      <RecentGameResult className="GameResult" win={win} gameTime={oneGameTime} gameType={gameType} date={date} />
+      <RecentGameResult className="GameResult" win={win} gameTime={oneGameTime} gameType={gameType} date={date} queueId={queueId} />
       <ChampProfile className="ChampProfile" win={win} chapmName={championName} champLevel={champLevel} />
       <Skill className="Skill" />
       <KDA className="KDA" kills={kills} deaths={deaths} assists={assists} quadraKills={quadraKills} pentaKills={pentaKills} tripleKills={tripleKills} doubleKills={doubleKills} totalKill={totalKill} />

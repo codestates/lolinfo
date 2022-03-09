@@ -8,7 +8,6 @@ module.exports = {
     if (email === undefined || reqPassword === undefined || name === undefined) {
       return res.status(401).send("insufficient parameters supplied");
     }
-
     let find = await User.findOne({
       where: {
         email: req.body.email,
@@ -22,6 +21,7 @@ module.exports = {
       email: email,
       password: encryptPassword,
       name: name,
+      // userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
       salt,
     });
     res.status(201).json({

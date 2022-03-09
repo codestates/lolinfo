@@ -34,6 +34,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
         comment: "비밀번호",
       },
+      userImg: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        defaultValue: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
+      },
       name: {
         allowNull: false,
         type: DataTypes.STRING(100),

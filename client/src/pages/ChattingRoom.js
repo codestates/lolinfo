@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import ioClient from "socket.io-client";
 import ChattingApp from "./pageComponents/ChattingApp";
-import Loading from "./Loading";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -49,56 +49,56 @@ const UserName = styled.span`
 
 let socket;
 
-function ChattingRoom() {
-  let userInfo = useSelector( state => state.userInfo );
-
+function ChattingRoom(props) {
+  let userInfo = useSelector((state) => state.user);
   let [userList, setUserList] = useState([]);
 
   let [chatLog, setChatLog] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket = ioClient(process.env.REACT_APP_API_URL);
-    const name = userInfo.userName;
+    const name = userInfo.payload.name;
     const room = "global";
-    const userImg = userInfo.userImg;
+    const userImg = userInfo.payload.userImg;
+    // const userId = userInfo.payload.id;
 
     socket.emit("join", { name, room, userImg }, (error) => {
       // console.log("error");
       // 에러 처리
       if (error) {
         alert(error);
+        navigate('/');
+        socket.disconnect();
+        socket.off();
+        return;
       }
     });
-    // Disconnect handle
-    // return () => {
-    //   socket.emit("disconnect");
 
-    //   socket.off();
-    // };
-  }, [userInfo.userImg, userInfo.userName]);
+    return () => {
+      socket.disconnect();
+      socket.off();
+    };
+  }, [navigate, userInfo.payload]);
 
   useEffect(() => {
     // 서버에서 message 이벤트가 올 경우에 대해서 `on`
     socket.on("message", (message) => {
-      setChatLog([...chatLog, message]);
+      //setChatLog([...chatLog, message]);
+      setChatLog((chatlog) => [...chatlog, message]);
     });
 
     socket.on("roomData", ({ users }) => {
       setUserList(users);
     });
-  }, [chatLog]);
+  }, []);
 
-  useEffect(() => {
-    console.log("userList: ", userList);
-    console.log("chatLog: ", chatLog);
-  }, [userList, chatLog]);
-
-  const handleSubmit = (message) => {
+  const handleSubmit = useCallback((message) => {
     console.log(message);
     if (message) {
       socket.emit("sendMessage", message);
     }
-  };
+  }, []);
 
   return (
     <Container>
@@ -110,7 +110,7 @@ function ChattingRoom() {
             return (
               <User key={index}>
                 <UserImg src={user.userImg} />
-                <UserName>{user.userName}</UserName>
+                <UserName>{user.name}</UserName>
               </User>
             );
           })}
@@ -120,4 +120,4 @@ function ChattingRoom() {
   );
 }
 
-export default ChattingRoom;
+export default React.memo(ChattingRoom);
