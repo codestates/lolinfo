@@ -7,29 +7,39 @@ import { validEmail, validPassword, isMatchPassword } from "../modules/validatio
 axios.defaults.withCredentials = true;
 function SignupPage({ setLoginModal, setUserInfo, userInfo }) {
 
-  const [info, setInfo] = useState(userInfo)
-  // const infoHandler = (e, tag) => setInfo(Object.assign(info, { tag: e.target.value }));
-  const [emailInput, setEmailInput] = useState("")
   const EmailInputFunction = (e) => {
-    setUserInfo(Object.assign(userInfo, { "Email": e.target.value }))
+    console.log(userInfo)
+    setUserInfo(Object.assign(userInfo, { "email": e.target.value }))
+  }
+  const NicknameInputFunction = (e) => {
+    console.log(userInfo)
+    setUserInfo(Object.assign(userInfo, { "name": e.target.value }))
+  }
+  const PasswordInputFunction = (e) => {
+    console.log(userInfo)
+    setUserInfo(Object.assign(userInfo, { "password": e.target.value }))
+  }
+  const PasswordCInputFunction = (e) => {
+    console.log(userInfo)
+    setUserInfo(Object.assign(userInfo, { "passwordC": e.target.value }))
   }
 
   const infoSandler = async () => {
-    info.submit = true;
-    // setLoginModal("");
-    console.log(info)
-    console.log(userInfo); //이해를 돕기위해 남겨놓겠습니다.
+    // info.submit = true;
+    // // setLoginModal("");
+    // console.log(info)
+    // console.log(userInfo); //이해를 돕기위해 남겨놓겠습니다.
     const { name, email, password, passwordC } = userInfo
-    // if (!validEmail(email)) {
-    //   return alert("이메일 형식이 아닙니다.")
-    // }
-    // if (!validPassword(password)) {
-    //   return alert("비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다.")
-    // }
+    if (!validEmail(email)) {
+      return alert("이메일 형식이 아닙니다.")
+    }
+    if (!validPassword(password)) {
+      return alert("비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다.")
+    }
     if (!isMatchPassword(password, passwordC)) {
       return alert("비밀번호가 일치하지 않습니다.")
     }
-    const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/register", { name: name, email: email, password: password })
+    const LoginReturnValue = await axios.post(`${process.env.REACT_APP_API_URL}/users/register`, { name: name, email: email, password: password })
     if (LoginReturnValue.status === 201) {
       alert("정상적으로 회원가입이 되었습니다.")
       setLoginModal("login")
@@ -47,15 +57,15 @@ function SignupPage({ setLoginModal, setUserInfo, userInfo }) {
         />
         <NicknameInput
           placeholder="Enter your Nickname"
-          onChange={(e) => infoHandler(e, "name")}
+          onChange={(e) => NicknameInputFunction(e)}
         />
         <PasswordInput
           placeholder="Enter your Password"
-          onChange={(e) => infoHandler(e, "password")}
+          onChange={(e) => PasswordInputFunction(e)}
         />
         <PasswordInputC
           placeholder="Confirm your Password"
-          onChange={(e) => infoHandler(e, "passwordC")}
+          onChange={(e) => PasswordCInputFunction(e)}
         />
         <SignUpButton onClick={infoSandler}>Submit</SignUpButton>
         <TextMessage>Already have an acount?</TextMessage>
