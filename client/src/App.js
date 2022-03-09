@@ -26,6 +26,8 @@ function App() {
   const [history, setHistory] = useState(1);
   const [loginModal, setLoginModal] = useState("");
   const [loginState, setLoginState] = useState("");
+  const [loginFailState, setloginFailState] = useState("");
+  const [emailState, setemailState] = useState("");
   const [userInfo, setUserInfo] = useState({
     email: "",
     name: "",
@@ -53,11 +55,13 @@ function App() {
           {history ? <Search /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
-              {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} />
-                : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} userInfo={userInfo} />}
+              {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} setloginFailState={setloginFailState} />
+                : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} userInfo={userInfo} setemailState={setemailState} />}
             </Modal>
           ) : null}
-          {loginState ? <AlertModal setLoginModal={setLoginModal} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
+          {loginState ? <AlertModal setLoginState={setLoginState} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
+          {loginFailState ? <AlertModal setloginFailState={setloginFailState} visible={true} children="로그인에 실패했습니다."></AlertModal> : <div></div>}
+          {emailState ? <AlertModal setemailState={setemailState} visible={true} children="이메일 형식이 아닙니다."></AlertModal> : <div></div>}
           <Routes>
             <Route path="/" element={<Home setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />
