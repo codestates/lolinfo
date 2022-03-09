@@ -5,9 +5,16 @@ const {
 const makePasswordHashed = require('../../modules/makePasswordHashed')
 module.exports = {
   post: async (req, res) => {
-    const { email, password: plainPassword } = req.body;
+    if (req.body.email === undefined || req.body.password === undefined) {
+      return res.status(401).send("please check your email or password again")
+    }
+    const { email, password } = req.body;
     //암호화 코드 작성
-    const findPassword = await makePasswordHashed(email, plainPassword)
+    const findPassword = await makePasswordHashed(email, password)
+    console.log(findPassword)
+    if (findPassword === undefined) {
+      return res.status(401).send("please check your email or password again")
+    }
     const Value = await User.findOne({
       where: {
         email: email,

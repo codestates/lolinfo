@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import AlertModal from "./alertModal"
 
 axios.defaults.withCredentials = true;
 
-function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState }) {
+function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState, setloginFailState }) {
 
   const IdInputFunction = (e) => {
     setUserInfo(Object.assign(userInfo, { "name": e.target.value }))
@@ -20,11 +19,9 @@ function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState }) {
     const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/login", { email: name, password: password })
     if (LoginReturnValue.status === 200) {
       setUserInfo(Object.assign(userInfo, { "login": true }))
-      setLoginState("SuLogin")
-      // if (loginState === "SuLogin") {
-      //   return <AlertModal setLoginState={setLoginState} visible={true}> <div>안녕하세요</div> </AlertModal>
-      // }
+      return setLoginState("SuLogin")//로그인성공시 모달창
     }
+    setloginFailState("loginFail")//로그인실패시 모달창
   };
   return (
     <div>
