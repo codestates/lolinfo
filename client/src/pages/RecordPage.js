@@ -8,6 +8,7 @@ import { getRecord } from "../store/GameRecord";
 import Loading from "./Loading";
 import { profileDummyData, dummyChartData } from "../resource/RecordPagehelp";
 import axios from "axios";
+
 const Content = styled.div`
   display: grid;
   background-color: #fff;
@@ -54,6 +55,7 @@ const LogWrapper = styled.div`
   background-color: ${(props) => props.theme.recordBgColor};
 `;
 function RecordPage({ setHistory, schBarInput }) {
+  axios.defaults.withCredentials = false;
   const { data: record } = useSelector((state) => state.gameRecord);
   const dispatch = useDispatch();
 
