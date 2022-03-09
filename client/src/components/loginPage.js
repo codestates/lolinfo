@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import AlertModal from "./alertModal"
 
-function LoginPage({ setLoginModal, setUserInfo }) {
-  let info = {};
-  const infoHandler = (e, tag) => (info[tag] = e.target.value);
+axios.defaults.withCredentials = true;
+
+function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState }) {
+
+  const IdInputFunction = (e) => {
+    setUserInfo(Object.assign(userInfo, { "name": e.target.value }))
+  }
+  const InfoHandlerFunction = (e) => {
+    setUserInfo(Object.assign(userInfo, { "password": e.target.value }))
+  }
+
   const infoSandler = async () => {
-    info.login = true;
-    setUserInfo(info);
     setLoginModal("");
-    console.log(info); //이해를 돕기위해 남겨놓겠습니다.
-    // const { name, password } = info
-    // const LoginReturnValue = await axios.post("http://localhost:80", { name, password })
-
+    const { name, password } = userInfo
+    const LoginReturnValue = await axios.post("http://localhost:8090/users/login", { email: name, password: password })
+    if (LoginReturnValue.status === 200) {
+      setUserInfo(Object.assign(userInfo, { "login": true }))
+      setLoginState("SuLogin")
+      // if (loginState === "SuLogin") {
+      //   return <AlertModal setLoginState={setLoginState} visible={true}> <div>안녕하세요</div> </AlertModal>
+      // }
+    }
   };
   return (
     <div>
@@ -21,11 +34,11 @@ function LoginPage({ setLoginModal, setUserInfo }) {
           type="text"
           placeholder="Username or Email"
           required
-          onChange={(e) => infoHandler(e, "name")}
+          onChange={(e) => IdInputFunction(e)}
         />
         <PasswordInput
           placeholder="Enter your Password"
-          onChange={(e) => infoHandler(e, "password")}
+          onChange={(e) => InfoHandlerFunction(e)}
         />
         <LoginButton onClick={infoSandler}>Next</LoginButton>
         <TextMessage>Don’t have an account?</TextMessage>

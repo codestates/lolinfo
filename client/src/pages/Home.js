@@ -2,7 +2,8 @@ import { Search } from "@styled-icons/bootstrap/Search";
 import styled from "styled-components";
 import CardContainer from "../containers/CardContainer";
 import * as d3 from "d3";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 //Body
 const StWrapper = styled.div`
   display: flex;
@@ -95,7 +96,15 @@ const StButton = styled.button`
   cursor: pointer;
 `;
 
-function Home({ setHistory }) {
+function Home({ setHistory, setSchBarInput }) {
+  const [nick, setNick] = useState("");
+  function handleSend(e, tag) {
+    if (e.key === "Enter" || tag) {
+      setSchBarInput(nick);
+      setHistory("/record");
+      console.log(1);
+    }
+  }
   useEffect(() => {
     d3.select(".main-title")
       .transition()
@@ -110,7 +119,7 @@ function Home({ setHistory }) {
       .duration(1500)
       .style("color", "#2e2f32")
       .text("LOLINFO");
-    setHistory(false);
+    setHistory("/");
   }, []);
 
   return (
@@ -120,8 +129,8 @@ function Home({ setHistory }) {
           <h1 className="main-title">LOLINFO</h1>
         </BodyHeader>
         <SearchBox>
-          <StInput placeholder="Search" autoComplete="off"></StInput>
-          <StSearchIcon />
+          <StInput placeholder="Search" autoComplete="off" onChange={(e) => setNick(e.target.value)} onKeyUp={handleSend}></StInput>
+          <StSearchIcon onClick={() => handleSend(false, true)} />
         </SearchBox>
         <StH2>게시판</StH2>
         <CardContainer />

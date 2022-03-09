@@ -53,7 +53,7 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
     // 해당 방으로 메세지를
-    console.log(`[sendMessage] ${user.userName}: ${message}, [${new Date().toTimeString().split(" ")[0]}]`)
+    console.log(`[sendMessage] ${user.userName}: ${message}, [${new Date().toTimeString().split(" ")[0]}]`);
     io.to(user.room).emit("message", {
       userName: user.userName,
       message: message,
