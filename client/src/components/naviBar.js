@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 function NaviBar({ sticky, setLoginModal, loginState }) {
   let navigate = useNavigate();
+
   return (
     <div>
       <NaviContainer sticky={sticky} className={sticky ? "naviBar-sticky" : "navibar-nomal"}>
