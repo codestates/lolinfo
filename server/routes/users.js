@@ -17,5 +17,7 @@ router.put("/userinfo", usersController.userinfo.put);
 
 // * POST /users/register
 router.post("/register", usersController.register.post);
+// * POST /users/delete
+router.post("/remove", usersController.remove.delete);
 
 module.exports = router;
