@@ -272,12 +272,14 @@ const Disagree = styled.button`
   font-size: 18px;
 `;
 const Agree = styled.button`
+  /* ${(props) => (props.check ? "yellow" : "black")}; */
   grid-row: 2/10;
   grid-column: 8/11;
-  background-color: ${(props) => props.theme.MypageLineColor};
-  color: #fff;
+  background-color: ${(props) => (props.check ? "#fff" : props.theme.MypageLineColor)};
+  color: ${(props) => (!props.check ? "#fff" : "black")};
+  border: ${(props) => (props.check ? "2px " + "solid " + props.theme.MypageLineColor : 0)};
+  cursor: ${(props) => (props.check ? "pointer" : null)};
   font-weight: 700;
-  border: 0;
   font-size: 18px;
 `;
 

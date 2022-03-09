@@ -1,53 +1,45 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUserLoginedInfo } from "../store/User";
 
 axios.defaults.withCredentials = true;
 
 function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState, setloginFailState }) {
-
+  const dispatch = useDispatch();
   const IdInputFunction = (e) => {
-    setUserInfo(Object.assign(userInfo, { "name": e.target.value }))
-  }
+    setUserInfo(Object.assign(userInfo, { name: e.target.value }));
+  };
   const InfoHandlerFunction = (e) => {
-    setUserInfo(Object.assign(userInfo, { "password": e.target.value }))
-  }
+    setUserInfo(Object.assign(userInfo, { password: e.target.value }));
+  };
 
   const infoSandler = async () => {
     setLoginModal("");
-    const { name, password } = userInfo
-    const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/login", { email: name, password: password })
-    console.log(LoginReturnValue)
-    if (LoginReturnValue.status === 401) {
-      return setloginFailState("loginFail")//로그인실패시 모달창
-    }
+    const { name, password } = userInfo;
+    const LoginReturnValue = await axios.post(process.env.REACT_APP_API_URL + "/users/login", { email: name, password: password });
+
+    LoginReturnValue.data.data.isLogined = true;
+    dispatch(setUserLoginedInfo(LoginReturnValue.data.data));
+    console.log(LoginReturnValue.data.data);
+
     if (LoginReturnValue.status === 200) {
-      setUserInfo(Object.assign(userInfo, { "login": true }))
-      return setLoginState("SuLogin")//로그인성공시 모달창
+      setUserInfo(Object.assign(userInfo, { login: true }));
+      return setLoginState("SuLogin"); //로그인성공시 모달창
     }
   };
   return (
     <div>
       <Container>
         <TitleOPGG>LOLINFO</TitleOPGG>
-        <IDInput
-          type="text"
-          placeholder="Username or Email"
-          required
-          onChange={(e) => IdInputFunction(e)}
-        />
-        <PasswordInput
-          placeholder="Enter your Password"
-          onChange={(e) => InfoHandlerFunction(e)}
-        />
+        <IDInput type="text" placeholder="Username or Email" required onChange={(e) => IdInputFunction(e)} />
+        <PasswordInput placeholder="Enter your Password" onChange={(e) => InfoHandlerFunction(e)} />
         <LoginButton onClick={infoSandler}>Next</LoginButton>
         <TextMessage>Don’t have an account?</TextMessage>
         <SignUp onClick={() => setLoginModal("signup")}>SignUp</SignUp>
         <SocialContainer>
-          <SocialButton
-            src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-github-icon-35.png"
-            alt=""
-          />
+          <SocialButton src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-github-icon-35.png" alt="" />
         </SocialContainer>
       </Container>
     </div>

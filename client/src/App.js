@@ -17,14 +17,12 @@ import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 import AlertModal from "./components/alertModal";
-import { useSelector, useDispatch } from "react-redux";
-import { getUserSuccess } from "./store/User";
-
 
 function App() {
   const { isSticky, element } = useSticky();
-  const [history, setHistory] = useState(1);
+  const [history, setHistory] = useState(0);
   const [loginModal, setLoginModal] = useState("");
+  const [schBarInput, setSchBarInput] = useState("");
   const [loginState, setLoginState] = useState("");
   const [loginFailState, setloginFailState] = useState("");
   const [emailState, setemailState] = useState("");
@@ -41,26 +39,28 @@ function App() {
     login: "",
   });
 
-  const user = useSelector((state) => state.user);
-  // console.log(user);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getUserSuccess(userInfo));
-  }, [dispatch, userInfo]);
-
   return (
     <div className="App" ref={element}>
       <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
-          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} setHistory={setHistory} />
-          {history ? <Search /> : null}
+          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
+          {history !== "/" ? <Search setSchBarInput={setSchBarInput} schBarInput={schBarInput} /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
-              {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} setloginFailState={setloginFailState} />
-                : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} userInfo={userInfo} setemailState={setemailState} setPasswordState={setPasswordState} setPasswordCheckState={setPasswordCheckState} setRegisterState={setRegisterState} />}
+              {loginModal === "login" ? (
+                <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} setloginFailState={setloginFailState} />
+              ) : (
+                <SignupPage
+                  setLoginModal={setLoginModal}
+                  setUserInfo={setUserInfo}
+                  userInfo={userInfo}
+                  setemailState={setemailState}
+                  setPasswordState={setPasswordState}
+                  setPasswordCheckState={setPasswordCheckState}
+                  setRegisterState={setRegisterState}
+                />
+              )}
             </Modal>
           ) : null}
           {loginState ? <AlertModal setLoginState={setLoginState} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
@@ -72,7 +72,7 @@ function App() {
           {replaceState ? <AlertModal setLoginState={setReplaceState} visible={true} children="정상적으로 교체되었습니다!"></AlertModal> : <div></div>}
 
           <Routes>
-            <Route path="/" element={<Home setHistory={setHistory} />} />
+            <Route path="/" element={<Home setSchBarInput={setSchBarInput} setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />
             <Route path="/record" element={<RecordPage setHistory={setHistory} />} />
             <Route path="/mypage/edit" element={<Edit setHistory={setHistory} setReplaceState={setReplaceState} />} />

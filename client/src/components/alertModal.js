@@ -11,6 +11,7 @@ function AlertModal({ setLoginState, visible, children }) {
     <>
       <ModalOverlay visible={visible} />
       <ModalWrapper className="modal-outside" visible={visible}>
+
         <ModalInner className="modal-inside">{children}
           <ModalButton onClick={() => downFunction()}>확인</ModalButton>
         </ModalInner>

@@ -4,7 +4,7 @@ axios.defaults.headers.common["X-Riot-Token"] = process.env.API || "RGAPI-5b4398
 module.exports = {
   matchList: async (puuid, int1 = 0, int2 = 10) => {
     let data = await axios.get(`https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${int1}&count=${int2}`).catch((error) => console.log("Error in matchList call: ", error.message));
-    return data.data;
+    if (data) return data.data;
   },
   nametoUserInfo: async (nickname) => {
     let temp;
