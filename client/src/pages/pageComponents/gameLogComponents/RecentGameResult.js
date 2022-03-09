@@ -68,7 +68,7 @@ const GameResultWrapper = styled.div`
   }
 `;
 
-function RecentGameResult({ win, gameTime, gameType, date }) {
+function RecentGameResult({ win, gameTime, gameType, date, queueId }) {
   let gameResult = "";
   let result = "";
   if (win) {
@@ -81,12 +81,11 @@ function RecentGameResult({ win, gameTime, gameType, date }) {
 
   gameTime = gameTime.split(".");
 
-  if (gameType === "MATCHED_GAME") {
-    gameType = "Match";
+  if (queueId === 420) {
+    gameType = "솔랭";
   } else {
-    gameType = "AI대전";
+    gameType = "일반";
   }
-  // console.log(gameType);
 
   return (
     <GameResultWrapper>

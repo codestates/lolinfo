@@ -16,18 +16,33 @@ import LoginPage from "./components/loginPage";
 import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
+import AlertModal from "./components/alertModal";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserSuccess } from "./store/User";
+
 
 function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(1);
   const [loginModal, setLoginModal] = useState("");
+  const [loginState, setLoginState] = useState("");
   const [userInfo, setUserInfo] = useState({
+    email: "",
     name: "",
     password: "",
     passwordC: "",
     submit: "",
     login: "",
   });
+
+  const user = useSelector((state) => state.user);
+  // console.log(user);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserSuccess(userInfo));
+  }, [dispatch, userInfo]);
 
   return (
     <div className="App" ref={element}>
@@ -38,9 +53,11 @@ function App() {
           {history ? <Search /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>
-              {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} /> : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} />}
+              {loginModal === "login" ? <LoginPage setLoginModal={setLoginModal} userInfo={userInfo} setUserInfo={setUserInfo} setLoginState={setLoginState} />
+                : <SignupPage setLoginModal={setLoginModal} setUserInfo={setUserInfo} userInfo={userInfo} />}
             </Modal>
           ) : null}
+          {loginState ? <AlertModal setLoginModal={setLoginModal} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
           <Routes>
             <Route path="/" element={<Home setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />

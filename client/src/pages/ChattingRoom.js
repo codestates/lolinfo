@@ -50,11 +50,7 @@ const UserName = styled.span`
 let socket;
 
 function ChattingRoom() {
-  // let userInfo = useSelector( state => state.userInfo );
-  let userInfo = {
-    userName: "응가뿡뿡",
-    userImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3kiVpzQisF4m8TU_1jv9xFho9z2g-XRyMKg&usqp=CAU",
-  };
+  let userInfo = useSelector(state => state.userInfo);
 
   let [userList, setUserList] = useState([]);
 
@@ -97,6 +93,8 @@ function ChattingRoom() {
       socket.emit("sendMessage", message);
     }
   };
+
+  function handleCTS() { }
 
   return (
     <Container>

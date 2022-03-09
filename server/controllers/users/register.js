@@ -8,7 +8,6 @@ module.exports = {
     if (email === undefined || reqPassword === undefined || name === undefined) {
       return res.status(401).send("insufficient parameters supplied");
     }
-
     let find = await User.findOne({
       where: {
         email: req.body.email,
