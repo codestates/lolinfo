@@ -3,6 +3,7 @@ import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponen
 import MypageEditUserInfoManage from './pageComponents/MypageComponents/MypageEditUserInfoManage';
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -10,6 +11,9 @@ function Mypage({ setHistory, setReplaceState }) {
   useEffect(() => {
     setHistory(true);
   }, []);
+  const userInfo = useSelector((state) => state.user.payload);
+  console.log("accountPage:::", userInfo.email);
+
   const [change, setChange] = useState("")
   const something = async () => {
     await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: "kimcoding@korea.com", name: change })
