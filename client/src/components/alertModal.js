@@ -51,13 +51,14 @@ const ModalInner = styled.div`
   box-sizing: border-box;
   position: relative;
   width: 350px;
-  height: 100px;
-  border-radius:30px;
+  height: 200px;
+  border-radius:10px;
   text-align: center;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
   background-color: white;
+  font-size:20px
 `;
 
 const ModalButton = styled.button`
