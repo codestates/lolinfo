@@ -5,10 +5,11 @@ import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "./Loading";
-import { profileDummyData, dummyChartData } from "../resource/RecordPagehelp";
+import { profileDummyData, dummyChartData, extractData, extractProfileData } from "../resource/RecordPagehelp";
 import axios from "axios";
 import { getRecord } from "../store/GameRecord";
 import { setPrevRecord } from "../store/PrevRecord";
+import RecordPageModal from "./pageComponents/RecordPageModal";
 
 const Content = styled.div`
   display: grid;
@@ -64,22 +65,29 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
     setHistory("/record");
   }, []);
 
+  let isDummy = false;
+  console.log(loading, prevRecord, schBarInput);
+
   if (loading || schBarInput !== prevRecord) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
-  if (error) {
-    return <div>찾을수 없는 유저입니다</div>;
+  if (error || schBarInput === "") {
+    isDummy = true;
   }
+
+  const { chartData, needs } = extractData(payload, schBarInput);
+  const profileData = extractProfileData(payload, needs);
 
   return (
     <div>
       <Content>
-        <UserProfile profileData={profileDummyData} />
+        {/* {error ? <RecordPageModal text={"찾을 수 없는 유저입니다"} /> : null} */}
         <BoxWrapper name="BoxWrapper">
-          <RecentChart className="RecentChart" chartData={dummyChartData} />
+          <UserProfile profileData={isDummy ? profileDummyData : profileData} />
+          <RecentChart className="RecentChart" chartData={isDummy ? dummyChartData : chartData} />
           <div>
             <LogWrapper className="RecentGameLog">
-              {/* {needs.map((v) => {
+              {needs.map((v) => {
                 return <RecentGameLog key={v.gameId} data={v} />;
-              })} */}
+              })}
             </LogWrapper>
           </div>
         </BoxWrapper>

@@ -7,9 +7,12 @@ export const createPromiseThunk = (type) => {
     dispatch({ type, param });
 
     try {
-      const creAxios = axios.create({ withCredentials: true });
+      const creAxios = axios.create({ withCredentials: false });
       let resData = null;
       url = url + param;
+
+      console.log("url", url);
+
       switch (method) {
         case "get": {
           resData = await creAxios.get(url);
