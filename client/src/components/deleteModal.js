@@ -7,38 +7,38 @@ axios.defaults.withCredentials = true;
 
 function DeleteModal({ setDeleteModal, setloginFailState, setDeleteModalConfirm }) {
 
-    const [inputName, setInputName] = useState("")
-    const [inputPassword, setInputPassword] = useState("")
-    const [checkMessage, setCheckMessage] = useState("")
+  const [inputName, setInputName] = useState("")
+  const [inputPassword, setInputPassword] = useState("")
+  const [checkMessage, setCheckMessage] = useState("")
 
-    const close = () => {
-        setDeleteModal("");
+  const close = () => {
+    setDeleteModal("");
+  }
+
+  const infoSandler = async () => {
+    if (!checkMessage === "영구삭제") {
+      return setloginFailState("change")
     }
-
-    const infoSandler = async () => {
-        if (!checkMessage === "영구삭제") {
-            return setloginFailState("change")
-        }
-        const LoginReturnValue = await axios.delete(process.env.REACT_APP_API_URL + "/users/remove", { data: { email: inputName, password: inputPassword } });
-
-        if (LoginReturnValue.status === 204) {
-            setDeleteModal("");
-            return setDeleteModalConfirm("change")
-        }
-    };
-    return (
-        <div>
-            <Container>
-                <TitleOPGG>삭제페이지</TitleOPGG>
-                <IDInput type="text" placeholder="Username or Email" required onChange={(e) => setInputName(e.target.value)} />
-                <PasswordInput placeholder="Enter your Password" onChange={(e) => setInputPassword(e.target.value)} />
-                <ConfirmMessage placeholder="영구삭제를 입력해주세요" onChange={(e) => setCheckMessage(e.target.value)} />
-                <CloseButton onClick={close}>종료</CloseButton>
-                <DeleteButton onClick={infoSandler}>삭제</DeleteButton>
-                <TextMessage>정말로 삭제하실건가요?</TextMessage>
-            </Container>
-        </div>
-    );
+    const LoginReturnValue = await axios.delete(process.env.REACT_APP_API_URL + "/users/remove", { data: { email: inputName, password: inputPassword } });
+    console.log(LoginReturnValue)
+    if (LoginReturnValue.status === 204) {
+      setDeleteModal("");
+      return setDeleteModalConfirm("change")
+    }
+  };
+  return (
+    <div>
+      <Container>
+        <TitleOPGG>삭제페이지</TitleOPGG>
+        <IDInput type="text" placeholder="Username or Email" required onChange={(e) => setInputName(e.target.value)} />
+        <PasswordInput placeholder="Enter your Password" onChange={(e) => setInputPassword(e.target.value)} />
+        <ConfirmMessage placeholder="영구삭제를 입력해주세요" onChange={(e) => setCheckMessage(e.target.value)} />
+        <CloseButton onClick={close}>종료</CloseButton>
+        <DeleteButton onClick={infoSandler}>삭제</DeleteButton>
+        <TextMessage>정말로 삭제하실건가요?</TextMessage>
+      </Container>
+    </div>
+  );
 }
 
 
@@ -79,7 +79,7 @@ const IDInput = styled.input`
   }
 `;
 const PasswordInput = styled.input.attrs((_) => ({
-    type: "password",
+  type: "password",
 }))`
   border: solid;
   padding: 5px;
