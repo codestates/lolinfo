@@ -272,6 +272,64 @@ function RecordPage({ setHistory }) {
     };
   }
 
+  const ddragon = async (version, aux, user) => {
+    let pri = [];
+    let sub = [];
+    let perks = [];
+    let spell = [];
+    for (let i = 1; i < aux.length; i++) {
+      aux[i].info.participants.forEach((x) => {
+        if (x.summonerName === user) {
+          perks.push(x.perks.styles);
+          spell.push([x.summoner1Id, x.summoner2Id]);
+        }
+      });
+    }
+    perks.forEach((perk) => {
+      pri.push([perk[0].style, perk[0].selections[0].perk]);
+      sub.push(perk[1].style);
+    });
+    console.log("pri=", pri);
+    console.log("sub=", sub);
+    let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
+    let mainRune = [];
+    let subRune = [];
+    let perksInfo = data.data;
+    for (let i = 0; i < pri.length; i++) {
+      perksInfo.forEach((x) => {
+        if (x.id === pri[i][0]) {
+          for (let j = 0; j < x.slots.length; j++) {
+            for (let k = 0; k < x.slots[j].runes.length; k++) {
+              if (x.slots[j].runes[k].id === pri[i][1]) mainRune.push(x.slots[j].runes[k].icon);
+            }
+          }
+        }
+      });
+      perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
+    }
+    let temp = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/summoner.json");
+
+    // console.log("spellTF=", spell);
+    // console.log(temp.data.data);
+
+    let spell1 = [];
+    let spell2 = [];
+    let spellAll = temp.data.data;
+    spell.forEach((x) => {
+      for (let spellOne in spellAll) {
+        if (spellAll[spellOne].key === `${x[0]}`) {
+          spell1.push(spellAll[spellOne].id + ".png");
+        }
+        if (spellAll[spellOne].key === `${x[1]}`) {
+          spell2.push(spellAll[spellOne].id + ".png");
+        }
+      }
+    });
+    return { mainRune, subRune, spell1, spell2 };
+  };
+
+  ddragon("12.4.1", record.data, userName);
+
   return (
     <div>
       <Content>
