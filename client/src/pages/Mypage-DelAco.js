@@ -1,6 +1,79 @@
 import styled from "styled-components";
 import MypageNavbar from "./pageComponents/MypageComponents/MypageNavbarComponent";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
+
+axios.defaults.withCredentials = true;
+
+function DeleteAccountPage({ setHistory }) {
+  useEffect(() => {
+    setHistory(true);
+  }, []);
+
+  const userInfo = useSelector((state) => state.user.payload);
+  console.log("accountPage:::", userInfo);
+
+  const [state, setState] = useState("false");
+
+  const ChangeButton = () => {
+    setState((current) => !current);
+  };
+
+  const DeleteAccount = async () => {};
+  return (
+    <Container>
+      <SubMenu>
+        <MypageNavbar></MypageNavbar>
+      </SubMenu>
+      <DeletePage>
+        <DeleteAccountContainer>
+          <Header>회원탈퇴</Header>
+          <SmallHeader>회원탈퇴 전에 반드시 유의사항을 확인하고 진행해 주세요.</SmallHeader>
+          <FirstLaw>
+            <FirstLawName>개인정보 및 서비스 이용 기록 삭제</FirstLawName>
+            <FirstLawdetail>개인정보 및 개인화 서비스 이용기록이 모두 삭제 되며, 삭제된 데이터는 복구되지 않습니다. 필요한 데이터는 미리 백업해 주시기 바랍니다.</FirstLawdetail>
+          </FirstLaw>
+          <SecondLaw>
+            <SecondLawName>소셜 계정 연결 정보 삭제</SecondLawName>
+            <SecondLawdetail>이메일 ID에 소셜 계정을 연결한 경우 탈퇴 시 연결 정보도 함께 삭제됩니다.</SecondLawdetail>
+          </SecondLaw>
+          <ThirdLaw>
+            <ThirdLawName>커뮤니티 서비스 등록 게시물 유지</ThirdLawName>
+            <ThirdLawdetail>회원가입 이후 등록하신 게시물들은 회원탈퇴 후에도 삭제 되지 않고 유지됩니다. 삭제를 원하시는 경우에는 직접 삭제하신 후 회원탈퇴를 진행하시기 바랍니다.</ThirdLawdetail>
+          </ThirdLaw>
+          <FourthLaw>
+            <FourthLawName>개인정보 보관</FourthLawName>
+            <FourthLawdetail>회원 탈퇴 시 일부 개인정보는 개인정보처리방침에 따라 탈퇴일로부터 30일간 보관되며, 그 이후 관계법령에 필요한 경우에는 별도 보관합니다.</FourthLawdetail>
+          </FourthLaw>
+          <FifthLaw>
+            <FifthLawName>탈퇴 후 제한</FifthLawName>
+            <FifthLawdetail>탈퇴 처리된 이메일 ID는 30일동안 재가입이 불가합니다.</FifthLawdetail>
+          </FifthLaw>
+          <CheckBoxDiv>
+            <CheckBox onClick={() => ChangeButton()} type="checkbox"></CheckBox>
+            <CheckBoxDetail>회원탈퇴 시 유의사항을 확인하였으며, 모두 동의합니다.</CheckBoxDetail>
+          </CheckBoxDiv>
+          <AgreeORDisAgree>
+            <Disagree>비동의</Disagree>
+            {state ? <Agree>동의</Agree> : <AgreeAccess onClick={() => DeleteAccount()}> 동의</AgreeAccess>}
+          </AgreeORDisAgree>
+        </DeleteAccountContainer>
+      </DeletePage>
+    </Container>
+  );
+}
+
+const AgreeAccess = styled.button`
+  grid-row: 2/10;
+  grid-column: 8/11;
+  background-color: ${(props) => props.theme.MypageButtonColor};
+  color: #fff;
+  font-weight: 700;
+  border: 0;
+  font-size: 18px;
+  cursor: pointer;
+`;
 
 const Container = styled.div`
   display: grid;
@@ -64,6 +137,7 @@ const SmallHeader = styled.h4`
     color: ${(props) => props.theme.MypageSmallHeader};
   }
 `;
+
 const FirstLaw = styled.div`
   display: grid;
   grid-template-columns: repeat(9, minmax(auto, 1fr));
@@ -207,53 +281,9 @@ const Agree = styled.button`
   font-weight: 700;
   font-size: 18px;
 `;
-function DeleteAccountPage({ setHistory }) {
-  const [check, setCheck] = useState(false);
-
-  useEffect(() => {
-    setHistory("/mypage/deleteAccount");
-  }, []);
-  return (
-    <Container>
-      <SubMenu>
-        <MypageNavbar></MypageNavbar>
-      </SubMenu>
-      <DeletePage>
-        <DeleteAccountContainer>
-          <Header>회원탈퇴</Header>
-          <SmallHeader>회원탈퇴 전에 반드시 유의사항을 확인하고 진행해 주세요.</SmallHeader>
-          <FirstLaw>
-            <FirstLawName>개인정보 및 서비스 이용 기록 삭제</FirstLawName>
-            <FirstLawdetail>개인정보 및 개인화 서비스 이용기록이 모두 삭제 되며, 삭제된 데이터는 복구되지 않습니다. 필요한 데이터는 미리 백업해 주시기 바랍니다.</FirstLawdetail>
-          </FirstLaw>
-          <SecondLaw>
-            <SecondLawName>소셜 계정 연결 정보 삭제</SecondLawName>
-            <SecondLawdetail>이메일 ID에 소셜 계정을 연결한 경우 탈퇴 시 연결 정보도 함께 삭제됩니다.</SecondLawdetail>
-          </SecondLaw>
-          <ThirdLaw>
-            <ThirdLawName>커뮤니티 서비스 등록 게시물 유지</ThirdLawName>
-            <ThirdLawdetail>회원가입 이후 등록하신 게시물들은 회원탈퇴 후에도 삭제 되지 않고 유지됩니다. 삭제를 원하시는 경우에는 직접 삭제하신 후 회원탈퇴를 진행하시기 바랍니다.</ThirdLawdetail>
-          </ThirdLaw>
-          <FourthLaw>
-            <FourthLawName>개인정보 보관</FourthLawName>
-            <FourthLawdetail>회원 탈퇴 시 일부 개인정보는 개인정보처리방침에 따라 탈퇴일로부터 30일간 보관되며, 그 이후 관계법령에 필요한 경우에는 별도 보관합니다.</FourthLawdetail>
-          </FourthLaw>
-          <FifthLaw>
-            <FifthLawName>탈퇴 후 제한</FifthLawName>
-            <FifthLawdetail>탈퇴 처리된 이메일 ID는 30일동안 재가입이 불가합니다.</FifthLawdetail>
-          </FifthLaw>
-          <CheckBoxDiv>
-            <CheckBox type="checkbox" onClick={() => setCheck(!check)}></CheckBox>
-            <CheckBoxDetail>회원탈퇴 시 유의사항을 확인하였으며, 모두 동의합니다.</CheckBoxDetail>
-          </CheckBoxDiv>
-          <AgreeORDisAgree>
-            <Disagree>비동의</Disagree>
-            <Agree check={check}>동의</Agree>
-          </AgreeORDisAgree>
-        </DeleteAccountContainer>
-      </DeletePage>
-    </Container>
-  );
-}
 
 export default DeleteAccountPage;
+
+// ChattingRoom에서 handleText라는 함수를
+// chattingapp한테
+// props로 내려준다고하면요

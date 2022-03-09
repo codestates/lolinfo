@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function NaviBar({ sticky, setLoginModal }) {
+
   let navigate = useNavigate();
   let userInfo = useSelector((state) => state.user.payload);
   return (
@@ -21,6 +22,7 @@ function NaviBar({ sticky, setLoginModal }) {
               else if (menuIdx === 2) navigate("/record");
               else if (menuIdx === 3) navigate("/rank");
               else if (menuIdx === 4) navigate("/chat");
+              else if (menuIdx === 5) navigate("/mypage/edit");
               else setLoginModal("login");
             }}
           >
