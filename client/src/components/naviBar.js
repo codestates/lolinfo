@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function NaviBar({ sticky, setLoginModal }) {
+
   let navigate = useNavigate();
   let userInfo = useSelector((state) => state.user.payload);
   return (
