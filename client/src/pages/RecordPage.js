@@ -74,13 +74,13 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   let profileData = {};
   let chartData = {};
   let isActiveDummy = false;
-
+  console.log("schBarInput", schBarInput, record);
   if (schBarInput !== "") {
     if (record.loading) return <Loading />;
-    if (!record.data) return <div>data null!...</div>;
+    if (!record.payload && !record.loading) return <div>data null!...</div>;
     if (record.error) return <div>`error !!`</div>;
     if (!record.loading) {
-      if (record.data[0].length !== 0) {
+      if (record.payload[0].length !== 0) {
         extractData();
         extractProfileData();
       } else {
@@ -93,13 +93,13 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
 
   function extractData() {
     let totalKill = [];
-    for (let i = 1; i < record.data.length; ++i) {
-      const { gameType, gameDuration, gameId } = record.data[i].info;
+    for (let i = 1; i < record.payload.length; ++i) {
+      const { gameType, gameDuration, gameId } = record.payload[i].info;
       let gameLen = gameDuration;
       let blueTotalKill = 0,
         redTotalKill = 0;
 
-      let date = new Date(record.data[i].info.gameCreation);
+      let date = new Date(record.payload[i].info.gameCreation);
       let month = date.toString().split(" ")[1];
       let day = date.toString().split(" ")[2];
       let convertSTN = (m) => {
@@ -113,9 +113,9 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
       // console.log("월=", convertSTN(month));
       // console.log("일=", Number(day));
 
-      for (let j = 0; j < record.data[i].info.participants.length; ++j) {
-        const { queueId } = record.data[i].info;
-        const { kills, teamId, summonerName } = record.data[i].info.participants[j];
+      for (let j = 0; j < record.payload[i].info.participants.length; ++j) {
+        const { queueId } = record.payload[i].info;
+        const { kills, teamId, summonerName } = record.payload[i].info.participants[j];
         if (teamId === 100) {
           blueTotalKill += kills;
         } else {
@@ -147,7 +147,7 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
             item6,
             goldEarned,
             totalMinionsKilled,
-          } = record.data[i].info.participants[j];
+          } = record.payload[i].info.participants[j];
           const oneGameTime = (gameLen / 60).toFixed(2);
           gameLen = parseInt(gameLen / 60);
           const item = [item0, item1, item2, item3, item4, item5, item6];
@@ -255,7 +255,7 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   }
 
   function extractProfileData() {
-    const { leaguePoints, wins, losses, tier, rank, queueType } = record.data[0][0];
+    const { leaguePoints, wins, losses, tier, rank, queueType } = record.payload[0][0];
     const { profileIcon, summonerName } = needs[0];
 
     profileData = {
@@ -269,64 +269,6 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
       summonerName,
     };
   }
-
-  // const ddragon = async (version, aux, user) => {
-  //   let pri = [];
-  //   let sub = [];
-  //   let perks = [];
-  //   let spell = [];
-  //   for (let i = 1; i < aux.length; i++) {
-  //     aux[i].info.participants.forEach((x) => {
-  //       if (x.summonerName === user) {
-  //         perks.push(x.perks.styles);
-  //         spell.push([x.summoner1Id, x.summoner2Id]);
-  //       }
-  //     });
-  //   }
-  //   perks.forEach((perk) => {
-  //     pri.push([perk[0].style, perk[0].selections[0].perk]);
-  //     sub.push(perk[1].style);
-  //   });
-  //   // console.log("pri=", pri);
-  //   // console.log("sub=", sub);
-  //   let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
-  //   let mainRune = [];
-  //   let subRune = [];
-  //   let perksInfo = data.data;
-  //   for (let i = 0; i < pri.length; i++) {
-  //     perksInfo.forEach((x) => {
-  //       if (x.id === pri[i][0]) {
-  //         for (let j = 0; j < x.slots.length; j++) {
-  //           for (let k = 0; k < x.slots[j].runes.length; k++) {
-  //             if (x.slots[j].runes[k].id === pri[i][1]) mainRune.push(x.slots[j].runes[k].icon);
-  //           }
-  //         }
-  //       }
-  //     });
-  //     perksInfo.forEach((x) => (x.id === sub[i] ? subRune.push(x.icon) : 0));
-  //   }
-  //   let temp = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/summoner.json");
-
-  //   // console.log("spellTF=", spell);
-  //   // console.log(temp.data.data);
-
-  //   let spell1 = [];
-  //   let spell2 = [];
-  //   let spellAll = temp.data.data;
-  //   spell.forEach((x) => {
-  //     for (let spellOne in spellAll) {
-  //       if (spellAll[spellOne].key === `${x[0]}`) {
-  //         spell1.push(spellAll[spellOne].id + ".png");
-  //       }
-  //       if (spellAll[spellOne].key === `${x[1]}`) {
-  //         spell2.push(spellAll[spellOne].id + ".png");
-  //       }
-  //     }
-  //   });
-  //   return { mainRune, subRune, spell1, spell2 };
-  // };
-
-  // ddragon("12.4.1", record.data, schBarInput);
 
   return (
     <div>

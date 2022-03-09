@@ -73,7 +73,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home setSchBarInput={setSchBarInput} setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />
-            <Route path="/record" element={<RecordPage setHistory={setHistory} />} />
+            <Route path="/record" element={<RecordPage setHistory={setHistory} schBarInput={schBarInput} setSchBarInput={setSchBarInput} />} />
             <Route path="/mypage/edit" element={<Edit setHistory={setHistory} setReplaceState={setReplaceState} />} />
             <Route path="/mypage/changePassword" element={<ChangePassword setHistory={setHistory} setPasswordState={setPasswordState} setPasswordCheckState={setPasswordCheckState} setReplaceState={setReplaceState} />} />
             <Route path="/mypage/deleteAccount" element={<DeleteAccount setHistory={setHistory} />} />

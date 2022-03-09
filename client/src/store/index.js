@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 import user from "./User";
-import gameProfile from "./GameProfile";
+import prevRecord from "./PrevRecord";
 import gameRecord from "./GameRecord";
 
 const rootReducer = combineReducers({
   user,
-  gameProfile,
+  prevRecord,
   gameRecord,
 });
 
