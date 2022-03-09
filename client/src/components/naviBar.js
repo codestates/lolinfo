@@ -21,6 +21,7 @@ function NaviBar({ sticky, setLoginModal }) {
               else if (menuIdx === 2) navigate("/record");
               else if (menuIdx === 3) navigate("/rank");
               else if (menuIdx === 4) navigate("/chat");
+              else if (menuIdx === 5) navigate("/mypage/edit");
               else setLoginModal("login");
             }}
           >
