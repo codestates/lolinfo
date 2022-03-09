@@ -54,7 +54,7 @@ function App() {
       <ThemeProvider theme={Theme}>
         <Router>
           <GlobalStyle />
-          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} />
+          <NaviBar sticky={isSticky} setLoginModal={setLoginModal} loginState={loginState} />
           {history !== "/" ? <Search setSchBarInput={setSchBarInput} schBarInput={schBarInput} /> : null}
           {loginModal ? (
             <Modal setLoginModal={setLoginModal} visible={true}>

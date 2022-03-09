@@ -2,14 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-function NaviBar({ sticky, setLoginModal }) {
+function NaviBar({ sticky, setLoginModal, loginState }) {
   let navigate = useNavigate();
   return (
     <div>
       <NaviContainer sticky={sticky} className={sticky ? "naviBar-sticky" : "navibar-nomal"}>
         {menuNameList.map((ele, menuIdx) => (
           <Menu
-            key={menuIdx}
+            loginState={loginState}
+            className={menuNameList[menuIdx]}
+            key={menuNameList[menuIdx]}
             order={menuIdx}
             onClick={() => {
               if (menuIdx === 0) navigate("/");
@@ -27,7 +29,7 @@ function NaviBar({ sticky, setLoginModal }) {
     </div>
   );
 }
-const menuNameList = ["메인", "게시판", "전적", "랭킹", "오픈채팅", "로그인"];
+const menuNameList = ["메인", "게시판", "전적", "랭킹", "오픈채팅", "마이페이지", "로그인"];
 const NaviContainer = styled.div`
   z-index: 998;
   min-width: 320px;
@@ -56,8 +58,14 @@ const Menu = styled.button`
   background: ${(props) => props.theme.mainColor};
   border: none;
   cursor: pointer;
-  grid-column: ${(props) => (props.order === menuNameList.length - 1 ? menuNameList.length + 1 : props.order + 1)} / ${(props) => (props.order === menuNameList.length - 1 ? menuNameList.length + 2 : props.order + 2)};
+  grid-column: ${(x) => (x.order < menuNameList.length - 2 ? Number(x.order / (x.order + 1)) : -2)};
   grid-row: 2/3;
+  &.마이페이지 {
+    visibility: ${(x) => (!x.loginState ? "hidden" : "visible")};
+  }
+  &.로그인 {
+    visibility: ${(x) => (x.loginState ? "hidden" : "visible")};
+  }
 `;
 
 export default NaviBar;
