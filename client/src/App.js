@@ -27,6 +27,7 @@ function App() {
   const [loginModal, setLoginModal] = useState("");
   const [loginState, setLoginState] = useState("");
   const [userInfo, setUserInfo] = useState({
+    email: "",
     name: "",
     password: "",
     passwordC: "",
