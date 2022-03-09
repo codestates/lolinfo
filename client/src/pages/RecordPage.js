@@ -56,6 +56,7 @@ const LogWrapper = styled.div`
 
   background-color: ${(props) => props.theme.recordBgColor};
 `;
+
 function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   axios.defaults.withCredentials = false;
   const { loading, payload, error } = useSelector((state) => state.gameRecord);
@@ -66,22 +67,22 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   }, []);
 
   let isDummy = false;
-  console.log(loading, prevRecord, schBarInput);
 
   if (loading || schBarInput !== prevRecord) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
   if (error || schBarInput === "") {
     isDummy = true;
   }
 
+  console.log(loading, prevRecord, schBarInput, payload);
   const { chartData, needs } = extractData(payload, schBarInput);
   const profileData = extractProfileData(payload, needs);
 
   return (
     <div>
       <Content>
-        {/* {error ? <RecordPageModal text={"찾을 수 없는 유저입니다"} /> : null} */}
+        {error ? <RecordPageModal text={"찾을 수 없는 유저입니다"} /> : null}
+        <UserProfile profileData={isDummy ? profileDummyData : profileData} />
         <BoxWrapper name="BoxWrapper">
-          <UserProfile profileData={isDummy ? profileDummyData : profileData} />
           <RecentChart className="RecentChart" chartData={isDummy ? dummyChartData : chartData} />
           <div>
             <LogWrapper className="RecentGameLog">
