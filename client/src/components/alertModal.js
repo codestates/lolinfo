@@ -13,6 +13,7 @@ function AlertModal({ setModalOn, visible, children }) {
       <ModalOverlay visible={visible} />
       <ModalWrapper className="modal-outside" visible={visible}>
         <ModalInner className="modal-inside">{children}</ModalInner>
+        <button>확인</button>
       </ModalWrapper>
     </>
   );
