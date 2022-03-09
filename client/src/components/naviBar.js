@@ -1,9 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function NaviBar({ sticky, setLoginModal }) {
+  const userInfo = useSelector((state) => state.user.payload);
+  console.log("userInfo:::", userInfo);
+
+  let navStrLoginState = "로그인";
+  if (userInfo.isLogined) navStrLoginState = "로그아웃";
+
   let navigate = useNavigate();
+
   return (
     <div>
       <NaviContainer sticky={sticky} className={sticky ? "naviBar-sticky" : "navibar-nomal"}>
@@ -27,7 +35,9 @@ function NaviBar({ sticky, setLoginModal }) {
     </div>
   );
 }
-const menuNameList = ["메인", "게시판", "전적", "랭킹", "오픈채팅", "로그인"];
+
+let menuNameList = ["메인", "게시판", "전적", "랭킹", "오픈채팅", "로그인"];
+
 const NaviContainer = styled.div`
   z-index: 998;
   min-width: 320px;
