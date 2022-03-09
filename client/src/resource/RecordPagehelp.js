@@ -195,20 +195,28 @@ export function extractData(payload, schBarInput = "고양이") {
 }
 
 export function extractProfileData(payload, needs) {
-  const { leaguePoints, wins, losses, tier, rank, queueType } = payload[0][0];
-  console.log(needs[0]);
-  const { profileIcon, summonerName } = needs[0];
+  if (payload !== null) {
+    if (payload[0] === undefined) {
+      return false;
+    }
+    console.log(payload, payload[0]);
+    const { leaguePoints, wins, losses, tier, rank, queueType } = payload[0][0];
+    console.log(needs[0]);
+    const { profileIcon, summonerName } = needs[0];
 
-  let profileData = {
-    leaguePoints,
-    wins,
-    losses,
-    tier,
-    rank,
-    queueType,
-    profileIcon,
-    summonerName,
-  };
+    let profileData = {
+      leaguePoints,
+      wins,
+      losses,
+      tier,
+      rank,
+      queueType,
+      profileIcon,
+      summonerName,
+    };
 
-  return profileData;
+    return profileData;
+  } else {
+    return false;
+  }
 }
