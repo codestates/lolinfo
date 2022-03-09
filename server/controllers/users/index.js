@@ -3,4 +3,5 @@ module.exports = {
   logout: require('./logout'),
   register: require('./register'),
   userinfo: require('./userinfo'),
+  remove: require('./remove'),
 };
