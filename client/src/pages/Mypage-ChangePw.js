@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import MypageNavbar from "./pageComponents/MypageComponents/MypageNavbarComponent";
-import { useState, useEffect } from "react";
-import { isMatchPassword, validPassword } from "../modules/validation";
+import styled from 'styled-components';
+import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponent'
+import { useState, useEffect } from 'react'
+import { isMatchPassword, validPassword } from '../modules/validation'
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -10,32 +10,31 @@ function ChangePasswordPage({ setHistory, setPasswordState, setPasswordCheckStat
   useEffect(() => {
     setHistory(true);
   }, []);
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newAgainPassword, setnewAgainPassword] = useState("");
+  const [password, setPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [newAgainPassword, setnewAgainPassword] = useState("")
 
   const passwordConfirmation = async () => {
     if (!validPassword(password)) {
-      setPassword("");
-      setPasswordState("change");
-      return;
+      setPassword("")
+      setPasswordState("change")
+      return
     }
     if (!isMatchPassword(newPassword, newAgainPassword)) {
-      setPasswordCheckState("change");
-      return;
+      setPasswordCheckState("change")
+      return
     }
-    const change = await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: "kimcoding@korea.com", password: password, changedPassword: newPassword });
+    const change = await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo",
+      { email: "kimcoding@korea.com", password: password, changedPassword: newPassword })
     if (change.status === 200) {
-      setPassword("");
-      setNewPassword("");
-      setnewAgainPassword("");
-      setReplaceState("change");
-      return;
+      setPassword("")
+      setNewPassword("")
+      setnewAgainPassword("")
+      setReplaceState("change")
+      return
     }
-    if (!isMatchPassword(newPassword, newAgainPassword)) {
-      return alert("비밀번호가 일치하지 않습니다.");
-    }
-  };
+
+  }
 
   return (
     <Container>
@@ -63,7 +62,7 @@ function ChangePasswordPage({ setHistory, setPasswordState, setPasswordCheckStat
         </ChangePasswordContainer>
       </ChangePwPage>
     </Container>
-  );
+  )
 }
 
 const Container = styled.div`
@@ -192,5 +191,6 @@ const SubmitButton = styled.button`
   border: 0;
   cursor: pointer;
 `;
+
 
 export default ChangePasswordPage;
