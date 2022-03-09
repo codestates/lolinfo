@@ -12,7 +12,8 @@ function ChangePasswordPage({ setHistory, setPasswordState, setPasswordCheckStat
     setHistory(true);
   }, []);
   const userInfo = useSelector((state) => state.user.payload);
-  console.log("accountPage:::", userInfo.email);
+
+  const Email = userInfo.email
 
   const [password, setPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
@@ -29,7 +30,7 @@ function ChangePasswordPage({ setHistory, setPasswordState, setPasswordCheckStat
       return
     }
     const change = await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo",
-      { email: "kimcoding@korea.com", password: password, changedPassword: newPassword })
+      { email: Email, password: password, changedPassword: newPassword })
     if (change.status === 200) {
       setPassword("")
       setNewPassword("")
