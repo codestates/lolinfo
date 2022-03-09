@@ -8,19 +8,15 @@ axios.defaults.withCredentials = true;
 function SignupPage({ setLoginModal, setUserInfo, userInfo }) {
 
   const EmailInputFunction = (e) => {
-    console.log(userInfo)
     setUserInfo(Object.assign(userInfo, { "email": e.target.value }))
   }
   const NicknameInputFunction = (e) => {
-    console.log(userInfo)
     setUserInfo(Object.assign(userInfo, { "name": e.target.value }))
   }
   const PasswordInputFunction = (e) => {
-    console.log(userInfo)
     setUserInfo(Object.assign(userInfo, { "password": e.target.value }))
   }
   const PasswordCInputFunction = (e) => {
-    console.log(userInfo)
     setUserInfo(Object.assign(userInfo, { "passwordC": e.target.value }))
   }
 
