@@ -11,7 +11,7 @@ export const createPromiseThunk = (type) => {
       let resData = null;
       url = url + param;
 
-      console.log("url", url);
+      // console.log("url", url);
 
       switch (method) {
         case "get": {
@@ -28,11 +28,11 @@ export const createPromiseThunk = (type) => {
         }
       }
 
-      console.log("썽크", { type: SUCCESS, payload: resData.data });
+      // console.log("썽크", { type: SUCCESS, payload: resData.data });
 
       dispatch({ type: SUCCESS, payload: resData.data });
     } catch (e) {
-      console.log("썽크에러", { type: ERROR, e });
+      // console.log("썽크에러", { type: ERROR, e });
       dispatch({ type: ERROR, errorMsg: e });
     }
   };

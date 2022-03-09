@@ -55,7 +55,7 @@ function Loading({ schBarInput, prevRecord }) {
       dispatch(getRecord("get", matchUrl, schBarInput));
       dispatch(setPrevRecord(schBarInput));
     }
-  }, []);
+  }, [dispatch, schBarInput, prevRecord]);
 
   return (
     <div>

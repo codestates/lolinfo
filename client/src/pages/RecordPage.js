@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import UserProfile from "./pageComponents/UserProfile";
 import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Loading from "./Loading";
 import { profileDummyData, dummyChartData, extractData, extractProfileData } from "../resource/RecordPagehelp";
 import axios from "axios";
-import { getRecord } from "../store/GameRecord";
-import { setPrevRecord } from "../store/PrevRecord";
 import RecordPageModal from "./pageComponents/RecordPageModal";
 
 const Content = styled.div`

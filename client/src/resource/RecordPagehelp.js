@@ -27,7 +27,7 @@ export function extractData(payload, schBarInput = "고양이") {
       let day = date.toString().split(" ")[2];
       let convertSTN = (m) => {
         let result = "";
-        let temp = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].forEach((x, i) => (x === m ? (result = i + 1) : 0));
+        ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].forEach((x, i) => (x === m ? (result = i + 1) : 0));
         return result;
       };
 
