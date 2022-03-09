@@ -272,8 +272,8 @@ function RecordPage({ setHistory, schBarInput }) {
       pri.push([perk[0].style, perk[0].selections[0].perk]);
       sub.push(perk[1].style);
     });
-    console.log("pri=", pri);
-    console.log("sub=", sub);
+    // console.log("pri=", pri);
+    // console.log("sub=", sub);
     let data = await axios("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/ko_KR/runesReforged.json");
     let mainRune = [];
     let subRune = [];
