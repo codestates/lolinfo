@@ -37,7 +37,7 @@ function CardContainer({ boardList }) {
     <CardWrapper>
       {boardList.map((board) => {
         const time = displayedAt(new Date(board.createdAt));
-        return <Card key={board.id} time={time} title={board.title} body={board.body} userName={"name"} userEmail={"email"} />;
+        return <Card key={board.id} time={time} title={board.title} body={board.body} userName={board.User.name} userEmail={board.User.email} />;
       })}
     </CardWrapper>
   );

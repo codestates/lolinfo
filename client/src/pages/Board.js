@@ -191,7 +191,7 @@ function Board({ setHistory }) {
   const navigate = useNavigate();
   const token = useSelector((state) => state.user.payload.accessToken);
   const userId = useSelector((state) => state.user.payload.id);
-
+  const isLogined = useSelector((state) => state.user.payload.isLogined);
   //func
 
   const axiosInstance = axios.create({
@@ -201,7 +201,7 @@ function Board({ setHistory }) {
       Authorization: "Bearer " + token,
     },
   });
-  
+
   const axiosPost = async (title, body) => {
     const payload = {
       title,
@@ -211,7 +211,7 @@ function Board({ setHistory }) {
     const rs = await axiosInstance.post("/board", payload);
     return rs;
   };
-  
+
   const axiosGet = async (limit, offset) => {
     const params = {
       limit,
@@ -260,6 +260,10 @@ function Board({ setHistory }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isLogined) {
+      alert("로그인이 되어있지 않습니다.");
+      return navigate(0);
+    }
     axiosPost(post.title, post.body);
     setPost({
       title: "",
