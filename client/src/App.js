@@ -67,7 +67,7 @@ function App() {
             </Modal>
           ) : null}
           {loginState ? <AlertModal setLoginState={setLoginState} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
-          {loginFailState ? <AlertModal setLoginState={setloginFailState} visible={true} children="실패했습니다."></AlertModal> : <div></div>}
+          {loginFailState ? <AlertModal setLoginState={setloginFailState} visible={true} children={loginFailState}></AlertModal> : <div></div>}
           {emailState ? <AlertModal setLoginState={setemailState} visible={true} children="이메일 형식이 아닙니다."></AlertModal> : <div></div>}
           {passwordState ? <AlertModal setLoginState={setPasswordState} visible={true} children="비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다."></AlertModal> : <div></div>}
           {passwordCheckState ? <AlertModal setLoginState={setPasswordCheckState} visible={true} children="비밀번호가 일치하지 않습니다."></AlertModal> : <div></div>}
