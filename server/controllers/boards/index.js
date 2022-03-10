@@ -13,13 +13,13 @@ module.exports = {
     }
 
     const auth = isAuthorized(req);
+    console.log("isAuth: ", auth);
 
     if (auth === null) {
       return res.status(401).send({
         message: "Unauthorized token",
       });
     }
-    console.log(auth);
     const userId = auth.id;
 
     // // userId validation - 로그인에서 이미 처리했음
@@ -39,11 +39,18 @@ module.exports = {
     // defaults: 0 to 25 post
 
     const { offset, limit } = { offset: parseInt(req.query.offset), limit: parseInt(req.query.limit) };
-    let payload = {};
+    let payload = {
+      include: [
+        {
+          model: User,
+          attributes: ["id", "name", "email"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    };
 
     if (offset > 0) payload.offset = offset;
     if (limit > 0) payload.limit = limit;
-    console.log(payload);
 
     try {
       const list = await Board.findAll(payload);
