@@ -36,7 +36,7 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   return (
     <div>
       <Content>
-        {isDummy ? <RecordPageModal text={"찾을 수 없는 유저입니다"} /> : null}
+        {isDummy && schBarInput !== "" ? <RecordPageModal text={"찾을 수 없는 유저입니다"} /> : null}
         <UserProfile profileData={isDummy ? profileDummyData : profileData} />
         <BoxWrapper name="BoxWrapper">
           <RecentChart className="RecentChart" chartData={isDummy ? dummyChartData : chartData} />
