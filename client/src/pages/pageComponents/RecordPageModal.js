@@ -71,7 +71,6 @@ function RecordPageModal({ text }) {
   const dispatch = useDispatch();
   function removeModal() {
     setIsModal("hidden");
-    dispatch(getRecordInitial());
   }
 
   return (

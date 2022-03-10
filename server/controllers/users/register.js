@@ -6,7 +6,7 @@ module.exports = {
   post: async (req, res) => {
     const { name, email, password: reqPassword } = req.body;
     if (email === undefined || reqPassword === undefined || name === undefined) {
-      return res.status(401).send("insufficient parameters supplied");
+      return res.status(406).send("insufficient parameters supplied");
     }
     let find = await User.findOne({
       where: {

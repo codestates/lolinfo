@@ -11,7 +11,7 @@ export const profileDummyData = {
 
 export const dummyChartData = { k: 0, d: 0, a: 0, blueRate: 100, RedRate: 100, rate25: 99, rate30: 99, rate35: 99, rate35more: 99, totalGame: 0, totalWin: 0, totalLose: 0, victoryRate: 0, kp: 0 };
 
-export function extractData(payload, schBarInput = "고양이") {
+export function extractData(payload, schBarInput = "") {
   let needs = [];
   let chartData = {};
   let totalKill = [];
@@ -19,97 +19,96 @@ export function extractData(payload, schBarInput = "고양이") {
 
   if (payload !== null) {
     for (let i = 1; i < payload.length; ++i) {
-      if (payload[i] !== null && payload[i] !== undefined) {
-        const { gameType, gameDuration, gameId } = payload[i].info;
-        let gameLen = gameDuration;
-        let blueTotalKill = 0,
-          redTotalKill = 0;
+      if (payload[i] === null) break;
+      const { gameType, gameDuration, gameId } = payload[i].info;
+      let gameLen = gameDuration;
+      let blueTotalKill = 0,
+        redTotalKill = 0;
 
-        let date = new Date(payload[i].info.gameCreation);
-        let month = date.toString().split(" ")[1];
-        let day = date.toString().split(" ")[2];
-        let convertSTN = (m) => {
-          let result = "";
-          ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].forEach((x, i) => (x === m ? (result = i + 1) : 0));
-          return result;
-        };
+      let date = new Date(payload[i].info.gameCreation);
+      let month = date.toString().split(" ")[1];
+      let day = date.toString().split(" ")[2];
+      let convertSTN = (m) => {
+        let result = "";
+        ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].forEach((x, i) => (x === m ? (result = i + 1) : 0));
+        return result;
+      };
 
-        month = convertSTN(month);
-        day = Number(day);
-        // console.log("월=", convertSTN(month));
-        // console.log("일=", Number(day));
+      month = convertSTN(month);
+      day = Number(day);
+      // console.log("월=", convertSTN(month));
+      // console.log("일=", Number(day));
 
-        for (let j = 0; j < payload[i].info.participants.length; ++j) {
-          const { queueId } = payload[i].info;
-          const { kills, teamId, summonerName } = payload[i].info.participants[j];
-          if (teamId === 100) {
-            blueTotalKill += kills;
-          } else {
-            redTotalKill += kills;
-          }
-          if (summonerName === schBarInput) {
-            const {
-              profileIcon,
-              summonerName,
-              summonerLevel,
-              win,
-              kills,
-              deaths,
-              assists,
-              teamId,
-              championId,
-              champLevel,
-              championName,
-              quadraKills,
-              pentaKills,
-              tripleKills,
-              doubleKills,
-              item0,
-              item1,
-              item2,
-              item3,
-              item4,
-              item5,
-              item6,
-              goldEarned,
-              totalMinionsKilled,
-            } = payload[i].info.participants[j];
-            const oneGameTime = (gameLen / 60).toFixed(2);
-            gameLen = parseInt(gameLen / 60);
-            const item = [item0, item1, item2, item3, item4, item5, item6];
-            needs.push({
-              gameId,
-              gameLen,
-              profileIcon,
-              summonerName,
-              summonerLevel,
-              win,
-              kills,
-              deaths,
-              assists,
-              teamId,
-              oneGameTime,
-              gameType,
-              championId,
-              champLevel,
-              quadraKills,
-              pentaKills,
-              tripleKills,
-              doubleKills,
-              championName,
-              item,
-              goldEarned,
-              totalMinionsKilled,
-              month,
-              day,
-              queueId,
-            });
-          }
+      for (let j = 0; j < payload[i].info.participants.length; ++j) {
+        const { queueId } = payload[i].info;
+        const { kills, teamId, summonerName } = payload[i].info.participants[j];
+        if (teamId === 100) {
+          blueTotalKill += kills;
+        } else {
+          redTotalKill += kills;
         }
-
-        totalKill.push({ blueTotalKill, redTotalKill });
-        // ("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+        if (summonerName === schBarInput) {
+          const {
+            profileIcon,
+            summonerName,
+            summonerLevel,
+            win,
+            kills,
+            deaths,
+            assists,
+            teamId,
+            championId,
+            champLevel,
+            championName,
+            quadraKills,
+            pentaKills,
+            tripleKills,
+            doubleKills,
+            item0,
+            item1,
+            item2,
+            item3,
+            item4,
+            item5,
+            item6,
+            goldEarned,
+            totalMinionsKilled,
+          } = payload[i].info.participants[j];
+          const oneGameTime = (gameLen / 60).toFixed(2);
+          gameLen = parseInt(gameLen / 60);
+          const item = [item0, item1, item2, item3, item4, item5, item6];
+          needs.push({
+            gameId,
+            gameLen,
+            profileIcon,
+            summonerName,
+            summonerLevel,
+            win,
+            kills,
+            deaths,
+            assists,
+            teamId,
+            oneGameTime,
+            gameType,
+            championId,
+            champLevel,
+            quadraKills,
+            pentaKills,
+            tripleKills,
+            doubleKills,
+            championName,
+            item,
+            goldEarned,
+            totalMinionsKilled,
+            month,
+            day,
+            queueId,
+          });
+        }
       }
+
+      totalKill.push({ blueTotalKill, redTotalKill });
+      // ("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
     }
 
     for (let i = 0; i < needs.length; ++i) {
@@ -200,11 +199,14 @@ export function extractData(payload, schBarInput = "고양이") {
 }
 
 export function extractProfileData(payload, needs) {
+  if (needs === undefined) return false;
+  if (payload === null) return false;
+
   if (payload !== null) {
     if (payload[0] === undefined) {
       return false;
     }
-    console.log(payload, payload[0]);
+    console.log(payload, payload[0], needs);
     const { leaguePoints, wins, losses, tier, rank, queueType } = payload[0][0];
     console.log(needs[0]);
     const { profileIcon, summonerName } = needs[0];
@@ -221,7 +223,5 @@ export function extractProfileData(payload, needs) {
     };
 
     return profileData;
-  } else {
-    return false;
   }
 }

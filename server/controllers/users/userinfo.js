@@ -11,7 +11,7 @@ module.exports = {
 
     const find = await User.findOne({
       where: {
-        name,
+        email: name,
       },
       attributes: { exclude: ["password", "salt"] },
     });
