@@ -10,7 +10,7 @@ module.exports = {
     //암호화 코드 작성
     const findPassword = await makePasswordHashed(email, password);
     if (findPassword === undefined) {
-      return res.status(401).send("please check your email or password again");
+      return res.status(404).send("Not Found Email");
     }
     const Value = await User.findOne({
       where: {
@@ -20,7 +20,7 @@ module.exports = {
     });
     if (!Value) {
       // cant find
-      return res.status(401).send("please check your email or password again");
+      return res.status(404).send("Not Found Password");
     }
     await User.destroy({ where: { email: email } });
     res.status(204).send("Deleted your Id!");
