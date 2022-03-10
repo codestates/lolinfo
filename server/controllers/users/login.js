@@ -27,7 +27,6 @@ module.exports = {
       return res.status(401).send("NOT AUTHORIZED");
     }
 
-    console.log("Value", Value);
     const payload = {
       id,
       name,
