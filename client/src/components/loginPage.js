@@ -6,7 +6,7 @@ import { setUserLoginedInfo } from "../store/User";
 
 axios.defaults.withCredentials = true;
 
-function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState, setloginFailState }) {
+function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState }) {
   const dispatch = useDispatch();
   const IdInputFunction = (e) => {
     setUserInfo(Object.assign(userInfo, { name: e.target.value }));
@@ -22,7 +22,7 @@ function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState, setlog
 
     LoginReturnValue.data.data.isLogined = true;
     dispatch(setUserLoginedInfo(LoginReturnValue.data.data));
-    console.log(LoginReturnValue.data.data);
+    // console.log(LoginReturnValue.data.data);
 
     if (LoginReturnValue.status === 200) {
       setUserInfo(Object.assign(userInfo, { login: true }));

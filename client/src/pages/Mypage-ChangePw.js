@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import MypageNavbar from './pageComponents/MypageComponents/MypageNavbarComponent'
 import { useState, useEffect } from 'react'
 import { isMatchPassword, validPassword } from '../modules/validation'
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -10,6 +11,10 @@ function ChangePasswordPage({ setHistory, setPasswordState, setPasswordCheckStat
   useEffect(() => {
     setHistory(true);
   }, []);
+  const userInfo = useSelector((state) => state.user.payload);
+
+  const Email = userInfo.email
+
   const [password, setPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [newAgainPassword, setnewAgainPassword] = useState("")
@@ -25,7 +30,7 @@ function ChangePasswordPage({ setHistory, setPasswordState, setPasswordCheckStat
       return
     }
     const change = await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo",
-      { email: "kimcoding@korea.com", password: password, changedPassword: newPassword })
+      { email: Email, password: password, changedPassword: newPassword })
     if (change.status === 200) {
       setPassword("")
       setNewPassword("")

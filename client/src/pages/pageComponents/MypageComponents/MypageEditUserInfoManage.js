@@ -1,17 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { useSelector } from "react-redux";
 
 function MypageEditUserInfoManage({ setChange }) {
+    const userInfo = useSelector((state) => state.user.payload);
+    console.log("accountPage:::", userInfo);
+    const day = userInfo.createdAt.slice(0, 10)
     return (
         <Container>
             <EmailDiv>
                 <EmailDivname>이메일</EmailDivname>
-                <EmailValue>myidisteemo123</EmailValue>
+                <EmailValue>{userInfo.email}</EmailValue>
             </EmailDiv>
             <CreateIdDiv>
                 <CreateIdDivName>생성일</CreateIdDivName>
-                <CreateIdValue>2022년 8월 15일</CreateIdValue>
+                <CreateIdValue>{day}</CreateIdValue>
             </CreateIdDiv>
             <NickName>
                 <NickNameDiv>닉네임</NickNameDiv>
@@ -19,7 +22,7 @@ function MypageEditUserInfoManage({ setChange }) {
                     <NickNameValueDiv>
                         <NickNameValueinput
                             onChange={(e) => setChange(e.target.value)}
-                            placeholder="hide on bush"></NickNameValueinput>
+                            placeholder={userInfo.name}></NickNameValueinput>
                     </NickNameValueDiv>
                 </NickNameValue>
             </NickName>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
@@ -17,6 +17,8 @@ import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 import AlertModal from "./components/alertModal";
+import DeleteModal from "./components/deleteModal";
+
 function App() {
   const { isSticky, element } = useSticky();
   const [history, setHistory] = useState(0);
@@ -29,6 +31,8 @@ function App() {
   const [passwordCheckState, setPasswordCheckState] = useState("");
   const [registerState, setRegisterState] = useState("");
   const [replaceState, setReplaceState] = useState("");
+  const [deleteModal, setDeleteModal] = useState("");
+  const [deleteModalConfirm, setDeleteModalConfirm] = useState("");
   const [userInfo, setUserInfo] = useState({
     email: "",
     name: "",
@@ -63,20 +67,28 @@ function App() {
             </Modal>
           ) : null}
           {loginState ? <AlertModal setLoginState={setLoginState} visible={true} children="로그인이 완료되었습니다."></AlertModal> : <div></div>}
-          {loginFailState ? <AlertModal setLoginState={setloginFailState} visible={true} children="로그인에 실패했습니다."></AlertModal> : <div></div>}
+          {loginFailState ? <AlertModal setLoginState={setloginFailState} visible={true} children="실패했습니다."></AlertModal> : <div></div>}
           {emailState ? <AlertModal setLoginState={setemailState} visible={true} children="이메일 형식이 아닙니다."></AlertModal> : <div></div>}
           {passwordState ? <AlertModal setLoginState={setPasswordState} visible={true} children="비밀번호 조건: 8~16자 영문 대 소문자, 숫자, 특수문자를 사용해야합니다."></AlertModal> : <div></div>}
           {passwordCheckState ? <AlertModal setLoginState={setPasswordCheckState} visible={true} children="비밀번호가 일치하지 않습니다."></AlertModal> : <div></div>}
           {registerState ? <AlertModal setLoginState={setRegisterState} visible={true} children="회원가입에 성공했습니다!"></AlertModal> : <div></div>}
           {replaceState ? <AlertModal setLoginState={setReplaceState} visible={true} children="정상적으로 교체되었습니다!"></AlertModal> : <div></div>}
+          {deleteModalConfirm ? <AlertModal setLoginState={setDeleteModalConfirm} visible={true} children="삭제 완료되었습니다!"></AlertModal> : <div></div>}
+          {deleteModal ? (
+            <Modal>
+              <DeleteModal setDeleteModal={setDeleteModal} setDeleteModalConfirm={setDeleteModalConfirm} visible={true}></DeleteModal>
+            </Modal>
+          ) : (
+            <div></div>
+          )}
 
           <Routes>
             <Route path="/" element={<Home setSchBarInput={setSchBarInput} setHistory={setHistory} />} />
             <Route path="/board" element={<Board setHistory={setHistory} />} />
-            <Route path="/record" element={<RecordPage setHistory={setHistory} />} />
+            <Route path="/record" element={<RecordPage setHistory={setHistory} schBarInput={schBarInput} setSchBarInput={setSchBarInput} />} />
             <Route path="/mypage/edit" element={<Edit setHistory={setHistory} setReplaceState={setReplaceState} />} />
             <Route path="/mypage/changePassword" element={<ChangePassword setHistory={setHistory} setPasswordState={setPasswordState} setPasswordCheckState={setPasswordCheckState} setReplaceState={setReplaceState} />} />
-            <Route path="/mypage/deleteAccount" element={<DeleteAccount setHistory={setHistory} />} />
+            <Route path="/mypage/deleteAccount" element={<DeleteAccount setHistory={setHistory} setDeleteModal={setDeleteModal} setloginFailState={setloginFailState} />} />
             <Route path="/chat" element={<ChattingRoom setHistory={setHistory} />} />
           </Routes>
         </Router>

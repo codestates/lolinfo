@@ -11,7 +11,6 @@ function AlertModal({ setLoginState, visible, children }) {
     <>
       <ModalOverlay visible={visible} />
       <ModalWrapper className="modal-outside" visible={visible}>
-
         <ModalInner className="modal-inside">{children}
           <ModalButton onClick={() => downFunction()}>확인</ModalButton>
         </ModalInner>
@@ -59,7 +58,7 @@ const ModalInner = styled.div`
   transform: translateY(-50%);
   margin: 0 auto;
   background-color: white;
-  font-size:20px
+  font-size:20px;
 `;
 
 const ModalButton = styled.button`

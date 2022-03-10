@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       body: DataTypes.STRING,
       class: DataTypes.TINYINT,
       order: DataTypes.INTEGER,
+      userId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,

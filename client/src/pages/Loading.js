@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { getRecord } from "../store/GameRecord";
+import { setPrevRecord } from "../store/PrevRecord";
+import { useDispatch } from "react-redux";
 
 const ProfileWrapper = styled.div`
   display: grid;
@@ -42,7 +45,18 @@ const Wrapper = styled.div`
   }
 `;
 
-function Loading() {
+function Loading({ schBarInput, prevRecord }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (schBarInput === "") return;
+    if (schBarInput !== prevRecord) {
+      const matchUrl = process.env.REACT_APP_API_URL + "/games/match?nickname=";
+      dispatch(getRecord("get", matchUrl, schBarInput));
+      dispatch(setPrevRecord(schBarInput));
+    }
+  }, [dispatch, schBarInput, prevRecord]);
+
   return (
     <div>
       <ProfileWrapper></ProfileWrapper>
