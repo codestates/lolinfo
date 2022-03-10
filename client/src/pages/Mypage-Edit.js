@@ -4,16 +4,19 @@ import MypageEditUserInfoManage from './pageComponents/MypageComponents/MypageEd
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 axios.defaults.withCredentials = true;
 function Mypage({ setHistory, setReplaceState }) {
   useEffect(() => {
     setHistory(true);
   }, []);
+  const userInfo = useSelector((state) => state.user.payload);
+  const Email = userInfo.email
 
   const [change, setChange] = useState("")
   const something = async () => {
-    await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: "kimcoding@korea.com", name: change })
+    await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: Email, name: change })
     setReplaceState("change")// 정상적으로 교체되면 나오는 모달
   }
   return (
