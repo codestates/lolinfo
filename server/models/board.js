@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         comment: "조회수",
       },
+      userId: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
     },
     {
       sequelize,
