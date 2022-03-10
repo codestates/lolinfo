@@ -22,7 +22,7 @@ function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState }) {
 
     LoginReturnValue.data.data.isLogined = true;
     dispatch(setUserLoginedInfo(LoginReturnValue.data.data));
-    console.log(LoginReturnValue.data.data);
+    // console.log(LoginReturnValue.data.data);
 
     if (LoginReturnValue.status === 200) {
       setUserInfo(Object.assign(userInfo, { login: true }));
