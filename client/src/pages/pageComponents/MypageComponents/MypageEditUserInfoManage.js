@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 function MypageEditUserInfoManage({ setChange }) {
     const userInfo = useSelector((state) => state.user.payload);
-    console.log("accountPage:::", userInfo);
     const day = userInfo.createdAt.slice(0, 10)
     return (
         <Container>
