@@ -1,13 +1,19 @@
-import { createPromiseThunk, reducerUtils } from "../lib/asyncUtils";
+import { createPromiseThunk } from "../lib/asyncUtils";
 
 const GET_RECORD = "GET_RECORD";
 const GET_RECORD_SUCCESS = "GET_RECORD_SUCCESS";
 const GET_RECORD_ERROR = "GET_RECORD_ERROR";
+const GET_RECORD_INITIAL = "GET_RECORD_INITIAL";
 
 export const getRecord = createPromiseThunk(GET_RECORD);
+export const getRecordInitial = () => ({ type: GET_RECORD_INITIAL });
 
 const initState = {
-  data: reducerUtils.initial(),
+  payload: {
+    loading: false,
+    payload: null,
+    error: null,
+  },
 };
 
 export default function gameRecord(state = initState, action) {
@@ -15,17 +21,34 @@ export default function gameRecord(state = initState, action) {
     case GET_RECORD:
       return {
         ...state,
-        data: reducerUtils.initial(),
+        loading: true,
+        payload: null,
+        error: false,
+        errorMsg: null,
       };
     case GET_RECORD_SUCCESS:
       return {
         ...state,
-        data: reducerUtils.success(action.payload),
+        loading: false,
+        payload: action.payload,
+        error: false,
+        errorMsg: null,
       };
     case GET_RECORD_ERROR:
       return {
         ...state,
-        data: reducerUtils.error(action.error),
+        loading: false,
+        payload: null,
+        error: true,
+        errorMsg: action.errorMsg,
+      };
+    case GET_RECORD_INITIAL:
+      return {
+        ...state,
+        loading: false,
+        payload: null,
+        error: false,
+        errorMsg: null,
       };
     default:
       return state;

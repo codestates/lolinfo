@@ -1,26 +1,33 @@
 const { Board, User } = require("../../models");
+const { isAuthorized } = require("../tokenFunction");
 
 module.exports = {
   newBoard: async (req, res) => {
     //validation
-    const { title, body, userId } = req.body;
-    if (!title || !body || !userId) {
+    const { title, body } = req.body;
+    if (!title || !body) {
       res.status(400).send({
         message: "Bad Request",
       });
       return;
     }
 
-    // userId validation
+    const auth = isAuthorized(req);
+    console.log("isAuth: ", auth);
+
+    if (auth === null) {
+      return res.status(401).send({
+        message: "Unauthorized token",
+      });
+    }
+    const userId = auth.id;
+
+    // // userId validation - 로그인에서 이미 처리했음
     // const user = await User.findByPk(userId);
     // if (user === null) {
-    //   res.status(400).send('Bad Request: user obscure');
+    //   res.status(400).send("Bad Request: user obscure");
     //   return;
     // }
-
-    //token validation
-    // TODO:
-    //
 
     const post = await Board.create({ title, body, userId });
     res.send({
@@ -32,11 +39,18 @@ module.exports = {
     // defaults: 0 to 25 post
 
     const { offset, limit } = { offset: parseInt(req.query.offset), limit: parseInt(req.query.limit) };
-    let payload = {};
+    let payload = {
+      include: [
+        {
+          model: User,
+          attributes: ["id", "name", "email"],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    };
 
     if (offset > 0) payload.offset = offset;
     if (limit > 0) payload.limit = limit;
-    console.log(payload);
 
     try {
       const list = await Board.findAll(payload);

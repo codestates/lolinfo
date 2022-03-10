@@ -23,12 +23,23 @@ const ProfileWrapper = styled.div`
   }
 `;
 
-function UserProfile() {
+function UserProfile({ profileData }) {
+  const { leaguePoints, wins, losses, tier, rank, queueType, profileIcon, summonerName } = profileData;
+
+  let rankType = queueType;
+  rankType = rankType.toLowerCase().split("_");
+
+  if (rankType[1] === "solo") {
+    rankType[1] = "솔로랭크";
+  } else if (rankType[1] === "free") {
+    rankType[1] = "자유랭크";
+  }
+
   return (
     <ProfileWrapper imgSize={6}>
-      <UserProfileImg />
-      <Rank name="solo-rank" />
-      <Rank name="free-rank" />
+      <UserProfileImg gameID={summonerName} icon={profileIcon} />
+      <Rank name="solo-rank" lp={leaguePoints} wins={wins} losses={losses} tier={tier} rank={rank} rankType={rankType[1]} />
+      {/* <Rank name="free-rank" /> */}
     </ProfileWrapper>
   );
 }

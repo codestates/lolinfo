@@ -1,11 +1,11 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-const { boardsController } = require('../controllers');
+const { boardsController } = require("../controllers");
 
 // * POST /boards
-router.post('/', boardsController.newPost);
-router.get('/', boardsController.listPost);
-router.delete('/', boardsController.deletePost);
+router.post("/", boardsController.newBoard);
+router.get("/", boardsController.listBoard);
+router.delete("/", boardsController.deleteBoard);
 
 module.exports = router;

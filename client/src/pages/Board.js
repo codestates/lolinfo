@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 import CardContainer from "../containers/CardContainer";
 
@@ -9,7 +11,7 @@ import { Fire as Hot } from "@styled-icons/remix-line/Fire";
 import { Time } from "@styled-icons/boxicons-regular/Time";
 import { Recommend } from "@styled-icons/material/Recommend";
 import { NewMessage } from "@styled-icons/entypo/NewMessage";
-import { CheckSquare } from '@styled-icons/bootstrap/CheckSquare'
+import { CheckSquare } from "@styled-icons/bootstrap/CheckSquare";
 
 const colorStyles = css`
   ${({ theme }) => {
@@ -32,23 +34,21 @@ const colorStyles = css`
 
 const Form = styled.form`
   grid-area: form;
-  display: ${({ active }) => active ? 'grid' : 'none'};
+  display: ${({ active }) => (active ? "grid" : "none")};
   grid-template-columns: 1fr 28rem;
   grid-template-areas:
     ". title"
     "submit text";
   justify-items: end;
-  
-
 `;
 
 const WriteContainer = styled.div`
   grid-area: title;
   width: 100%;
   display: grid;
-    grid-template-areas: 
-      ".    .    button"
-      "form form form";
+  grid-template-areas:
+    ".    .    button"
+    "form form form";
 
   form .title {
     grid-area: title;
@@ -78,11 +78,11 @@ const WriteContainer = styled.div`
     border-radius: 5px;
     border: 3px solid silver;
   }
-`
+`;
 
 const Button = styled.button`
   grid-area: button;
-    justify-self: end;
+  justify-self: end;
   border-style: none;
   cursor: pointer;
   ${colorStyles}
@@ -93,7 +93,7 @@ const SubmitButton = styled(Button)`
   justify-self: end;
   align-self: end;
   margin: 8px 7px;
-`
+`;
 
 const NewIcon = styled(NewMessage)`
   width: 30px;
@@ -119,7 +119,7 @@ const StWrapper = styled.div`
   overflow: auto;
   flex-wrap: wrap;
   background-color: ${(props) => props.theme.subColor};
-  height: 100%;
+  height: 87vh;
   padding: 2rem 0.4445rem;
 `;
 
@@ -178,12 +178,99 @@ const StH2 = styled.h2`
 
 const keyword = "최근";
 
-function Board() {
+const URL = process.env.REACT_APP_API_URL;
+
+function Board({ setHistory }) {
+  //vars
   const [isWriteFormVisible, setWriteFormVisible] = useState(false);
+  const [post, setPost] = useState({
+    title: "",
+    body: "",
+  });
+
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.user.payload.accessToken);
+  const userId = useSelector((state) => state.user.payload.id);
+  const isLogined = useSelector((state) => state.user.payload.isLogined);
+  //func
+
+  const axiosInstance = axios.create({
+    baseURL: URL,
+    withCredentials: true,
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+
+  const axiosPost = async (title, body) => {
+    const payload = {
+      title,
+      body,
+      userId,
+    };
+    const rs = await axiosInstance.post("/board", payload);
+    return rs;
+  };
+
+  const axiosGet = async (limit, offset) => {
+    const params = {
+      limit,
+      offset,
+    };
+    const rs = await axiosInstance.get("board", { params });
+    return rs.data;
+  };
+
+  const [boardList, setBoardList] = useState([]);
+
+  useEffect(() => {
+    setHistory("/board");
+  }, [setHistory]);
+
+  useEffect(() => {
+    let completed = false;
+    const action = async () => {
+      const result = await axiosGet();
+      if (!completed) setBoardList(result);
+    };
+    action();
+    return () => {
+      completed = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const writeButtonHandler = () => {
     setWriteFormVisible(!isWriteFormVisible);
-  }
+  };
+
+  const handleTitle = (e) => {
+    setPost({
+      ...post,
+      title: e.target.value,
+    });
+  };
+
+  const handleBody = (e) => {
+    setPost({
+      ...post,
+      body: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!isLogined) {
+      alert("로그인이 되어있지 않습니다.");
+      return navigate(0);
+    }
+    axiosPost(post.title, post.body);
+    setPost({
+      title: "",
+      body: "",
+    });
+    navigate(0);
+  };
 
   return (
     <StWrapper>
@@ -192,43 +279,38 @@ function Board() {
           <Button onClick={writeButtonHandler}>
             <NewIcon />
           </Button>
-          <Form 
-            active={isWriteFormVisible} 
-            onSubmit={e => {
-              e.preventDefault();
-            }}
-          >
-            <input placeholder="제목" className="title" /> 
+          <Form active={isWriteFormVisible} onSubmit={handleSubmit}>
+            <input placeholder="제목" className="title" value={post.title} onChange={handleTitle} />
             <SubmitButton type="submit">
-              <CheckSquare size='2rem'/>
+              <CheckSquare size="2rem" />
             </SubmitButton>
-            <textarea placeholder="내용" className="body"/>
+            <textarea placeholder="내용" className="body" value={post.body} onChange={handleBody} />
           </Form>
         </WriteContainer>
         <OrderBy>
           <ul>
-            <li>
+            {/* <li>
               <StLink to="?sort=popular">
                 <HotIcon size="1.2rem" title="인기" />
                 <span>인기</span>
               </StLink>
-            </li>
+            </li> */}
             <li>
               <StLink to="">
                 <TimeIcon size="1.2rem" title="최근" />
                 <span> 최근</span>
               </StLink>
             </li>
-            <li>
+            {/* <li>
               <StLink to="?sort=likes">
                 <RecommendIcon size="1.2rem" title="추천" />
                 <span> 추천</span>
               </StLink>
-            </li>
+            </li> */}
           </ul>
         </OrderBy>
         <StH2>{keyword} 게시판</StH2>
-        <CardContainer />
+        {boardList === undefined ? "Loading" : <CardContainer boardList={boardList} />}
       </BodyRow>
     </StWrapper>
   );

@@ -2,7 +2,9 @@ import { Search } from "@styled-icons/bootstrap/Search";
 import styled from "styled-components";
 import CardContainer from "../containers/CardContainer";
 import * as d3 from "d3";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 //Body
 const StWrapper = styled.div`
   display: flex;
@@ -10,21 +12,21 @@ const StWrapper = styled.div`
   overflow: auto;
   flex-wrap: wrap;
   background-color: ${(props) => props.theme.subColor};
-  height: 100%;
+  height: 94.772vh;
   padding: 2rem 0.4445rem;
 `;
 
 const BodyRow = styled.div`
-    display: grid;
-    grid-template-areas:
-        "title title title"
-        "search search search"
-        ". bodytitle ."
-        ". body ."
-        ". more .";
-    width: 100%;
-    height: 100%;
-    text-align: center;
+  display: grid;
+  grid-template-areas:
+    "title title title"
+    "search search search"
+    ". bodytitle ."
+    ". body ."
+    ". more .";
+  width: 100%;
+  height: 100%;
+  text-align: center;
 
   padding: 0rem 1rem;
 `;
@@ -47,12 +49,11 @@ const SearchBox = styled.div`
   position: relative;
   align-items: center;
   justify-content: center;
-  min-height: 100px;
 `;
 
 const StInput = styled.input`
   width: 50vw;
-  height: 80%;
+  height: 8vh;
   padding: 2rem;
   font-size: 1rem;
   border-radius: 0.25rem;
@@ -65,7 +66,8 @@ const StSearchIcon = styled(Search)`
   width: 1.5rem;
   height: 1.5rem;
   position: absolute;
-  right: 26vw;
+  right: 25%;
+  top: 45%;
   cursor: pointer;
 `;
 
@@ -80,6 +82,8 @@ const StH2 = styled.h2`
 const StButton = styled.button`
   grid-area: more;
   width: 7rem;
+  height: 2rem;
+  text-align: center;
   display: inline-block;
   color: white;
   background-color: darkgray;
@@ -95,7 +99,16 @@ const StButton = styled.button`
   cursor: pointer;
 `;
 
-function Home() {
+function Home({ setHistory, setSchBarInput }) {
+  let navigate = useNavigate();
+  const [nick, setNick] = useState("");
+  function handleSend(e, tag) {
+    if (e.key === "Enter" || tag) {
+      setSchBarInput(nick);
+      setHistory("/record");
+      navigate("/record");
+    } else setNick(e.target.value);
+  }
   useEffect(() => {
     d3.select(".main-title")
       .transition()
@@ -110,6 +123,7 @@ function Home() {
       .duration(1500)
       .style("color", "#2e2f32")
       .text("LOLINFO");
+    setHistory("/");
   }, []);
 
   return (
@@ -119,14 +133,11 @@ function Home() {
           <h1 className="main-title">LOLINFO</h1>
         </BodyHeader>
         <SearchBox>
-          <StInput placeholder="Search" autoComplete="off"></StInput>
-          <StSearchIcon />
+          <StInput placeholder="Search" autoComplete="off" onChange={(e) => handleSend(e)} onKeyUp={handleSend} />
+          <Link to="/record">
+            <StSearchIcon onClick={() => handleSend(false, true)} />
+          </Link>
         </SearchBox>
-        <StH2>게시판</StH2>
-        <CardContainer />
-        <StButton as="a" href="#">
-          더보기
-        </StButton>
       </BodyRow>
     </StWrapper>
   );

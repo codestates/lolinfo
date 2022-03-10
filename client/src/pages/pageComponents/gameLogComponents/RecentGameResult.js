@@ -27,6 +27,13 @@ const GameResultWrapper = styled.div`
     height: 0px;
     border-top: solid 1rem #018795;
     border-right: solid 1rem transparent;
+
+    &.win {
+      border-top: solid 1rem #018795;
+    }
+    &.lose {
+      border-top: solid 1rem #e5133c;
+    }
   }
   > .game-result {
     grid-area: game-result;
@@ -34,6 +41,13 @@ const GameResultWrapper = styled.div`
 
     color: #018795;
     font-weight: 700;
+
+    &.win {
+      color: #018795;
+    }
+    &.lose {
+      color: #e5133c;
+    }
   }
   > .time {
     grid-area: time;
@@ -54,14 +68,34 @@ const GameResultWrapper = styled.div`
   }
 `;
 
-function RecentGameResult() {
+function RecentGameResult({ win, gameTime, gameType, date, queueId }) {
+  let gameResult = "";
+  let result = "";
+  if (win) {
+    gameResult = "승리";
+    result = "win";
+  } else {
+    gameResult = "패배";
+    result = "lose";
+  }
+
+  gameTime = gameTime.split(".");
+
+  if (queueId === 420) {
+    gameType = "솔랭";
+  } else {
+    gameType = "일반";
+  }
+
   return (
     <GameResultWrapper>
-      <div className="shape"></div>
-      <div className="game-result">승리</div>
-      <div className="time">11:54</div>
-      <div className="gametype">AI대전</div>
-      <div className="date">2/27</div>
+      <div className={`shape ${result}`}></div>
+      <div className={`game-result ${result}`}>{gameResult}</div>
+      <div className="time">
+        {gameTime[0]}:{gameTime[1]}
+      </div>
+      <div className="gametype">{gameType}</div>
+      <div className="date">{date}</div>
     </GameResultWrapper>
   );
 }

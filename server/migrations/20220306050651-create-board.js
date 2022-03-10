@@ -9,12 +9,14 @@ module.exports = {
         type: Sequelize.UUID,
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       hit: {
         type: Sequelize.INTEGER,
       },
       body: {
+        allowNull: false,
         type: Sequelize.TEXT,
       },
       view: {

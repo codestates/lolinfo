@@ -1,24 +1,32 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-
-function NaviBar({ sticky, setLoginModal, setHistory }) {
+import { useSelector, useDispatch } from "react-redux";
+import { setUserLoginedInfo } from "../store/User";
+function NaviBar({ sticky, setLoginModal }) {
   let navigate = useNavigate();
+  let dispatch = useDispatch();
+
+  let userInfo = useSelector((state) => state.user.payload);
   return (
     <div>
       <NaviContainer sticky={sticky} className={sticky ? "naviBar-sticky" : "navibar-nomal"}>
         {menuNameList.map((ele, menuIdx) => (
           <Menu
-            key={menuIdx}
+            loginState={userInfo.isLogined}
+            className={menuNameList[menuIdx]}
+            key={menuNameList[menuIdx]}
             order={menuIdx}
             onClick={() => {
-              menuIdx ? setHistory(true) : setHistory(false);
               if (menuIdx === 0) navigate("/");
               else if (menuIdx === 1) navigate("/board");
               else if (menuIdx === 2) navigate("/record");
-              else if (menuIdx === 3) navigate("/rank");
-              else if (menuIdx === 4) navigate("/chat");
-              else setLoginModal("login");
+              else if (menuIdx === 3) navigate("/chat");
+              else if (menuIdx === 4) navigate("/mypage/edit");
+              else if (menuIdx === 6) {
+                dispatch(setUserLoginedInfo({ isLogined: false }));
+                navigate("/");
+              } else setLoginModal("login");
             }}
           >
             {ele}
@@ -28,7 +36,7 @@ function NaviBar({ sticky, setLoginModal, setHistory }) {
     </div>
   );
 }
-const menuNameList = ["메인", "게시판", "전적", "랭킹", "오픈채팅", "로그인"];
+const menuNameList = ["메인", "게시판", "전적", "오픈채팅", "마이페이지", "로그인", "로그아웃"];
 const NaviContainer = styled.div`
   z-index: 998;
   min-width: 320px;
@@ -57,8 +65,17 @@ const Menu = styled.button`
   background: ${(props) => props.theme.mainColor};
   border: none;
   cursor: pointer;
-  grid-column: ${(props) => (props.order === menuNameList.length - 1 ? menuNameList.length + 1 : props.order + 1)} / ${(props) => (props.order === menuNameList.length - 1 ? menuNameList.length + 2 : props.order + 2)};
+  grid-column: ${(x) => (x.order < menuNameList.length - 2 ? Number(x.order / (x.order + 1)) : -2)};
   grid-row: 2/3;
+  &.로그아웃 {
+    visibility: ${(x) => (!x.loginState ? "hidden" : "visible")};
+  }
+  &.마이페이지 {
+    visibility: ${(x) => (!x.loginState ? "hidden" : "visible")};
+  }
+  &.로그인 {
+    visibility: ${(x) => (x.loginState ? "hidden" : "visible")};
+  }
 `;
 
 export default NaviBar;

@@ -1,13 +1,13 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 function useSticky() {
   const [isSticky, setSticky] = useState(false);
   const element = useRef(null);
 
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     window.scrollY > 99 ? setSticky(true) : setSticky(false);
-  };
-  const debounce = (func, wait = 5, immediate = true) => {
+  });
+  const debounce = useCallback((func, wait = 5, immediate = true) => {
     let timeOut;
     return () => {
       let context = this,
@@ -21,7 +21,7 @@ function useSticky() {
       timeOut = setTimeout(later, wait);
       if (callNow) func.apply(context, args);
     };
-  };
+  });
   useEffect(() => {
     window.addEventListener("scroll", debounce(handleScroll));
     return () => {
