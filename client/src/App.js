@@ -17,7 +17,7 @@ import useSticky from "./hook/useSticky";
 import SignupPage from "./components/signupPage";
 import Modal from "./components/modal";
 import AlertModal from "./components/alertModal";
-import DeleteModal from "./components/deleteModal"
+import DeleteModal from "./components/deleteModal";
 
 function App() {
   const { isSticky, element } = useSticky();
@@ -31,7 +31,7 @@ function App() {
   const [passwordCheckState, setPasswordCheckState] = useState("");
   const [registerState, setRegisterState] = useState("");
   const [replaceState, setReplaceState] = useState("");
-  const [deleteModal, setDeleteModal] = useState("")
+  const [deleteModal, setDeleteModal] = useState("");
   const [deleteModalConfirm, setDeleteModalConfirm] = useState("");
   const [userInfo, setUserInfo] = useState({
     email: "",
@@ -74,7 +74,13 @@ function App() {
           {registerState ? <AlertModal setLoginState={setRegisterState} visible={true} children="회원가입에 성공했습니다!"></AlertModal> : <div></div>}
           {replaceState ? <AlertModal setLoginState={setReplaceState} visible={true} children="정상적으로 교체되었습니다!"></AlertModal> : <div></div>}
           {deleteModalConfirm ? <AlertModal setLoginState={setDeleteModalConfirm} visible={true} children="삭제 완료되었습니다!"></AlertModal> : <div></div>}
-          {deleteModal ? <Modal><DeleteModal setDeleteModal={setDeleteModal} setDeleteModalConfirm={setDeleteModalConfirm} visible={true} ></DeleteModal></Modal> : <div></div>}
+          {deleteModal ? (
+            <Modal>
+              <DeleteModal setDeleteModal={setDeleteModal} setDeleteModalConfirm={setDeleteModalConfirm} visible={true}></DeleteModal>
+            </Modal>
+          ) : (
+            <div></div>
+          )}
 
           <Routes>
             <Route path="/" element={<Home setSchBarInput={setSchBarInput} setHistory={setHistory} />} />
