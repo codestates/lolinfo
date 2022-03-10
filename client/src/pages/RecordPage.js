@@ -19,17 +19,19 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   }, []);
 
   let isDummy = false;
+  let profileData, chartData, needs;
   // console.log("로딩전", "loading", loading, "prevRecord", prevRecord, "schBarInput", schBarInput, payload);
   if (loading || schBarInput !== prevRecord) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
   if (error || schBarInput === "") {
     isDummy = true;
+  } else {
+    // console.log("로딩후", loading, prevRecord, schBarInput, payload);
+    const { chartData: ch, needs: nd, err } = extractData(payload, schBarInput);
+    if (!err) profileData = extractProfileData(payload, needs);
+    if (!profileData || err) isDummy = true;
+    chartData = ch;
+    needs = nd;
   }
-
-  // console.log("로딩후", loading, prevRecord, schBarInput, payload);
-  let profileData;
-  const { chartData, needs, err } = extractData(payload, schBarInput);
-  if (!err) profileData = extractProfileData(payload, needs);
-  if (!profileData || err) isDummy = true;
 
   return (
     <div>
@@ -40,9 +42,11 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
           <RecentChart className="RecentChart" chartData={isDummy ? dummyChartData : chartData} />
           <div>
             <LogWrapper className="RecentGameLog">
-              {needs.map((v) => {
-                return <RecentGameLog key={v.gameId} data={v} />;
-              })}
+              {isDummy
+                ? null
+                : needs.map((v) => {
+                    return <RecentGameLog key={v.gameId} data={v} />;
+                  })}
             </LogWrapper>
           </div>
         </BoxWrapper>
