@@ -49,7 +49,7 @@ const NickName = styled.div`
   grid-area: nickname;
   justify-self: left;
   align-items: end;
-
+  font-size: .9rem;
   > a {
     color: black;
   }
@@ -81,36 +81,37 @@ const UserLevel = styled.div`
 const UserInfo = styled.div`
   grid-area: userinfo;
   justify-self: left;
-  padding-left: 0.3rem;
+  padding-left: 0.08rem;
   align-self: baseline;
   font-size: 0.775rem;
   color: gray;
 `;
 
-function Card() {
+function Card({ time, title, body, userName, userEmail }) {
+  let textTime = time;
   return (
     <CardBody>
       <TimeWrapper>
-        <span>방금</span>
+        <span>{textTime}</span>
       </TimeWrapper>
       <TitleWrapper>
-        <span>타이틀</span>
+        <span>{title}</span>
       </TitleWrapper>
       <Main>
-        <p>본문 내용 엄청긴 본문내용 어쩌구 저쩌구 ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ</p>
+        <p>{body}</p>
       </Main>
       <NickName>
-        <a href="/">닉네임</a>
+        <a href="/">{userName}</a>
       </NickName>
       <UserLevel>
-        <p>123</p>
-        <p>lv</p>
+        <p></p>
+        <p></p>
       </UserLevel>
       <UserInfo>
-        <p>myidisteemo123</p>
+        <p>{userEmail}</p>
       </UserInfo>
     </CardBody>
   );
 }
 
-export default Card;
+export default React.memo(Card);
