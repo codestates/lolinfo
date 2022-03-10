@@ -1,5 +1,5 @@
 const app = require("./index");
-const PORT = process.env.SERVERPORT || 4000;
+const PORT = process.env.SERVERPORT || 80;
 const cors = require("cors");
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer, {
