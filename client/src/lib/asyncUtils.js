@@ -11,7 +11,7 @@ export const createPromiseThunk = (type) => {
       let resData = null;
       url = url + param;
 
-      // console.log("url", url);
+      console.log("url", url);
 
       switch (method) {
         case "get": {
