@@ -71,7 +71,9 @@ function Rank({ lp, wins, losses, tier, rank, rankType }) {
       <div className="rank-text">
         <span className="rank-title">{rankType}</span>
         <span className="tier">{`${tier} ${rank}`}</span>
-        <span className="ratio">55.26% {lp}lp</span>
+        <span className="ratio">
+          {wins / !(wins + losses) ? 1 : wins + losses}% {lp}lp
+        </span>
         <div className="result">
           <span className="win">{wins}W</span>
           <span className="lose">{losses}L</span>

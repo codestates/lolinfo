@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import CardContainer from "../containers/CardContainer";
 
@@ -118,7 +119,7 @@ const StWrapper = styled.div`
   overflow: auto;
   flex-wrap: wrap;
   background-color: ${(props) => props.theme.subColor};
-  height: 100%;
+  height: 87vh;
   padding: 2rem 0.4445rem;
 `;
 
@@ -177,22 +178,22 @@ const StH2 = styled.h2`
 
 const keyword = "최근";
 
+const URL = process.env.REACT_APP_API_URL;
+
 function Board({ setHistory }) {
+  //vars
   const [isWriteFormVisible, setWriteFormVisible] = useState(false);
   const [post, setPost] = useState({
     title: "",
     body: "",
   });
 
-  useEffect(() => {
-    setHistory("/board");
-  }, []);
-  const writeButtonHandler = () => {
-    setWriteFormVisible(!isWriteFormVisible);
-  };
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.user.payload.accessToken);
+  const userId = useSelector((state) => state.user.payload.id);
+  const isLogined = useSelector((state) => state.user.payload.isLogined);
+  //func
 
-  const URL = process.env.REACT_APP_API_URL;
-  const token = "";
   const axiosInstance = axios.create({
     baseURL: URL,
     withCredentials: true,
@@ -200,8 +201,47 @@ function Board({ setHistory }) {
       Authorization: "Bearer " + token,
     },
   });
+
   const axiosPost = async (title, body) => {
-    axiosInstance.post();
+    const payload = {
+      title,
+      body,
+      userId,
+    };
+    const rs = await axiosInstance.post("/board", payload);
+    return rs;
+  };
+
+  const axiosGet = async (limit, offset) => {
+    const params = {
+      limit,
+      offset,
+    };
+    const rs = await axiosInstance.get("board", { params });
+    return rs.data;
+  };
+
+  const [boardList, setBoardList] = useState([]);
+
+  useEffect(() => {
+    setHistory("/board");
+  }, [setHistory]);
+
+  useEffect(() => {
+    let completed = false;
+    const action = async () => {
+      const result = await axiosGet();
+      if (!completed) setBoardList(result);
+    };
+    action();
+    return () => {
+      completed = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const writeButtonHandler = () => {
+    setWriteFormVisible(!isWriteFormVisible);
   };
 
   const handleTitle = (e) => {
@@ -220,12 +260,17 @@ function Board({ setHistory }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!isLogined) {
+      alert("로그인이 되어있지 않습니다.");
+      return navigate(0);
+    }
+    axiosPost(post.title, post.body);
+    setPost({
+      title: "",
+      body: "",
+    });
+    navigate(0);
   };
-
-  //log
-  useEffect(() => {
-    // console.log(post);
-  }, [post]);
 
   return (
     <StWrapper>
@@ -265,7 +310,7 @@ function Board({ setHistory }) {
           </ul>
         </OrderBy>
         <StH2>{keyword} 게시판</StH2>
-        <CardContainer />
+        {boardList === undefined ? "Loading" : <CardContainer boardList={boardList} />}
       </BodyRow>
     </StWrapper>
   );

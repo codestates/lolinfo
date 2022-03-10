@@ -26,14 +26,15 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   }
 
   // console.log("로딩후", loading, prevRecord, schBarInput, payload);
-  const { chartData, needs } = extractData(payload, schBarInput);
-  const profileData = extractProfileData(payload, needs);
-  if (!profileData) isDummy = true;
+  let profileData;
+  const { chartData, needs, err } = extractData(payload, schBarInput);
+  if (!err) profileData = extractProfileData(payload, needs);
+  if (!profileData || err) isDummy = true;
 
   return (
     <div>
       <Content>
-        {error ? <RecordPageModal text={"찾을 수 없는 유저입니다"} /> : null}
+        {isDummy ? <RecordPageModal text={"찾을 수 없는 유저입니다"} /> : null}
         <UserProfile profileData={isDummy ? profileDummyData : profileData} />
         <BoxWrapper name="BoxWrapper">
           <RecentChart className="RecentChart" chartData={isDummy ? dummyChartData : chartData} />

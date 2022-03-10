@@ -1,6 +1,11 @@
 const users = [];
 
-const addUser = ({ id, name, room, userImg}) => {
+const addUser = ({ id, name, room, userImg }) => {
+
+  if (!name || !room || !id) {
+    return { error: "Login required" };
+  }
+
   name = name.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
