@@ -10,6 +10,7 @@ function Mypage({ setHistory, setReplaceState }) {
   useEffect(() => {
     setHistory(true);
   }, []);
+
   const [change, setChange] = useState("")
   const something = async () => {
     await axios.put(process.env.REACT_APP_API_URL + "/users/userinfo", { email: "kimcoding@korea.com", name: change })

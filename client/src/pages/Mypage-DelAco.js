@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 axios.defaults.withCredentials = true;
 
-function DeleteAccountPage({ setHistory }) {
+function DeleteAccountPage({ setHistory, setDeleteModal }) {
   useEffect(() => {
     setHistory(true);
   }, []);
@@ -20,7 +20,9 @@ function DeleteAccountPage({ setHistory }) {
     setState((current) => !current);
   };
 
-  const DeleteAccount = async () => {};
+  const DeleteAccount = () => {
+    setDeleteModal("change");
+  };
   return (
     <Container>
       <SubMenu>
