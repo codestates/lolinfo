@@ -15,14 +15,15 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require("./modules/user
 //소켓 연결 및 이벤트
 io.on("connection", (socket) => {
   console.log("소켓 연결 완료");
+  console.log(socket.id);
 
   // 클라이언트에서 join이벤트를 보냈을 경우에 대해서 처리 `on`
   socket.on("join", ({ name, room, userImg }, callback) => {
     const { error, user } = addUser({ id: socket.id, name, room, userImg });
     if (error) {
-      console.log('연결거부: ', error);
-      return callback(error)
-    }; // username taken
+      console.log("연결거부: ", error);
+      return callback(error);
+    } // username taken
     // 해당 유저 방에 접속처리
     socket.join(user.room);
     // 관리자(서버)에서 소켓으로 보내는 이벤트

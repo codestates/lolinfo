@@ -3,6 +3,7 @@ import MypageNavbar from "./pageComponents/MypageComponents/MypageNavbarComponen
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 axios.defaults.withCredentials = true;
 
@@ -11,24 +12,21 @@ function DeleteAccountPage({ setHistory, setDeleteModal }) {
     setHistory(true);
   }, []);
 
-  const userInfo = useSelector((state) => state.user.payload);
-  console.log("accountPage:::", userInfo);
+  useSelector((state) => state.user.payload);
 
-  const [state, setState] = useState("false")
-
+  const [state, setState] = useState("false");
 
   const ChangeButton = () => {
-    setState((current) => !current)
-  }
+    setState((current) => !current);
+  };
 
   const DeleteAccount = () => {
-    setDeleteModal("change")
-  }
+    setDeleteModal("change");
+  };
   return (
     <Container>
       <SubMenu>
-        <MypageNavbar>
-        </MypageNavbar>
+        <MypageNavbar></MypageNavbar>
       </SubMenu>
       <DeletePage>
         <DeleteAccountContainer>
@@ -59,7 +57,10 @@ function DeleteAccountPage({ setHistory, setDeleteModal }) {
             <CheckBoxDetail>회원탈퇴 시 유의사항을 확인하였으며, 모두 동의합니다.</CheckBoxDetail>
           </CheckBoxDiv>
           <AgreeORDisAgree>
-            <Disagree>비동의</Disagree>
+            <Disagree>
+              {" "}
+              <Link to="/">취소</Link>{" "}
+            </Disagree>
             {state ? <Agree>동의</Agree> : <AgreeAccess onClick={() => DeleteAccount()}> 동의</AgreeAccess>}
           </AgreeORDisAgree>
         </DeleteAccountContainer>
@@ -69,14 +70,14 @@ function DeleteAccountPage({ setHistory, setDeleteModal }) {
 }
 
 const AgreeAccess = styled.button`
-grid-row: 2/10;
-grid-column: 8/11;
-background-color: ${(props) => props.theme.MypageButtonColor};
-color: #fff;
-font-weight: 700;
-border: 0;
-font-size: 18px;
-cursor: pointer;
+  grid-row: 2/10;
+  grid-column: 8/11;
+  background-color: ${(props) => props.theme.MypageButtonColor};
+  color: #fff;
+  font-weight: 700;
+  border: 0;
+  font-size: 18px;
+  cursor: pointer;
 `;
 
 const Container = styled.div`
@@ -274,7 +275,6 @@ const Disagree = styled.button`
   font-size: 18px;
 `;
 const Agree = styled.button`
-  /* ${(props) => (props.check ? "yellow" : "black")}; */
   grid-row: 2/10;
   grid-column: 8/11;
   background-color: ${(props) => (props.check ? "#fff" : props.theme.MypageLineColor)};
