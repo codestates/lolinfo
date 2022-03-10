@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 axios.defaults.withCredentials = true;
 
-function DeleteAccountPage({ setHistory }) {
+function DeleteAccountPage({ setHistory, setDeleteModal }) {
   useEffect(() => {
     setHistory(true);
   }, []);
@@ -14,17 +14,21 @@ function DeleteAccountPage({ setHistory }) {
   const userInfo = useSelector((state) => state.user.payload);
   console.log("accountPage:::", userInfo);
 
-  const [state, setState] = useState("false");
+  const [state, setState] = useState("false")
+
 
   const ChangeButton = () => {
-    setState((current) => !current);
-  };
+    setState((current) => !current)
+  }
 
-  const DeleteAccount = async () => {};
+  const DeleteAccount = () => {
+    setDeleteModal("change")
+  }
   return (
     <Container>
       <SubMenu>
-        <MypageNavbar></MypageNavbar>
+        <MypageNavbar>
+        </MypageNavbar>
       </SubMenu>
       <DeletePage>
         <DeleteAccountContainer>
@@ -65,14 +69,14 @@ function DeleteAccountPage({ setHistory }) {
 }
 
 const AgreeAccess = styled.button`
-  grid-row: 2/10;
-  grid-column: 8/11;
-  background-color: ${(props) => props.theme.MypageButtonColor};
-  color: #fff;
-  font-weight: 700;
-  border: 0;
-  font-size: 18px;
-  cursor: pointer;
+grid-row: 2/10;
+grid-column: 8/11;
+background-color: ${(props) => props.theme.MypageButtonColor};
+color: #fff;
+font-weight: 700;
+border: 0;
+font-size: 18px;
+cursor: pointer;
 `;
 
 const Container = styled.div`
@@ -137,7 +141,6 @@ const SmallHeader = styled.h4`
     color: ${(props) => props.theme.MypageSmallHeader};
   }
 `;
-
 const FirstLaw = styled.div`
   display: grid;
   grid-template-columns: repeat(9, minmax(auto, 1fr));
@@ -283,7 +286,3 @@ const Agree = styled.button`
 `;
 
 export default DeleteAccountPage;
-
-// ChattingRoom에서 handleText라는 함수를
-// chattingapp한테
-// props로 내려준다고하면요
