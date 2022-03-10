@@ -3,6 +3,7 @@ import MypageNavbar from "./pageComponents/MypageComponents/MypageNavbarComponen
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Link } from 'react-router-dom'
 
 axios.defaults.withCredentials = true;
 
@@ -24,6 +25,7 @@ function DeleteAccountPage({ setHistory, setDeleteModal }) {
   const DeleteAccount = () => {
     setDeleteModal("change")
   }
+
   return (
     <Container>
       <SubMenu>
@@ -59,7 +61,7 @@ function DeleteAccountPage({ setHistory, setDeleteModal }) {
             <CheckBoxDetail>회원탈퇴 시 유의사항을 확인하였으며, 모두 동의합니다.</CheckBoxDetail>
           </CheckBoxDiv>
           <AgreeORDisAgree>
-            <Disagree>비동의</Disagree>
+            <Disagree> <Link to="/">취소</Link> </Disagree>
             {state ? <Agree>동의</Agree> : <AgreeAccess onClick={() => DeleteAccount()}> 동의</AgreeAccess>}
           </AgreeORDisAgree>
         </DeleteAccountContainer>
