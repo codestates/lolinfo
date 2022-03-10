@@ -289,24 +289,24 @@ function Board({ setHistory }) {
         </WriteContainer>
         <OrderBy>
           <ul>
-            <li>
+            {/* <li>
               <StLink to="?sort=popular">
                 <HotIcon size="1.2rem" title="인기" />
                 <span>인기</span>
               </StLink>
-            </li>
+            </li> */}
             <li>
               <StLink to="">
                 <TimeIcon size="1.2rem" title="최근" />
                 <span> 최근</span>
               </StLink>
             </li>
-            <li>
+            {/* <li>
               <StLink to="?sort=likes">
                 <RecommendIcon size="1.2rem" title="추천" />
                 <span> 추천</span>
               </StLink>
-            </li>
+            </li> */}
           </ul>
         </OrderBy>
         <StH2>{keyword} 게시판</StH2>
