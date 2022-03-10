@@ -99,7 +99,6 @@ export const CircleGraph = styled.div`
 
   > .progress-circle {
     position: absolute;
-    z-index: 6;
     top: 14px;
     left: 14px;
     height: 80%;
@@ -131,7 +130,6 @@ export const CircleGraph = styled.div`
     position: relative;
     top: 55px;
     left: 52px;
-    z-index: 10;
   }
 `;
 

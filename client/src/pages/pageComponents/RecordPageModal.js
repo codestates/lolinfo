@@ -12,6 +12,7 @@ const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 
   > .modal_overlay {
     background-color: rgba(0, 0, 0, 0.6);
