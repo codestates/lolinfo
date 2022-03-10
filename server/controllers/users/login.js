@@ -27,7 +27,6 @@ module.exports = {
       return res.status(401).send("please check your email or password again");
     }
 
-    console.log("Value", Value);
     const payload = {
       id,
       name,
