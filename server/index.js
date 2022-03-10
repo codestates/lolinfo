@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://lolinfo.shop"],
     credentials: true,
     methods: ["GET", "POST", "OPTIONS", "DELETE", "PUT"],
   }),
