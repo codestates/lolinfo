@@ -1,6 +1,7 @@
 const users = [];
 
 const addUser = ({ id, name, room, userImg }) => {
+
   if (!name || !room || !id) {
     return { error: "Login required" };
   }

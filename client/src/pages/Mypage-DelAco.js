@@ -12,8 +12,7 @@ function DeleteAccountPage({ setHistory, setDeleteModal }) {
     setHistory(true);
   }, []);
 
-  const userInfo = useSelector((state) => state.user.payload);
-  console.log("accountPage:::", userInfo);
+  useSelector((state) => state.user.payload);
 
   const [state, setState] = useState("false");
 
@@ -276,7 +275,6 @@ const Disagree = styled.button`
   font-size: 18px;
 `;
 const Agree = styled.button`
-  /* ${(props) => (props.check ? "yellow" : "black")}; */
   grid-row: 2/10;
   grid-column: 8/11;
   background-color: ${(props) => (props.check ? "#fff" : props.theme.MypageLineColor)};
