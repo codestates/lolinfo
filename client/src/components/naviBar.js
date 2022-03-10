@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setUserLoginedInfo } from "../store/User";
 function NaviBar({ sticky, setLoginModal }) {
-
   let navigate = useNavigate();
+  let dispatch = useDispatch();
+
   let userInfo = useSelector((state) => state.user.payload);
   return (
     <div>
@@ -20,10 +21,12 @@ function NaviBar({ sticky, setLoginModal }) {
               if (menuIdx === 0) navigate("/");
               else if (menuIdx === 1) navigate("/board");
               else if (menuIdx === 2) navigate("/record");
-              else if (menuIdx === 3) navigate("/rank");
-              else if (menuIdx === 4) navigate("/chat");
-              else if (menuIdx === 5) navigate("/mypage/edit");
-              else setLoginModal("login");
+              else if (menuIdx === 3) navigate("/chat");
+              else if (menuIdx === 4) navigate("/mypage/edit");
+              else if (menuIdx === 6) {
+                dispatch(setUserLoginedInfo({ isLogined: false }));
+                navigate("/");
+              } else setLoginModal("login");
             }}
           >
             {ele}
@@ -33,7 +36,7 @@ function NaviBar({ sticky, setLoginModal }) {
     </div>
   );
 }
-const menuNameList = ["메인", "게시판", "전적", "랭킹", "오픈채팅", "마이페이지", "로그인"];
+const menuNameList = ["메인", "게시판", "전적", "오픈채팅", "마이페이지", "로그인", "로그아웃"];
 const NaviContainer = styled.div`
   z-index: 998;
   min-width: 320px;
@@ -64,6 +67,9 @@ const Menu = styled.button`
   cursor: pointer;
   grid-column: ${(x) => (x.order < menuNameList.length - 2 ? Number(x.order / (x.order + 1)) : -2)};
   grid-row: 2/3;
+  &.로그아웃 {
+    visibility: ${(x) => (!x.loginState ? "hidden" : "visible")};
+  }
   &.마이페이지 {
     visibility: ${(x) => (!x.loginState ? "hidden" : "visible")};
   }

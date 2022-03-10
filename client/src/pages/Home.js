@@ -4,6 +4,7 @@ import CardContainer from "../containers/CardContainer";
 import * as d3 from "d3";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 //Body
 const StWrapper = styled.div`
   display: flex;
