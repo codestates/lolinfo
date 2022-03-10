@@ -59,6 +59,7 @@ const ModalInner = styled.div`
   margin: 0 auto;
   background-color: white;
   font-size:20px;
+  box-shadow: 5px 10px 10px 1px rgba(0,0,0,.3); 
 `;
 
 const ModalButton = styled.button`
@@ -70,6 +71,7 @@ box-sizing: border-box;
   top: 50%;
   transform: translateY(-50%);
   margin: 0 auto;
+  cursor:pointer;
 `;
 
 export default AlertModal;
