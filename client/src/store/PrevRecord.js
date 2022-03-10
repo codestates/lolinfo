@@ -3,7 +3,7 @@ const SET_PREV_RECORD = "SET_PREV_RECORD";
 export const setPrevRecord = (prevRecord) => ({ type: SET_PREV_RECORD, prevRecord });
 
 const initState = {
-  prevRecord: "",
+  prevRecord: "test",
 };
 
 export default function prevRecord(state = initState, action) {
@@ -13,7 +13,7 @@ export default function prevRecord(state = initState, action) {
     case SET_PREV_RECORD:
       return {
         ...state,
-        prevRecord: !action.prevRecord ? "" : action.prevRecord,
+        prevRecord: !action.prevRecord ? "test" : action.prevRecord,
       };
     default:
       return state;
