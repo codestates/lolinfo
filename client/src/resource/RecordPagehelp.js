@@ -202,25 +202,31 @@ export function extractProfileData(payload, needs) {
   if (needs === undefined) return false;
   if (payload === null) return false;
 
+  let profileData = {
+    leaguePoints: 0,
+    wins: 0,
+    losses: 0,
+    tier: "BRONZE",
+    rank: "UNRANK",
+    queueType: 410,
+    profileIcon: 10,
+    summonerName: "찾을수없음",
+  };
+
   if (payload !== null) {
-    if (payload[0] === undefined) {
-      return false;
+    if (payload[0].length !== 0) {
+      const { leaguePoints: lp, wins: w, losses: l, tier: t, rank: r, queueType: q } = payload[0][0];
+      profileData.leaguePoints = lp;
+      profileData.wins = w;
+      profileData.losses = l;
+      profileData.tier = t;
+      profileData.rank = r;
+      profileData.queueType = q;
     }
+
     console.log(payload, payload[0], needs);
-    const { leaguePoints, wins, losses, tier, rank, queueType } = payload[0][0];
     console.log(needs[0]);
     const { profileIcon, summonerName } = needs[0];
-
-    let profileData = {
-      leaguePoints,
-      wins,
-      losses,
-      tier,
-      rank,
-      queueType,
-      profileIcon,
-      summonerName,
-    };
 
     return profileData;
   }

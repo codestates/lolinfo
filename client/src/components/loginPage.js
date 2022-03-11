@@ -37,8 +37,7 @@ function LoginPage({ setLoginModal, userInfo, setUserInfo, setLoginState, setlog
           .pop()
           .replace(/[^0-9]/g, ""),
       );
-
-      if (err_code === 401) {
+      if (err_code === 401 || err_code === 404 || err_code === 406) {
         return setloginFailState("잘못된 정보를 입력하셨습니다");
       }
     }
