@@ -66,11 +66,12 @@ const ModalContainer = styled.div`
   }
 `;
 
-function RecordPageModal({ text }) {
+function RecordPageModal({ text, setSchBarInput }) {
   const [isModal, setIsModal] = useState("");
   const dispatch = useDispatch();
   function removeModal() {
     setIsModal("hidden");
+    setSchBarInput("");
   }
 
   return (
