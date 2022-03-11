@@ -198,7 +198,7 @@ export function extractData(payload, schBarInput = "") {
   return { chartData, needs, err };
 }
 
-export function extractProfileData(payload, needs) {
+export function extractProfileData(payload, needs, schBarInput) {
   if (needs === undefined) return false;
   if (payload === null) return false;
 
@@ -210,7 +210,7 @@ export function extractProfileData(payload, needs) {
     rank: "UNRANK",
     queueType: 410,
     profileIcon: 10,
-    summonerName: "찾을수없음",
+    summonerName: `${schBarInput}`,
   };
 
   if (payload !== null) {
@@ -224,9 +224,9 @@ export function extractProfileData(payload, needs) {
       profileData.queueType = q;
     }
 
-    console.log(payload, payload[0], needs);
-    console.log(needs[0]);
-    const { profileIcon, summonerName } = needs[0];
+    const { profileIcon: icon, summonerName: name } = needs[0];
+    profileData.profileIcon = icon;
+    profileData.summonerName = name;
 
     return profileData;
   }
