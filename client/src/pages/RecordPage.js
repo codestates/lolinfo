@@ -27,7 +27,7 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
     isDummy = true;
   } else {
     const { chartData: ch, needs: nd, err } = extractData(payload, schBarInput);
-    if (!err) profileData = extractProfileData(payload, nd);
+    if (!err) profileData = extractProfileData(payload, nd, schBarInput);
     if (!profileData || err) isDummy = true;
     chartData = ch;
     needs = nd;
