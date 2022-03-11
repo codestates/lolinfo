@@ -20,8 +20,8 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
 
   let isDummy = false;
   let profileData, chartData, needs;
-  // console.log("로딩전", "loading", loading, "prevRecord", prevRecord, "schBarInput", schBarInput, payload);
-  if (loading || schBarInput !== prevRecord) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
+  console.log("로딩전", "loading", loading, "prevRecord", prevRecord, "schBarInput", schBarInput, payload);
+  if (loading || (schBarInput !== prevRecord && schBarInput !== "")) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
 
   if (error || schBarInput === "") {
     isDummy = true;
@@ -32,9 +32,9 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
     chartData = ch;
     needs = nd;
   }
-  // console.log("로딩후", loading, prevRecord, schBarInput, payload, isDummy, schBarInput);
-  // console.log(loading, payload, error);
-  // console.log(profileData, chartData, needs);
+  console.log("로딩후", loading, prevRecord, schBarInput, payload, isDummy, schBarInput);
+  console.log(loading, payload, error);
+  console.log(profileData, chartData, needs);
 
   return (
     <div>
