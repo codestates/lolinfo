@@ -22,16 +22,19 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   let profileData, chartData, needs;
   // console.log("로딩전", "loading", loading, "prevRecord", prevRecord, "schBarInput", schBarInput, payload);
   if (loading || schBarInput !== prevRecord) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
+
   if (error || schBarInput === "") {
     isDummy = true;
   } else {
-    // console.log("로딩후", loading, prevRecord, schBarInput, payload);
     const { chartData: ch, needs: nd, err } = extractData(payload, schBarInput);
-    if (!err) profileData = extractProfileData(payload, needs);
+    if (!err) profileData = extractProfileData(payload, nd);
     if (!profileData || err) isDummy = true;
     chartData = ch;
     needs = nd;
   }
+  // console.log("로딩후", loading, prevRecord, schBarInput, payload, isDummy, schBarInput);
+  // console.log(loading, payload, error);
+  // console.log(profileData, chartData, needs);
 
   return (
     <div>

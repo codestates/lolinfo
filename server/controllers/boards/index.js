@@ -13,7 +13,6 @@ module.exports = {
     }
 
     const auth = isAuthorized(req);
-    console.log("isAuth: ", auth);
 
     if (auth === null) {
       return res.status(401).send({

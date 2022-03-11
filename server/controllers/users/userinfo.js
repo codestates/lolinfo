@@ -27,7 +27,6 @@ module.exports = {
     // 수정
     try {
       const email = req.body.email;
-      console.log(req.body.name)
       if (req.body.name) {
         await User.update({ name: req.body.name }, { where: { email: email } });
         return res.status(200).send("name has been successfully replaced");
