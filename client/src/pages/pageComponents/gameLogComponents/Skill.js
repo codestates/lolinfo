@@ -55,13 +55,15 @@ const SkillWrapper = styled.div`
 `;
 
 function Skill({ mainRune, subRune, spell1, spell2 }) {
-  console.log(mainRune, subRune, spell1, spell2);
+  if (!spell1) spell1 = "undefind.png";
+  if (!spell2) spell2 = "undefind.png";
+
   return (
     <SkillWrapper>
       <img className="rune" src={`https://ddragon.leagueoflegends.com/cdn/img/${mainRune}`} alt="rune"></img>
       <img className="sub-rune" src={`https://ddragon.leagueoflegends.com/cdn/img/${subRune}`} alt="srune"></img>
-      <img className="spell" src={`https://ddragon.leagueoflegends.com/cdn/11.20.1/img/spell/${spell1}`} alt="s1"></img>
-      <img className="sub-spell" src={`https://ddragon.leagueoflegends.com/cdn/11.20.1/img/spell/${spell2}`} alt="s2"></img>
+      <img className="spell" src={`/spell/${spell1}`} alt="s1"></img>
+      <img className="sub-spell" src={`/spell/${spell2}`} alt="s2"></img>
     </SkillWrapper>
   );
 }

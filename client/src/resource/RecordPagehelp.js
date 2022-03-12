@@ -3,8 +3,8 @@ export const profileDummyData = {
   leaguePoints: 0,
   wins: 0,
   losses: 0,
-  tier: "BRONZE",
-  rank: "unRanked",
+  tier: "Unranked",
+  rank: "Unranked",
   queueType: "none",
   profileIcon: 0,
   summonerName: "none",
@@ -213,7 +213,6 @@ export function extractData(payload, schBarInput = "") {
   // console.log("룬찾기", payload["rune"]);
 
   const { mainRune, subRune, spell1, spell2 } = payload["rune"];
-  console.log(mainRune, subRune, spell1, spell2);
   for (let i = 0; i < needs.length; i++) {
     needs[i]["mainRune"] = mainRune[i];
     needs[i]["subRune"] = subRune[i];
@@ -268,6 +267,7 @@ export const extractSkillIcon = async (version, aux, user) => {
   const userName = user.replace(/\s/gi, "");
 
   for (let i = 1; i < aux.length; i++) {
+    // version = aux[i].info.gameVersion;
     aux[i].info.participants.forEach((x) => {
       // console.log(x.summonerName, user);
       x.summonerName = x.summonerName.replace(/\s/gi, "");

@@ -65,12 +65,14 @@ const RankWrapper = styled.div`
 `;
 
 function Rank({ lp, wins, losses, tier, rank, rankType }) {
+  console.log(tier || "Unranked");
+
   return (
     <RankWrapper>
-      <img className="rank-img" src={`tierImg/Emblem_${tier}.png`} alt={`${rank}`} />
+      <img className="rank-img" src={`tierImg/Emblem_${tier || "Unranked"}.png`} alt={`${rank}`} />
       <div className="rank-text">
         <span className="rank-title">{rankType}</span>
-        <span className="tier">{`${tier} ${rank}`}</span>
+        <span className="tier">{`${tier || "UNRANK"} ${rank || "UNRANK"}`}</span>
         <span className="ratio">
           {wins / !(wins + losses) ? 1 : wins + losses}% {lp}lp
         </span>
