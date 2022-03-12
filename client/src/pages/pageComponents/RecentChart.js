@@ -134,7 +134,7 @@ function RecentChart({ chartData }) {
   }, []);
 
   const { k, d, a, totalGame, totalWin, totalLose, kp } = chartData;
-
+  // console.log("kp", kp);
   return (
     <div>
       <RecentWapper name="RecentWapper">
@@ -160,8 +160,8 @@ function RecentChart({ chartData }) {
             <span>{"/"}</span>
             <span className="assist">{`${a}`}</span>
             <Icon className="icon" size={20} src="https://www.lolog.me/images/icon/mask-icon-offense.png" alt="icon" />
-            <span className="average">평점:{`${(k + a / d || 0).toFixed(2)}`}</span>
-            <span className="kill-assist">킬관여:{`${kp}%`}</span>
+            <span className="average">평점:{`${((k + a) / (d || 1)).toFixed(1)}`}</span>
+            <span className="kill-assist">킬관여:{`${kp || 0}%`}</span>
           </TotalKDA>
         </TotalKDAWrapper>
       </RecentWapper>
