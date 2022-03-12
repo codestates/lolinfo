@@ -62,9 +62,9 @@ const EtcWrapper = styled.div`
   }
 `;
 
-function Etc({ item, goldEarned, totalMinionsKilled, kp }) {
+function Etc({ item, goldEarned, totalMinionsKilled, oneGameTime }) {
   const version = "12.4.1";
-
+  oneGameTime = oneGameTime.split(".");
   return (
     <EtcWrapper name="EtcWrapper">
       <div className="item">
@@ -80,7 +80,7 @@ function Etc({ item, goldEarned, totalMinionsKilled, kp }) {
       </div>
       <div className="cs">
         <span>{totalMinionsKilled}</span>
-        <span>{`(${kp})`}</span>
+        <span>{`(${(totalMinionsKilled / (oneGameTime[0] || 1)).toFixed(1)})`}</span>
       </div>
       <div className="icon">
         <img className="icon1" src="https://www.lolog.me/images/icon/mask-icon-cs.png" alt="i" />

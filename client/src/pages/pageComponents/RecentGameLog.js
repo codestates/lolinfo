@@ -82,7 +82,7 @@ function RecentGameLog({ data }) {
       <ChampProfile className="ChampProfile" win={win} chapmName={championName} champLevel={champLevel} />
       <Skill className="Skill" />
       <KDA className="KDA" kills={kills} deaths={deaths} assists={assists} quadraKills={quadraKills} pentaKills={pentaKills} tripleKills={tripleKills} doubleKills={doubleKills} totalKill={totalKill} />
-      <Etc className="Etc" item={item} goldEarned={goldEarned} totalMinionsKilled={totalMinionsKilled} kp={kp} />
+      <Etc className="Etc" item={item} goldEarned={goldEarned} totalMinionsKilled={totalMinionsKilled} oneGameTime={oneGameTime} />
       <DropInfo className={`DropInfo ${result}`} result={result} />
     </RecentGameWrapper>
   );
