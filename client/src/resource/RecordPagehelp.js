@@ -50,6 +50,10 @@ export function extractData(payload, schBarInput = "") {
         } else {
           redTotalKill += kills;
         }
+
+        // console.log(schBarInput, summonerName);
+        summonerName = summonerName.replace(/\s/gi, "");
+        schBarInput = schBarInput.replace(/\s/gi, "");
         if (summonerName === schBarInput) {
           const {
             profileIcon,
