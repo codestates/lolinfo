@@ -231,22 +231,22 @@ export function extractProfileData(payload, needs, schBarInput) {
     leaguePoints: 0,
     wins: 0,
     losses: 0,
-    tier: "BRONZE",
+    tier: "Unranked",
     rank: "UNRANK",
-    queueType: 410,
+    queueId: 410,
     profileIcon: 10,
     summonerName: `${schBarInput}`,
   };
 
   if (payload !== null) {
     if (payload[0].length !== 0) {
-      const { leaguePoints: lp, wins: w, losses: l, tier: t, rank: r, queueType: q } = payload[0][0];
+      const { leaguePoints: lp, wins: w, losses: l, tier: t, rank: r, queueId: q } = payload[0][0];
       profileData.leaguePoints = lp;
       profileData.wins = w;
       profileData.losses = l;
       profileData.tier = t;
       profileData.rank = r;
-      profileData.queueType = q;
+      profileData.queueId = q;
     }
 
     if (needs.length !== 0) {
