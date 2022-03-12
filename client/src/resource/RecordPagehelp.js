@@ -16,7 +16,7 @@ export function extractData(payload, schBarInput = "") {
   let chartData = {};
   let totalKill = [];
   let err = false;
-
+  let myTeamId = 0;
   if (payload !== null) {
     for (let i = 1; i < payload.length; ++i) {
       if (payload[i] === null) break;
@@ -40,14 +40,20 @@ export function extractData(payload, schBarInput = "") {
       // console.log("일=", Number(day));
 
       for (let j = 0; j < payload[i].info.participants.length; ++j) {
+        // console.log("info", payload[i].info);
         const { queueId } = payload[i].info;
         let { kills, teamId, summonerName } = payload[i].info.participants[j];
-        summonerName = summonerName.replace(/\s/gi, "");
+        // summonerName = summonerName.replace(/\s/gi, "");
+        summonerName = summonerName.trim();
         if (teamId === 100) {
           blueTotalKill += kills;
         } else {
           redTotalKill += kills;
         }
+
+        // console.log(schBarInput, summonerName);
+        summonerName = summonerName.replace(/\s/gi, "");
+        schBarInput = schBarInput.replace(/\s/gi, "");
         if (summonerName === schBarInput) {
           const {
             profileIcon,
@@ -75,6 +81,9 @@ export function extractData(payload, schBarInput = "") {
             goldEarned,
             totalMinionsKilled,
           } = payload[i].info.participants[j];
+
+          myTeamId = teamId;
+
           const oneGameTime = (gameLen / 60).toFixed(2);
           gameLen = parseInt(gameLen / 60);
           const item = [item0, item1, item2, item3, item4, item5, item6];
@@ -113,7 +122,8 @@ export function extractData(payload, schBarInput = "") {
     }
 
     for (let i = 0; i < needs.length; ++i) {
-      if (needs[i].teamId === 100) {
+      // console.log("myTeamId", myTeamId, totalKill[i].blueTotalKill, totalKill[i].redTotalKill);
+      if (needs[i].teamId === 100 && myTeamId === 100) {
         needs[i].totalKill = totalKill[i].blueTotalKill;
       } else {
         needs[i].totalKill = totalKill[i].redTotalKill;
@@ -169,8 +179,9 @@ export function extractData(payload, schBarInput = "") {
       let temp = 0;
       for (let i = 0; i < needs.length; i++) {
         const { totalKill, kills, assists } = needs[i];
-        temp += (kills + assists) / totalKill;
-        needs[i].kp = parseInt(temp * 100);
+        temp += (kills + assists) / (totalKill || 1);
+        needs[i].kp = parseInt(temp * 10);
+        // console.log("개별 kp", needs[i].kp, totalKill, kills, assists, temp * 10);
         recentKP = temp;
       }
 
