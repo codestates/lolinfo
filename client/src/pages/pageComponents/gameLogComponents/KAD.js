@@ -154,7 +154,7 @@ function KDA({ kills, deaths, assists, quadraKills, pentaKills, tripleKills, dou
       </div>
       <AverageWrapper className="AverageWrapper">
         <span className="AveText trans">평점:</span>
-        <span className="AveText">{((kills + assists) / deaths).toFixed(2)}</span>
+        <span className="AveText">{((kills + assists) / deaths || 1).toFixed(2)}</span>
       </AverageWrapper>
       <KillAsiWrapper className="KillAsiWrapper">
         <span className="KillText">킬관여:</span>

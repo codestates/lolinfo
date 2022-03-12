@@ -27,7 +27,6 @@ function UserProfile({ profileData }) {
   const { leaguePoints, wins, losses, tier, rank, queueType, profileIcon, summonerName } = profileData;
 
   let rankType = queueType;
-  rankType = rankType.toLowerCase().split("_");
 
   if (rankType[1] === "solo") {
     rankType[1] = "솔로랭크";

@@ -5,9 +5,11 @@ import RecentChart from "./pageComponents/RecentChart";
 import RecentGameLog from "./pageComponents/RecentGameLog";
 import { useSelector } from "react-redux";
 import Loading from "./Loading";
-import { profileDummyData, dummyChartData, extractData, extractProfileData } from "../resource/RecordPagehelp";
+import { profileDummyData, dummyChartData, extractData, extractProfileData, chapmName } from "../resource/RecordPagehelp";
 import axios from "axios";
 import RecordPageModal from "./pageComponents/RecordPageModal";
+
+//extractProfileData needs[0] 일때 그러니까 리그를 뛴적이 없는 캐릭터 냥냥이
 
 function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
   axios.defaults.withCredentials = false;
@@ -20,26 +22,28 @@ function RecordPage({ setHistory, schBarInput, setSchBarInput }) {
 
   let isDummy = false;
   let profileData, chartData, needs;
-  console.log("로딩전", "loading", loading, "prevRecord", prevRecord, "schBarInput", schBarInput, payload);
-  if (loading || (schBarInput !== prevRecord && schBarInput !== "")) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
+  // console.log("로딩전", "loading", loading, "prevRecord", prevRecord, "schBarInput", schBarInput, payload);
+  const isNotUserName = chapmName.some((v) => v === schBarInput);
+  let alertTxt = isNotUserName ? "챔피온 이름은 검색할수 없습니다" : "찾을 수 없는 유저입니다";
+  if (loading || (schBarInput !== prevRecord && schBarInput !== "" && !isNotUserName)) return <Loading schBarInput={schBarInput} prevRecord={prevRecord} />;
 
-  if (error || schBarInput === "") {
+  if (error || schBarInput === "" || isNotUserName) {
     isDummy = true;
   } else {
     const { chartData: ch, needs: nd, err } = extractData(payload, schBarInput);
-    if (!err) profileData = extractProfileData(payload, nd);
+    if (!err) profileData = extractProfileData(payload, nd, schBarInput);
     if (!profileData || err) isDummy = true;
     chartData = ch;
     needs = nd;
   }
-  console.log("로딩후", loading, prevRecord, schBarInput, payload, isDummy, schBarInput);
-  console.log(loading, payload, error);
-  console.log(profileData, chartData, needs);
+  // console.log("로딩후", loading, prevRecord, schBarInput, payload, isDummy, schBarInput);
+  // console.log(loading, payload, error);
+  // console.log(profileData, chartData, needs);
 
   return (
     <div>
       <Content>
-        {isDummy && schBarInput !== "" ? <RecordPageModal text={"찾을 수 없는 유저입니다"} /> : null}
+        {isDummy && schBarInput !== "" ? <RecordPageModal text={alertTxt} setSchBarInput={setSchBarInput} /> : null}
         <UserProfile profileData={isDummy ? profileDummyData : profileData} />
         <BoxWrapper name="BoxWrapper">
           <RecentChart className="RecentChart" chartData={isDummy ? dummyChartData : chartData} />
