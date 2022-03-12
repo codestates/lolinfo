@@ -27,11 +27,8 @@ const ProfileImg = styled.div`
       border: none;
       background-color: DodgerBlue;
 
-      width: 120%;
-      height: 55%;
+      height: 50%;
       color: white;
-
-      transform: translateX(-8%);
     }
   }
 `;
