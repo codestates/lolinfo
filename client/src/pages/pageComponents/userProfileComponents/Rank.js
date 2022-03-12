@@ -65,7 +65,7 @@ const RankWrapper = styled.div`
 `;
 
 function Rank({ lp, wins, losses, tier, rank, rankType }) {
-  console.log(tier || "Unranked");
+  // console.log(tier || "Unranked");
 
   return (
     <RankWrapper>
