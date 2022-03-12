@@ -3,6 +3,7 @@ import { RecentWapper, CircleGraphWapper, CircleGraph, TeamRate, GameTimeRate, T
 import * as d3 from "d3";
 
 function RecentChart({ chartData }) {
+  // console.log(chartData);
   const [rate, setRate] = useState(0);
   const [graphSize, setGraphSize] = useState(150);
   const sleep = (n) => new Promise((resolve) => setTimeout(resolve, n));
@@ -25,7 +26,7 @@ function RecentChart({ chartData }) {
 
   useEffect(() => {
     const { blueRate, RedRate } = chartData;
-
+    // console.log(chartData);
     const data = [RedRate, blueRate];
     const color = ["FireBrick", "DodgerBlue"];
     d3.select(".teamGraph")
