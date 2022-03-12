@@ -35,7 +35,7 @@ const ProfileImg = styled.div`
 function UserProfileImg({ gameID, icon }) {
   return (
     <ProfileImg className="user-profile">
-      <img className="profile-img" src={`http://ddragon.leagueoflegends.com/cdn/12.5.1/img/profileicon/${icon}.png`} alt="Profile Icon" />
+      <img className="profile-img" src={`/profileicon/${icon}.png`} alt="Profile Icon" />
       <div className="user-id">
         <span>{gameID}</span>
         <button>업데이트</button>
