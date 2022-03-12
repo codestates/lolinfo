@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const SkillWrapper = styled.div`
   display: grid;
   grid-template-columns: minmax(1rem, auto) minmax(1rem, auto);
   grid-template-rows: repeat(2, minmax(1rem, auto));
   grid-template-areas:
-    'rune sub-rune'
-    'spell sub-spell';
+    "rune sub-rune"
+    "spell sub-spell";
 
   justify-content: center;
   align-items: center;
@@ -54,33 +54,14 @@ const SkillWrapper = styled.div`
   }
 `;
 
-function Skill() {
+function Skill({ mainRune, subRune, spell1, spell2 }) {
+  console.log(mainRune, subRune, spell1, spell2);
   return (
     <SkillWrapper>
-      <img
-        className="rune"
-        src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/ArcaneComet/ArcaneComet.png"
-        rune-id="8229"
-        alt="rune icon"
-      ></img>
-      <img
-        className="sub-rune"
-        src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7200_Domination.png"
-        rune-id="8100"
-        alt="sub-rune icon"
-      ></img>
-      <img
-        className="spell"
-        src="https://ddragon.leagueoflegends.com/cdn/11.20.1/img/spell/SummonerHaste.png"
-        spell-name="SummonerHaste"
-        alt="spell-icon"
-      ></img>
-      <img
-        className="sub-spell"
-        src="https://ddragon.leagueoflegends.com/cdn/11.20.1/img/spell/SummonerHeal.png"
-        spell-name="SummonerHeal"
-        alt="spell-icon sub"
-      ></img>
+      <img className="rune" src={`https://ddragon.leagueoflegends.com/cdn/img/${mainRune}`} alt="rune"></img>
+      <img className="sub-rune" src={`https://ddragon.leagueoflegends.com/cdn/img/${subRune}`} alt="srune"></img>
+      <img className="spell" src={`https://ddragon.leagueoflegends.com/cdn/11.20.1/img/spell/${spell1}`} alt="s1"></img>
+      <img className="sub-spell" src={`https://ddragon.leagueoflegends.com/cdn/11.20.1/img/spell/${spell2}`} alt="s2"></img>
     </SkillWrapper>
   );
 }
