@@ -240,13 +240,13 @@ export function extractProfileData(payload, needs, schBarInput) {
 
   if (payload !== null) {
     if (payload[0].length !== 0) {
-      const { leaguePoints: lp, wins: w, losses: l, tier: t, rank: r, queueId: q } = payload[0][0];
+      const { leaguePoints: lp, wins: w, losses: l, tier: t, rank: r, queueType: q } = payload[0][0];
       profileData.leaguePoints = lp;
       profileData.wins = w;
       profileData.losses = l;
       profileData.tier = t;
       profileData.rank = r;
-      profileData.queueId = q;
+      profileData.queueType = q;
     }
 
     if (needs.length !== 0) {
