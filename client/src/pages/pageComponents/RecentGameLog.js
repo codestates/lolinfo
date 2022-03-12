@@ -65,6 +65,10 @@ function RecentGameLog({ data }) {
     day,
     kp,
     queueId,
+    mainRune,
+    subRune,
+    spell1,
+    spell2,
   } = data;
 
   let result = "";
@@ -80,7 +84,7 @@ function RecentGameLog({ data }) {
     <RecentGameWrapper name="RecentGameWrapper" className={result}>
       <RecentGameResult className="GameResult" win={win} gameTime={oneGameTime} gameType={gameType} date={date} queueId={queueId} />
       <ChampProfile className="ChampProfile" win={win} chapmName={championName} champLevel={champLevel} />
-      <Skill className="Skill" />
+      <Skill className="Skill" mainRune={mainRune} subRune={subRune} spell1={spell1} spell2={spell2} />
       <KDA className="KDA" kills={kills} deaths={deaths} assists={assists} quadraKills={quadraKills} pentaKills={pentaKills} tripleKills={tripleKills} doubleKills={doubleKills} kp={kp} />
       <Etc className="Etc" item={item} goldEarned={goldEarned} totalMinionsKilled={totalMinionsKilled} oneGameTime={oneGameTime} />
       <DropInfo className={`DropInfo ${result}`} result={result} />
